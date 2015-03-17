@@ -20,9 +20,12 @@ export class progVm {
 
 export class viewModel {
   constructor() {
-    this.maxGrowthPerTick = 15;
-    this.maxCatchPerTick = 3;
-    this.spinTicks = 4;
+    this.minBar = 1;
+    this.maxGrowthPerTick = 90;
+    this.maxCatchPerTick = 15;
+    this.catchSpinRate = 2;
+    this.growthSpinRate = 1;
+    this.spinTicks = 2;
     this.spinTickCount = 0;
     this.spinRate = 1;
 
@@ -62,14 +65,21 @@ export class viewModel {
     });
 
     // update radial
+    if (this.currentVal() < this.minBar) {
+      this.currentVal(this.minBar);
+    }
+
     if (this.targetVal() > this.currentVal()) {
       var diff = Math.min(this.targetVal() - this.currentVal(), this.maxGrowthPerTick);
       this.currentVal(this.currentVal() + diff);
+      if (this.growthSpinRate) {
+        this.currentOffset(this.currentOffset() + this.growthSpinRate);
+      }
       this.spinTickCount = 0;
-    } else if (this.targetVal() < this.currentVal()) {
+    } else if (this.targetVal() < this.currentVal() && this.currentVal() > this.minBar) {
       var diff = Math.min(this.currentVal() - this.targetVal(), this.maxCatchPerTick);
-      this.currentVal(this.currentVal() - diff);
-      var offset = this.currentOffset() + diff;
+      this.currentVal(Math.max(this.currentVal() - diff, this.minBar));
+      var offset = this.currentOffset() + diff + this.catchSpinRate;
       if (offset >= 360) {
         offset -= 360;
       }
