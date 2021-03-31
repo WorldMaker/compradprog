@@ -1,1 +1,1 @@
-include: ["_snowpack/**/*"]
+keep_files: ["_snowpack"]
