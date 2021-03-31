@@ -1,1 +1,1 @@
-include: ["_snowpack"]
+include: ["_snowpack/**/*"]
