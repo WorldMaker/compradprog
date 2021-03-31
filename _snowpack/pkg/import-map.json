@@ -1,0 +1,7 @@
+{
+  "imports": {
+    "jquery": "./jquery.js",
+    "jquery-knob": "./jquery-knob.js",
+    "knockout": "./knockout.js"
+  }
+}
