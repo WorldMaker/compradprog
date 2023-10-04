@@ -6,3 +6,11 @@ await esbuild.build({
     outfile: "main.js",
     format: "esm"
 })
+
+// *** Test Modules ***
+await esbuild.build({
+    entryPoints: ['progvm.ts'],
+    bundle: true,
+    outdir: '.',
+    format: 'esm'
+})

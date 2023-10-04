@@ -7004,11 +7004,11 @@ var require_jquery = __commonJS({
           }
         });
       })();
-      function curCSS(elem, name, computed2) {
+      function curCSS(elem, name, computed3) {
         var width, minWidth, maxWidth, ret, style = elem.style;
-        computed2 = computed2 || getStyles(elem);
-        if (computed2) {
-          ret = computed2.getPropertyValue(name) || computed2[name];
+        computed3 = computed3 || getStyles(elem);
+        if (computed3) {
+          ret = computed3.getPropertyValue(name) || computed3[name];
           if (ret === "" && !isAttached(elem)) {
             ret = jQuery2.style(elem, name);
           }
@@ -7017,7 +7017,7 @@ var require_jquery = __commonJS({
             minWidth = style.minWidth;
             maxWidth = style.maxWidth;
             style.minWidth = style.maxWidth = style.width = ret;
-            ret = computed2.width;
+            ret = computed3.width;
             style.width = width;
             style.minWidth = minWidth;
             style.maxWidth = maxWidth;
@@ -7145,8 +7145,8 @@ var require_jquery = __commonJS({
         // behavior of getting and setting a style property
         cssHooks: {
           opacity: {
-            get: function(elem, computed2) {
-              if (computed2) {
+            get: function(elem, computed3) {
+              if (computed3) {
                 var ret = curCSS(elem, "opacity");
                 return ret === "" ? "1" : ret;
               }
@@ -7242,8 +7242,8 @@ var require_jquery = __commonJS({
       });
       jQuery2.each(["height", "width"], function(_i, dimension) {
         jQuery2.cssHooks[dimension] = {
-          get: function(elem, computed2, extra) {
-            if (computed2) {
+          get: function(elem, computed3, extra) {
+            if (computed3) {
               return rdisplayswap.test(jQuery2.css(elem, "display")) && // Support: Safari 8+
               // Table columns in Safari have non-zero offsetWidth & zero
               // getBoundingClientRect().width unless display is changed.
@@ -7278,8 +7278,8 @@ var require_jquery = __commonJS({
       });
       jQuery2.cssHooks.marginLeft = addGetHookIf(
         support.reliableMarginLeft,
-        function(elem, computed2) {
-          if (computed2) {
+        function(elem, computed3) {
+          if (computed3) {
             return (parseFloat(curCSS(elem, "marginLeft")) || elem.getBoundingClientRect().left - swap(elem, { marginLeft: 0 }, function() {
               return elem.getBoundingClientRect().left;
             })) + "px";
@@ -9498,10 +9498,10 @@ var require_jquery = __commonJS({
       jQuery2.each(["top", "left"], function(_i, prop) {
         jQuery2.cssHooks[prop] = addGetHookIf(
           support.pixelPosition,
-          function(elem, computed2) {
-            if (computed2) {
-              computed2 = curCSS(elem, prop);
-              return rnumnonpx.test(computed2) ? jQuery2(elem).position()[prop] + "px" : computed2;
+          function(elem, computed3) {
+            if (computed3) {
+              computed3 = curCSS(elem, prop);
+              return rnumnonpx.test(computed3) ? jQuery2(elem).position()[prop] + "px" : computed3;
             }
           }
         );
@@ -10086,14 +10086,19 @@ var require_jquery_knob_min = __commonJS({
 });
 
 // main.ts
-var ko = __toESM(require_knockout_latest(), 1);
+var ko2 = __toESM(require_knockout_latest(), 1);
 var import_jquery = __toESM(require_jquery(), 1);
+
+// progvm.ts
+var ko = __toESM(require_knockout_latest(), 1);
+var BaseSpeed = 5e-3;
+var SpeedMultiplier = 2;
 var ProgVm = class {
   name = ko.observable("Item");
   percent = ko.observable(0);
   roundPercent = ko.computed(() => Math.round(this.percent() * 100));
   paused = ko.observable(false);
-  perTick = ko.observable(5e-3);
+  perTick = ko.observable(BaseSpeed);
   pause() {
     this.paused(true);
   }
@@ -10101,10 +10106,10 @@ var ProgVm = class {
     this.paused(false);
   }
   speedUp() {
-    this.perTick(this.perTick() * 2);
+    this.perTick(this.perTick() * SpeedMultiplier);
   }
   slowDown() {
-    this.perTick(this.perTick() / 2);
+    this.perTick(this.perTick() / SpeedMultiplier);
   }
   tick() {
     if (!this.paused() && this.percent() < 1) {
@@ -10115,6 +10120,8 @@ var ProgVm = class {
     this.percent(1);
   }
 };
+
+// main.ts
 var CompRadProgVm = class {
   minBar = 1;
   maxGrowthPerTick = 90;
@@ -10124,14 +10131,14 @@ var CompRadProgVm = class {
   spinTicks = 2;
   spinTickCount = 0;
   spinRate = 1;
-  inprogress = ko.observableArray();
-  targetPercent = ko.computed(
+  inprogress = ko2.observableArray();
+  targetPercent = ko2.computed(
     () => this.inprogress().length > 0 ? this.inprogress().map((item) => item.percent()).reduce((a, b) => a + b) / this.inprogress().length : 0
   );
-  targetRoundPercent = ko.computed(() => Math.round(this.targetPercent() * 100));
-  targetVal = ko.computed(() => Math.round(this.targetPercent() * 360));
-  currentVal = ko.observable(0);
-  currentOffset = ko.observable(0);
+  targetRoundPercent = ko2.computed(() => Math.round(this.targetPercent() * 100));
+  targetVal = ko2.computed(() => Math.round(this.targetPercent() * 360));
+  currentVal = ko2.observable(0);
+  currentOffset = ko2.observable(0);
   constructor(dial2) {
     this.currentVal.subscribe((v) => dial2.val(v).trigger("change"));
     this.currentOffset.subscribe(
@@ -10139,10 +10146,10 @@ var CompRadProgVm = class {
     );
   }
   pauseAll() {
-    this.inprogress().forEach((item) => item.paused(true));
+    this.inprogress().forEach((item) => item.pause());
   }
   unpauseAll() {
-    this.inprogress().forEach((item) => item.paused(false));
+    this.inprogress().forEach((item) => item.unpause());
   }
   addItem() {
     this.inprogress.unshift(new ProgVm());
@@ -10188,11 +10195,10 @@ w.jQuery = w.$ = import_jquery.default;
 await Promise.resolve().then(() => __toESM(require_jquery_knob_min(), 1));
 dial.knob();
 var vm = new CompRadProgVm(dial);
-ko.applyBindings(vm);
+ko2.applyBindings(vm);
 setInterval(() => vm.tick(), 500);
 export {
-  CompRadProgVm,
-  ProgVm
+  CompRadProgVm
 };
 /*! Bundled license information:
 

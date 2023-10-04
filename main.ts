@@ -1,34 +1,6 @@
 import * as ko from 'knockout'
 import $ from 'jquery'
-
-export class ProgVm {
-  name = ko.observable('Item')
-  percent = ko.observable(0)
-  roundPercent = ko.computed(() => Math.round(this.percent() * 100))
-  paused = ko.observable(false)
-  perTick = ko.observable(0.005)
-
-  pause() {
-    this.paused(true)
-  }
-  unpause() {
-    this.paused(false)
-  }
-  speedUp() {
-    this.perTick(this.perTick() * 2)
-  }
-  slowDown() {
-    this.perTick(this.perTick() / 2)
-  }
-  tick() {
-    if (!this.paused() && this.percent() < 1) {
-      this.percent(Math.min(this.percent() + this.perTick(), 1))
-    }
-  }
-  finish() {
-    this.percent(1)
-  }
-}
+import { ProgVm } from './progvm'
 
 export class CompRadProgVm {
   minBar = 1
@@ -63,11 +35,11 @@ export class CompRadProgVm {
   }
 
   pauseAll() {
-    this.inprogress().forEach((item) => item.paused(true))
+    this.inprogress().forEach((item) => item.pause())
   }
 
   unpauseAll() {
-    this.inprogress().forEach((item) => item.paused(false))
+    this.inprogress().forEach((item) => item.unpause())
   }
 
   addItem() {
