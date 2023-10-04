@@ -17,6 +17,7 @@
   },
   "scripts": {
     "start": "snowpack dev",
+    "prebuild": "tsc -p .",
     "build": "snowpack build",
     "prettier:check": "prettier --check .",
     "prettier": "prettier --write .",
