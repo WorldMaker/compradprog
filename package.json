@@ -10,7 +10,8 @@
     "knockout": "^3.5.1"
   },
   "devDependencies": {
-    "prettier": "^3.0.3"
+    "prettier": "^3.0.3",
+    "typescript": "^5.2.2"
   },
   "scripts": {
     "start": "snowpack dev",
