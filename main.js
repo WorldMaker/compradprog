@@ -10086,8 +10086,11 @@ var require_jquery_knob_min = __commonJS({
 });
 
 // main.ts
-var ko2 = __toESM(require_knockout_latest(), 1);
+var ko3 = __toESM(require_knockout_latest(), 1);
 var import_jquery = __toESM(require_jquery(), 1);
+
+// compradprogvm.ts
+var ko2 = __toESM(require_knockout_latest(), 1);
 
 // progvm.ts
 var ko = __toESM(require_knockout_latest(), 1);
@@ -10121,7 +10124,7 @@ var ProgVm = class {
   }
 };
 
-// main.ts
+// compradprogvm.ts
 var CompRadProgVm = class {
   minBar = 1;
   maxGrowthPerTick = 90;
@@ -10140,10 +10143,14 @@ var CompRadProgVm = class {
   currentVal = ko2.observable(0);
   currentOffset = ko2.observable(0);
   constructor(dial2) {
-    this.currentVal.subscribe((v) => dial2.val(v).trigger("change"));
-    this.currentOffset.subscribe(
-      (v) => dial2.trigger("configure", { angleOffset: this.currentOffset() })
-    );
+    if (dial2) {
+      this.currentVal.subscribe((v) => dial2.val(v).trigger("change"));
+      this.currentOffset.subscribe(
+        (v) => dial2.trigger("configure", { angleOffset: this.currentOffset() })
+      );
+    } else {
+      console.warn("Unable to subscribe jQuery Knob dial to progress changes");
+    }
   }
   pauseAll() {
     this.inprogress().forEach((item) => item.pause());
@@ -10189,17 +10196,16 @@ var CompRadProgVm = class {
     }
   }
 };
+
+// main.ts
 var dial = (0, import_jquery.default)("#dial");
 var w = window;
 w.jQuery = w.$ = import_jquery.default;
 await Promise.resolve().then(() => __toESM(require_jquery_knob_min(), 1));
 dial.knob();
 var vm = new CompRadProgVm(dial);
-ko2.applyBindings(vm);
+ko3.applyBindings(vm);
 setInterval(() => vm.tick(), 500);
-export {
-  CompRadProgVm
-};
 /*! Bundled license information:
 
 knockout/build/output/knockout-latest.js:

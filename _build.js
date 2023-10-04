@@ -9,8 +9,9 @@ await esbuild.build({
 
 // *** Test Modules ***
 await esbuild.build({
-    entryPoints: ['progvm.ts'],
+    entryPoints: ['compradprogvm.ts', 'progvm.ts'],
     bundle: true,
+    splitting: true,
     outdir: '.',
     format: 'esm'
 })
