@@ -1,5 +1,5 @@
 import * as ko from 'knockout'
-import * as $ from 'jquery'
+import $ from 'jquery'
 
 export class ProgVm {
   name = ko.observable('Item')
