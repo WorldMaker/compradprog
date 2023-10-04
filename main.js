@@ -4,7 +4,7 @@ import $ from "jquery"
 // Set global for jquery-knob
 window.jQuery = window.$ = $
 var knobLoad = (async () => {
-  await import('jquery-knob')
+  await import("jquery-knob")
   $("#dial").knob()
 })()
 
@@ -52,17 +52,17 @@ export class viewModel {
         ? this.inprogress()
             .map((item) => item.percent())
             .reduce((a, b) => a + b) / this.inprogress().length
-        : 0
+        : 0,
     )
     this.targetRoundPercent = ko.computed(() =>
-      Math.round(this.targetPercent() * 100)
+      Math.round(this.targetPercent() * 100),
     )
     this.targetVal = ko.computed(() => Math.round(this.targetPercent() * 360))
     this.currentVal = ko.observable(0)
     this.currentVal.subscribe((v) => $("#dial").val(v).trigger("change"))
     this.currentOffset = ko.observable(0)
     this.currentOffset.subscribe((v) =>
-      $("#dial").trigger("configure", { angleOffset: this.currentOffset() })
+      $("#dial").trigger("configure", { angleOffset: this.currentOffset() }),
     )
   }
 
@@ -94,7 +94,7 @@ export class viewModel {
     if (this.targetVal() > this.currentVal()) {
       var diff = Math.min(
         this.targetVal() - this.currentVal(),
-        this.maxGrowthPerTick
+        this.maxGrowthPerTick,
       )
       this.currentVal(this.currentVal() + diff)
       if (this.growthSpinRate) {
@@ -107,7 +107,7 @@ export class viewModel {
     ) {
       var diff = Math.min(
         this.currentVal() - this.targetVal(),
-        this.maxCatchPerTick
+        this.maxCatchPerTick,
       )
       this.currentVal(Math.max(this.currentVal() - diff, this.minBar))
       var offset = this.currentOffset() + diff + this.catchSpinRate

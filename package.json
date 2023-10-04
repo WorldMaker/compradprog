@@ -15,6 +15,8 @@
   "scripts": {
     "start": "snowpack dev",
     "build": "snowpack build",
+    "prettier:check": "prettier --check .",
+    "prettier": "prettier --write .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
