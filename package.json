@@ -10,12 +10,19 @@
     "knockout": "^3.5.1"
   },
   "devDependencies": {
-    "prettier": "2.2.1",
-    "snowpack": "^3.1.2"
+    "@types/jquery": "^3.5.20",
+    "@types/jquery-knob": "^1.2.33",
+    "esbuild": "^0.19.4",
+    "http-server": "^14.1.1",
+    "prettier": "^3.0.3",
+    "typescript": "^5.2.2"
   },
   "scripts": {
-    "start": "snowpack dev",
-    "build": "snowpack build",
+    "start": "http-server",
+    "prebuild": "tsc -p .",
+    "build": "node _build.js",
+    "prettier:check": "prettier --check .",
+    "prettier": "prettier --write .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
