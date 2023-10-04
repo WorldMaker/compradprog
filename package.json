@@ -18,7 +18,7 @@
     "typescript": "^5.2.2"
   },
   "scripts": {
-    "start": "snowpack dev",
+    "start": "http-server",
     "prebuild": "tsc -p .",
     "build": "node _build.js",
     "prettier:check": "prettier --check .",
