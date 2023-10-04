@@ -10,6 +10,8 @@
     "knockout": "^3.5.1"
   },
   "devDependencies": {
+    "@types/jquery": "^3.5.20",
+    "@types/jquery-knob": "^1.2.33",
     "prettier": "^3.0.3",
     "typescript": "^5.2.2"
   },
