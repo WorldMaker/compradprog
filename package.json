@@ -23,7 +23,7 @@
     "build": "node _build.js",
     "prettier:check": "prettier --check .",
     "prettier": "prettier --write .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node --test"
   },
   "repository": {
     "type": "git",

@@ -5,3 +5,8 @@ node_modules
 build
 
 *.swp
+
+# test files
+chunk-*.js
+compradprogvm.js
+progvm.js
