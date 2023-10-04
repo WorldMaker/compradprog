@@ -12,6 +12,7 @@
   "devDependencies": {
     "@types/jquery": "^3.5.20",
     "@types/jquery-knob": "^1.2.33",
+    "esbuild": "^0.19.4",
     "prettier": "^3.0.3",
     "typescript": "^5.2.2"
   },
