@@ -1,33 +1,74 @@
-import * as ko from 'knockout'
+import { StateSetter, butterfly } from 'butterfloat'
+import {
+  combineLatest,
+  firstValueFrom,
+  Observable,
+  map,
+  shareReplay,
+} from 'rxjs'
 
 export const BaseSpeed = 0.005
 export const SpeedMultiplier = 2
 
 export class ProgVm {
-  name = ko.observable('Item')
-  percent = ko.observable(0)
-  roundPercent = ko.computed(() => Math.round(this.percent() * 100))
-  paused = ko.observable(false)
-  perTick = ko.observable(BaseSpeed)
+  readonly #name: Observable<string>
+  readonly #setName: (name: StateSetter<string>) => void
+  get name() {
+    return this.#name
+  }
+
+  readonly #percent: Observable<number>
+  readonly #setPercent: (percent: StateSetter<number>) => void
+  get percent() {
+    return this.#percent
+  }
+
+  readonly #roundPercent: Observable<number>
+  get roundPercent() {
+    return this.#roundPercent
+  }
+
+  readonly #paused: Observable<boolean>
+  readonly #setPaused: (paused: StateSetter<boolean>) => void
+  get paused() {
+    return this.#paused
+  }
+
+  readonly #perTick: Observable<number>
+  readonly #setPerTick: (perTick: StateSetter<number>) => void
+  get perTick() {
+    return this.#perTick
+  }
+
+  constructor() {
+    ;[this.#name, this.#setName] = butterfly('Item')
+    ;[this.#percent, this.#setPercent] = butterfly(0)
+    ;[this.#paused, this.#setPaused] = butterfly(false)
+    ;[this.#perTick, this.#setPerTick] = butterfly(BaseSpeed)
+
+    this.#roundPercent = this.percent.pipe(
+      map((percent) => Math.round(percent * 100)),
+    )
+  }
 
   pause() {
-    this.paused(true)
+    this.#setPaused(true)
   }
   unpause() {
-    this.paused(false)
+    this.#setPaused(false)
   }
   speedUp() {
-    this.perTick(this.perTick() * SpeedMultiplier)
+    this.#setPerTick((perTick) => perTick * SpeedMultiplier)
   }
   slowDown() {
-    this.perTick(this.perTick() / SpeedMultiplier)
+    this.#setPerTick((perTick) => perTick / SpeedMultiplier)
   }
-  tick() {
-    if (!this.paused() && this.percent() < 1) {
-      this.percent(Math.min(this.percent() + this.perTick(), 1))
-    }
+  async tick() {
+    const paused = await firstValueFrom(this.paused)
+    const perTick = paused ? 0 : await firstValueFrom(this.perTick)
+    this.#setPercent((percent) => percent + perTick)
   }
   finish() {
-    this.percent(1)
+    this.#setPercent(1)
   }
 }

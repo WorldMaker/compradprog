@@ -1,5 +1,5 @@
-import * as ko from 'knockout'
 import $ from 'jquery'
+import { interval } from 'rxjs'
 import { CompRadProgVm } from './compradprogvm'
 
 // create and bind
@@ -12,6 +12,5 @@ w.jQuery = w.$ = $
 // @ts-ignore
 await import('jquery-knob')
 dial.knob()
-const vm = new CompRadProgVm(dial)
-ko.applyBindings(vm)
-setInterval(() => vm.tick(), 500)
+const vm = new CompRadProgVm(dial, interval(500))
+//ko.applyBindings(vm)
