@@ -23,7 +23,7 @@ export class ProgVm {
     return this.#percent
   }
 
-  readonly #roundPercent: Observable<number>
+  readonly #roundPercent: Observable<string>
   get roundPercent() {
     return this.#roundPercent
   }
@@ -47,7 +47,7 @@ export class ProgVm {
     ;[this.#perTick, this.#setPerTick] = butterfly(BaseSpeed)
 
     this.#roundPercent = this.percent.pipe(
-      map((percent) => Math.round(percent * 100)),
+      map((percent) => percent.toLocaleString(undefined, { style: 'percent' })),
     )
   }
 

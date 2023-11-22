@@ -51,7 +51,7 @@ export class CompRadProgVm {
     return this.#targetPercent
   }
 
-  readonly #targetRoundPercent: Observable<number>
+  readonly #targetRoundPercent: Observable<string>
   get targetRoundPercent() {
     return this.#targetRoundPercent
   }
@@ -85,7 +85,7 @@ export class CompRadProgVm {
     )
 
     this.#targetRoundPercent = this.targetPercent.pipe(
-      map((target) => Math.round(target * 100)),
+      map((target) => target.toLocaleString(undefined, { style: 'percent' })),
     )
 
     this.#targetVal = this.targetPercent.pipe(

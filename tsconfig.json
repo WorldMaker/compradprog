@@ -6,6 +6,8 @@
     "moduleResolution": "node",
     "noEmit": true,
     "forceConsistentCasingInFileNames": true,
-    "strict": true
+    "strict": true,
+    "jsx": "react",
+    "jsxFactory": "jsx"
   }
 }

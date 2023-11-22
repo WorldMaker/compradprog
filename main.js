@@ -3741,9 +3741,9 @@ var require_jquery = __commonJS({
           if (!div) {
             return;
           }
-          container.style.cssText = "position:absolute;left:-11111px;width:60px;margin-top:1px;padding:0;border:0";
+          container2.style.cssText = "position:absolute;left:-11111px;width:60px;margin-top:1px;padding:0;border:0";
           div.style.cssText = "position:relative;display:block;box-sizing:border-box;overflow:scroll;margin:auto;border:1px;padding:1px;width:60%;top:1%";
-          documentElement.appendChild(container).appendChild(div);
+          documentElement.appendChild(container2).appendChild(div);
           var divStyle = window2.getComputedStyle(div);
           pixelPositionVal = divStyle.top !== "1%";
           reliableMarginLeftVal = roundPixelMeasures(divStyle.marginLeft) === 12;
@@ -3752,13 +3752,13 @@ var require_jquery = __commonJS({
           boxSizingReliableVal = roundPixelMeasures(divStyle.width) === 36;
           div.style.position = "absolute";
           scrollboxSizeVal = roundPixelMeasures(div.offsetWidth / 3) === 12;
-          documentElement.removeChild(container);
+          documentElement.removeChild(container2);
           div = null;
         }
         function roundPixelMeasures(measure) {
           return Math.round(parseFloat(measure));
         }
-        var pixelPositionVal, boxSizingReliableVal, scrollboxSizeVal, pixelBoxStylesVal, reliableTrDimensionsVal, reliableMarginLeftVal, container = document2.createElement("div"), div = document2.createElement("div");
+        var pixelPositionVal, boxSizingReliableVal, scrollboxSizeVal, pixelBoxStylesVal, reliableTrDimensionsVal, reliableMarginLeftVal, container2 = document2.createElement("div"), div = document2.createElement("div");
         if (!div.style) {
           return;
         }
@@ -6896,9 +6896,6 @@ var require_jquery_knob_min = __commonJS({
   }
 });
 
-// main.ts
-var import_jquery = __toESM(require_jquery(), 1);
-
 // node_modules/tslib/tslib.es6.mjs
 var extendStatics = function(d, b) {
   extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
@@ -7748,6 +7745,43 @@ var OperatorSubscriber = function(_super) {
   return OperatorSubscriber2;
 }(Subscriber);
 
+// node_modules/rxjs/dist/esm5/internal/scheduler/animationFrameProvider.js
+var animationFrameProvider = {
+  schedule: function(callback) {
+    var request = requestAnimationFrame;
+    var cancel = cancelAnimationFrame;
+    var delegate = animationFrameProvider.delegate;
+    if (delegate) {
+      request = delegate.requestAnimationFrame;
+      cancel = delegate.cancelAnimationFrame;
+    }
+    var handle = request(function(timestamp) {
+      cancel = void 0;
+      callback(timestamp);
+    });
+    return new Subscription(function() {
+      return cancel === null || cancel === void 0 ? void 0 : cancel(handle);
+    });
+  },
+  requestAnimationFrame: function() {
+    var args = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+      args[_i] = arguments[_i];
+    }
+    var delegate = animationFrameProvider.delegate;
+    return ((delegate === null || delegate === void 0 ? void 0 : delegate.requestAnimationFrame) || requestAnimationFrame).apply(void 0, __spreadArray([], __read(args)));
+  },
+  cancelAnimationFrame: function() {
+    var args = [];
+    for (var _i = 0; _i < arguments.length; _i++) {
+      args[_i] = arguments[_i];
+    }
+    var delegate = animationFrameProvider.delegate;
+    return ((delegate === null || delegate === void 0 ? void 0 : delegate.cancelAnimationFrame) || cancelAnimationFrame).apply(void 0, __spreadArray([], __read(args)));
+  },
+  delegate: void 0
+};
+
 // node_modules/rxjs/dist/esm5/internal/util/ObjectUnsubscribedError.js
 var ObjectUnsubscribedError = createErrorClass(function(_super) {
   return function ObjectUnsubscribedErrorImpl() {
@@ -8023,9 +8057,9 @@ var Action = function(_super) {
   function Action2(scheduler, work) {
     return _super.call(this) || this;
   }
-  Action2.prototype.schedule = function(state, delay) {
-    if (delay === void 0) {
-      delay = 0;
+  Action2.prototype.schedule = function(state, delay2) {
+    if (delay2 === void 0) {
+      delay2 = 0;
     }
     return this;
   };
@@ -8062,10 +8096,10 @@ var AsyncAction = function(_super) {
     _this.pending = false;
     return _this;
   }
-  AsyncAction2.prototype.schedule = function(state, delay) {
+  AsyncAction2.prototype.schedule = function(state, delay2) {
     var _a;
-    if (delay === void 0) {
-      delay = 0;
+    if (delay2 === void 0) {
+      delay2 = 0;
     }
     if (this.closed) {
       return this;
@@ -8074,24 +8108,24 @@ var AsyncAction = function(_super) {
     var id = this.id;
     var scheduler = this.scheduler;
     if (id != null) {
-      this.id = this.recycleAsyncId(scheduler, id, delay);
+      this.id = this.recycleAsyncId(scheduler, id, delay2);
     }
     this.pending = true;
-    this.delay = delay;
-    this.id = (_a = this.id) !== null && _a !== void 0 ? _a : this.requestAsyncId(scheduler, this.id, delay);
+    this.delay = delay2;
+    this.id = (_a = this.id) !== null && _a !== void 0 ? _a : this.requestAsyncId(scheduler, this.id, delay2);
     return this;
   };
-  AsyncAction2.prototype.requestAsyncId = function(scheduler, _id, delay) {
-    if (delay === void 0) {
-      delay = 0;
+  AsyncAction2.prototype.requestAsyncId = function(scheduler, _id, delay2) {
+    if (delay2 === void 0) {
+      delay2 = 0;
     }
-    return intervalProvider.setInterval(scheduler.flush.bind(scheduler, this), delay);
+    return intervalProvider.setInterval(scheduler.flush.bind(scheduler, this), delay2);
   };
-  AsyncAction2.prototype.recycleAsyncId = function(_scheduler, id, delay) {
-    if (delay === void 0) {
-      delay = 0;
+  AsyncAction2.prototype.recycleAsyncId = function(_scheduler, id, delay2) {
+    if (delay2 === void 0) {
+      delay2 = 0;
     }
-    if (delay != null && this.delay === delay && this.pending === false) {
+    if (delay2 != null && this.delay === delay2 && this.pending === false) {
       return id;
     }
     if (id != null) {
@@ -8099,12 +8133,12 @@ var AsyncAction = function(_super) {
     }
     return void 0;
   };
-  AsyncAction2.prototype.execute = function(state, delay) {
+  AsyncAction2.prototype.execute = function(state, delay2) {
     if (this.closed) {
       return new Error("executing a cancelled action");
     }
     this.pending = false;
-    var error = this._execute(state, delay);
+    var error = this._execute(state, delay2);
     if (error) {
       return error;
     } else if (this.pending === false && this.id != null) {
@@ -8151,11 +8185,11 @@ var Scheduler = function() {
     this.schedulerActionCtor = schedulerActionCtor;
     this.now = now;
   }
-  Scheduler2.prototype.schedule = function(work, delay, state) {
-    if (delay === void 0) {
-      delay = 0;
+  Scheduler2.prototype.schedule = function(work, delay2, state) {
+    if (delay2 === void 0) {
+      delay2 = 0;
     }
-    return new this.schedulerActionCtor(this, work).schedule(state, delay);
+    return new this.schedulerActionCtor(this, work).schedule(state, delay2);
   };
   Scheduler2.now = dateTimestampProvider.now;
   return Scheduler2;
@@ -8201,6 +8235,82 @@ var AsyncScheduler = function(_super) {
 var asyncScheduler = new AsyncScheduler(AsyncAction);
 var async = asyncScheduler;
 
+// node_modules/rxjs/dist/esm5/internal/scheduler/AnimationFrameAction.js
+var AnimationFrameAction = function(_super) {
+  __extends(AnimationFrameAction2, _super);
+  function AnimationFrameAction2(scheduler, work) {
+    var _this = _super.call(this, scheduler, work) || this;
+    _this.scheduler = scheduler;
+    _this.work = work;
+    return _this;
+  }
+  AnimationFrameAction2.prototype.requestAsyncId = function(scheduler, id, delay2) {
+    if (delay2 === void 0) {
+      delay2 = 0;
+    }
+    if (delay2 !== null && delay2 > 0) {
+      return _super.prototype.requestAsyncId.call(this, scheduler, id, delay2);
+    }
+    scheduler.actions.push(this);
+    return scheduler._scheduled || (scheduler._scheduled = animationFrameProvider.requestAnimationFrame(function() {
+      return scheduler.flush(void 0);
+    }));
+  };
+  AnimationFrameAction2.prototype.recycleAsyncId = function(scheduler, id, delay2) {
+    var _a;
+    if (delay2 === void 0) {
+      delay2 = 0;
+    }
+    if (delay2 != null ? delay2 > 0 : this.delay > 0) {
+      return _super.prototype.recycleAsyncId.call(this, scheduler, id, delay2);
+    }
+    var actions = scheduler.actions;
+    if (id != null && ((_a = actions[actions.length - 1]) === null || _a === void 0 ? void 0 : _a.id) !== id) {
+      animationFrameProvider.cancelAnimationFrame(id);
+      scheduler._scheduled = void 0;
+    }
+    return void 0;
+  };
+  return AnimationFrameAction2;
+}(AsyncAction);
+
+// node_modules/rxjs/dist/esm5/internal/scheduler/AnimationFrameScheduler.js
+var AnimationFrameScheduler = function(_super) {
+  __extends(AnimationFrameScheduler2, _super);
+  function AnimationFrameScheduler2() {
+    return _super !== null && _super.apply(this, arguments) || this;
+  }
+  AnimationFrameScheduler2.prototype.flush = function(action) {
+    this._active = true;
+    var flushId = this._scheduled;
+    this._scheduled = void 0;
+    var actions = this.actions;
+    var error;
+    action = action || actions.shift();
+    do {
+      if (error = action.execute(action.state, action.delay)) {
+        break;
+      }
+    } while ((action = actions[0]) && action.id === flushId && actions.shift());
+    this._active = false;
+    if (error) {
+      while ((action = actions[0]) && action.id === flushId && actions.shift()) {
+        action.unsubscribe();
+      }
+      throw error;
+    }
+  };
+  return AnimationFrameScheduler2;
+}(AsyncScheduler);
+
+// node_modules/rxjs/dist/esm5/internal/scheduler/animationFrame.js
+var animationFrameScheduler = new AnimationFrameScheduler(AnimationFrameAction);
+
+// node_modules/rxjs/dist/esm5/internal/observable/empty.js
+var EMPTY = new Observable(function(subscriber) {
+  return subscriber.complete();
+});
+
 // node_modules/rxjs/dist/esm5/internal/util/isScheduler.js
 function isScheduler(value) {
   return value && isFunction(value.schedule);
@@ -8215,6 +8325,9 @@ function popResultSelector(args) {
 }
 function popScheduler(args) {
   return isScheduler(last(args)) ? args.pop() : void 0;
+}
+function popNumber(args, defaultValue) {
+  return typeof last(args) === "number" ? args.pop() : defaultValue;
 }
 
 // node_modules/rxjs/dist/esm5/internal/util/isArrayLike.js
@@ -8447,9 +8560,9 @@ function process(asyncIterable, subscriber) {
 }
 
 // node_modules/rxjs/dist/esm5/internal/util/executeSchedule.js
-function executeSchedule(parentSubscription, scheduler, work, delay, repeat) {
-  if (delay === void 0) {
-    delay = 0;
+function executeSchedule(parentSubscription, scheduler, work, delay2, repeat) {
+  if (delay2 === void 0) {
+    delay2 = 0;
   }
   if (repeat === void 0) {
     repeat = false;
@@ -8457,11 +8570,11 @@ function executeSchedule(parentSubscription, scheduler, work, delay, repeat) {
   var scheduleSubscription = scheduler.schedule(function() {
     work();
     if (repeat) {
-      parentSubscription.add(this.schedule(null, delay));
+      parentSubscription.add(this.schedule(null, delay2));
     } else {
       this.unsubscribe();
     }
-  }, delay);
+  }, delay2);
   parentSubscription.add(scheduleSubscription);
   if (!repeat) {
     return scheduleSubscription;
@@ -8469,36 +8582,36 @@ function executeSchedule(parentSubscription, scheduler, work, delay, repeat) {
 }
 
 // node_modules/rxjs/dist/esm5/internal/operators/observeOn.js
-function observeOn(scheduler, delay) {
-  if (delay === void 0) {
-    delay = 0;
+function observeOn(scheduler, delay2) {
+  if (delay2 === void 0) {
+    delay2 = 0;
   }
   return operate(function(source, subscriber) {
     source.subscribe(createOperatorSubscriber(subscriber, function(value) {
       return executeSchedule(subscriber, scheduler, function() {
         return subscriber.next(value);
-      }, delay);
+      }, delay2);
     }, function() {
       return executeSchedule(subscriber, scheduler, function() {
         return subscriber.complete();
-      }, delay);
+      }, delay2);
     }, function(err) {
       return executeSchedule(subscriber, scheduler, function() {
         return subscriber.error(err);
-      }, delay);
+      }, delay2);
     }));
   });
 }
 
 // node_modules/rxjs/dist/esm5/internal/operators/subscribeOn.js
-function subscribeOn(scheduler, delay) {
-  if (delay === void 0) {
-    delay = 0;
+function subscribeOn(scheduler, delay2) {
+  if (delay2 === void 0) {
+    delay2 = 0;
   }
   return operate(function(source, subscriber) {
     subscriber.add(scheduler.schedule(function() {
       return source.subscribe(subscriber);
-    }, delay));
+    }, delay2));
   });
 }
 
@@ -8877,6 +8990,64 @@ function concat() {
   return concatAll()(from(args, popScheduler(args)));
 }
 
+// node_modules/rxjs/dist/esm5/internal/observable/fromEvent.js
+var nodeEventEmitterMethods = ["addListener", "removeListener"];
+var eventTargetMethods = ["addEventListener", "removeEventListener"];
+var jqueryMethods = ["on", "off"];
+function fromEvent(target, eventName, options, resultSelector) {
+  if (isFunction(options)) {
+    resultSelector = options;
+    options = void 0;
+  }
+  if (resultSelector) {
+    return fromEvent(target, eventName, options).pipe(mapOneOrManyArgs(resultSelector));
+  }
+  var _a = __read(isEventTarget(target) ? eventTargetMethods.map(function(methodName) {
+    return function(handler) {
+      return target[methodName](eventName, handler, options);
+    };
+  }) : isNodeStyleEventEmitter(target) ? nodeEventEmitterMethods.map(toCommonHandlerRegistry(target, eventName)) : isJQueryStyleEventEmitter(target) ? jqueryMethods.map(toCommonHandlerRegistry(target, eventName)) : [], 2), add = _a[0], remove = _a[1];
+  if (!add) {
+    if (isArrayLike(target)) {
+      return mergeMap(function(subTarget) {
+        return fromEvent(subTarget, eventName, options);
+      })(innerFrom(target));
+    }
+  }
+  if (!add) {
+    throw new TypeError("Invalid event target");
+  }
+  return new Observable(function(subscriber) {
+    var handler = function() {
+      var args = [];
+      for (var _i = 0; _i < arguments.length; _i++) {
+        args[_i] = arguments[_i];
+      }
+      return subscriber.next(1 < args.length ? args : args[0]);
+    };
+    add(handler);
+    return function() {
+      return remove(handler);
+    };
+  });
+}
+function toCommonHandlerRegistry(target, eventName) {
+  return function(methodName) {
+    return function(handler) {
+      return target[methodName](eventName, handler);
+    };
+  };
+}
+function isNodeStyleEventEmitter(target) {
+  return isFunction(target.addListener) && isFunction(target.removeListener);
+}
+function isJQueryStyleEventEmitter(target) {
+  return isFunction(target.on) && isFunction(target.off);
+}
+function isEventTarget(target) {
+  return isFunction(target.addEventListener) && isFunction(target.removeEventListener);
+}
+
 // node_modules/rxjs/dist/esm5/internal/observable/timer.js
 function timer(dueTime, intervalOrScheduler, scheduler) {
   if (dueTime === void 0) {
@@ -8926,6 +9097,18 @@ function interval(period, scheduler) {
   return timer(period, period, scheduler);
 }
 
+// node_modules/rxjs/dist/esm5/internal/observable/merge.js
+function merge() {
+  var args = [];
+  for (var _i = 0; _i < arguments.length; _i++) {
+    args[_i] = arguments[_i];
+  }
+  var scheduler = popScheduler(args);
+  var concurrent = popNumber(args, Infinity);
+  var sources = args;
+  return !sources.length ? EMPTY : sources.length === 1 ? innerFrom(sources[0]) : mergeAll(concurrent)(from(sources, scheduler));
+}
+
 // node_modules/rxjs/dist/esm5/internal/operators/filter.js
 function filter(predicate, thisArg) {
   return operate(function(source, subscriber) {
@@ -8933,6 +9116,82 @@ function filter(predicate, thisArg) {
     source.subscribe(createOperatorSubscriber(subscriber, function(value) {
       return predicate.call(thisArg, value, index++) && subscriber.next(value);
     }));
+  });
+}
+
+// node_modules/rxjs/dist/esm5/internal/operators/bufferTime.js
+function bufferTime(bufferTimeSpan) {
+  var _a, _b;
+  var otherArgs = [];
+  for (var _i = 1; _i < arguments.length; _i++) {
+    otherArgs[_i - 1] = arguments[_i];
+  }
+  var scheduler = (_a = popScheduler(otherArgs)) !== null && _a !== void 0 ? _a : asyncScheduler;
+  var bufferCreationInterval = (_b = otherArgs[0]) !== null && _b !== void 0 ? _b : null;
+  var maxBufferSize = otherArgs[1] || Infinity;
+  return operate(function(source, subscriber) {
+    var bufferRecords = [];
+    var restartOnEmit = false;
+    var emit = function(record) {
+      var buffer = record.buffer, subs = record.subs;
+      subs.unsubscribe();
+      arrRemove(bufferRecords, record);
+      subscriber.next(buffer);
+      restartOnEmit && startBuffer();
+    };
+    var startBuffer = function() {
+      if (bufferRecords) {
+        var subs = new Subscription();
+        subscriber.add(subs);
+        var buffer = [];
+        var record_1 = {
+          buffer,
+          subs
+        };
+        bufferRecords.push(record_1);
+        executeSchedule(subs, scheduler, function() {
+          return emit(record_1);
+        }, bufferTimeSpan);
+      }
+    };
+    if (bufferCreationInterval !== null && bufferCreationInterval >= 0) {
+      executeSchedule(subscriber, scheduler, startBuffer, bufferCreationInterval, true);
+    } else {
+      restartOnEmit = true;
+    }
+    startBuffer();
+    var bufferTimeSubscriber = createOperatorSubscriber(subscriber, function(value) {
+      var e_1, _a2;
+      var recordsCopy = bufferRecords.slice();
+      try {
+        for (var recordsCopy_1 = __values(recordsCopy), recordsCopy_1_1 = recordsCopy_1.next(); !recordsCopy_1_1.done; recordsCopy_1_1 = recordsCopy_1.next()) {
+          var record = recordsCopy_1_1.value;
+          var buffer = record.buffer;
+          buffer.push(value);
+          maxBufferSize <= buffer.length && emit(record);
+        }
+      } catch (e_1_1) {
+        e_1 = { error: e_1_1 };
+      } finally {
+        try {
+          if (recordsCopy_1_1 && !recordsCopy_1_1.done && (_a2 = recordsCopy_1.return))
+            _a2.call(recordsCopy_1);
+        } finally {
+          if (e_1)
+            throw e_1.error;
+        }
+      }
+    }, function() {
+      while (bufferRecords === null || bufferRecords === void 0 ? void 0 : bufferRecords.length) {
+        subscriber.next(bufferRecords.shift().buffer);
+      }
+      bufferTimeSubscriber === null || bufferTimeSubscriber === void 0 ? void 0 : bufferTimeSubscriber.unsubscribe();
+      subscriber.complete();
+      subscriber.unsubscribe();
+    }, void 0, function() {
+      return bufferRecords = null;
+    });
+    source.subscribe(bufferTimeSubscriber);
   });
 }
 
@@ -8983,6 +9242,83 @@ function combineLatestAll(project) {
 // node_modules/rxjs/dist/esm5/internal/operators/concatMap.js
 function concatMap(project, resultSelector) {
   return isFunction(resultSelector) ? mergeMap(project, resultSelector, 1) : mergeMap(project, 1);
+}
+
+// node_modules/rxjs/dist/esm5/internal/operators/take.js
+function take(count) {
+  return count <= 0 ? function() {
+    return EMPTY;
+  } : operate(function(source, subscriber) {
+    var seen = 0;
+    source.subscribe(createOperatorSubscriber(subscriber, function(value) {
+      if (++seen <= count) {
+        subscriber.next(value);
+        if (count <= seen) {
+          subscriber.complete();
+        }
+      }
+    }));
+  });
+}
+
+// node_modules/rxjs/dist/esm5/internal/operators/ignoreElements.js
+function ignoreElements() {
+  return operate(function(source, subscriber) {
+    source.subscribe(createOperatorSubscriber(subscriber, noop));
+  });
+}
+
+// node_modules/rxjs/dist/esm5/internal/operators/mapTo.js
+function mapTo(value) {
+  return map(function() {
+    return value;
+  });
+}
+
+// node_modules/rxjs/dist/esm5/internal/operators/delayWhen.js
+function delayWhen(delayDurationSelector, subscriptionDelay) {
+  if (subscriptionDelay) {
+    return function(source) {
+      return concat(subscriptionDelay.pipe(take(1), ignoreElements()), source.pipe(delayWhen(delayDurationSelector)));
+    };
+  }
+  return mergeMap(function(value, index) {
+    return innerFrom(delayDurationSelector(value, index)).pipe(take(1), mapTo(value));
+  });
+}
+
+// node_modules/rxjs/dist/esm5/internal/operators/delay.js
+function delay(due, scheduler) {
+  if (scheduler === void 0) {
+    scheduler = asyncScheduler;
+  }
+  var duration = timer(due, scheduler);
+  return delayWhen(function() {
+    return duration;
+  });
+}
+
+// node_modules/rxjs/dist/esm5/internal/operators/distinctUntilChanged.js
+function distinctUntilChanged(comparator, keySelector) {
+  if (keySelector === void 0) {
+    keySelector = identity;
+  }
+  comparator = comparator !== null && comparator !== void 0 ? comparator : defaultCompare;
+  return operate(function(source, subscriber) {
+    var previousKey;
+    var first = true;
+    source.subscribe(createOperatorSubscriber(subscriber, function(value) {
+      var currentKey = keySelector(value);
+      if (first || !comparator(previousKey, currentKey)) {
+        first = false;
+        previousKey = currentKey;
+        subscriber.next(value);
+      }
+    }));
+  });
+}
+function defaultCompare(a, b) {
+  return a === b;
 }
 
 // node_modules/rxjs/dist/esm5/internal/operators/scan.js
@@ -9096,6 +9432,32 @@ function shareReplay(configOrBufferSize, windowTime, scheduler) {
   });
 }
 
+// node_modules/rxjs/dist/esm5/internal/operators/switchMap.js
+function switchMap(project, resultSelector) {
+  return operate(function(source, subscriber) {
+    var innerSubscriber = null;
+    var index = 0;
+    var isComplete = false;
+    var checkComplete = function() {
+      return isComplete && !innerSubscriber && subscriber.complete();
+    };
+    source.subscribe(createOperatorSubscriber(subscriber, function(value) {
+      innerSubscriber === null || innerSubscriber === void 0 ? void 0 : innerSubscriber.unsubscribe();
+      var innerIndex = 0;
+      var outerIndex = index++;
+      innerFrom(project(value, outerIndex)).subscribe(innerSubscriber = createOperatorSubscriber(subscriber, function(innerValue) {
+        return subscriber.next(resultSelector ? resultSelector(value, innerValue, outerIndex, innerIndex++) : innerValue);
+      }, function() {
+        innerSubscriber = null;
+        checkComplete();
+      }));
+    }, function() {
+      isComplete = true;
+      checkComplete();
+    }));
+  });
+}
+
 // node_modules/rxjs/dist/esm5/internal/operators/withLatestFrom.js
 function withLatestFrom() {
   var inputs = [];
@@ -9133,6 +9495,50 @@ function withLatestFrom() {
 
 // node_modules/butterfloat/events.js
 var ButterfloatEvent = Symbol("Butterfloat Event");
+var EventProxyHandler = class {
+  #subjects = /* @__PURE__ */ new WeakMap();
+  #componentName;
+  get componentName() {
+    return this.#componentName;
+  }
+  constructor(componentName) {
+    this.#componentName = componentName;
+  }
+  get(target, prop) {
+    if (prop in target) {
+      return target[prop];
+    }
+    const subject = new Subject();
+    const observable2 = subject.asObservable();
+    observable2[ButterfloatEvent] = `${this.componentName} ${prop}`;
+    this.#subjects.set(observable2, subject);
+    target[prop] = observable2;
+    return target[prop];
+  }
+  applyEvent(event, element, eventName) {
+    const subject = this.#subjects.get(event);
+    if (!subject) {
+      throw new Error(`Unhandled event subject: ${event[ButterfloatEvent]}`);
+    }
+    if (eventName === "bfDomAttach") {
+      subject.next(element);
+      return new Subscription();
+    }
+    const observable2 = fromEvent(element, eventName);
+    return observable2.subscribe(subject);
+  }
+};
+function makeEventProxy(componentName, baseEvents = {}) {
+  const events = { ...baseEvents };
+  const handler = new EventProxyHandler(componentName);
+  const proxy = new Proxy(events, handler);
+  return { events: proxy, handler };
+}
+
+// node_modules/butterfloat/component.js
+function hasAnyBinds(description) {
+  return description.childrenBind || Object.keys(description.bind).length > 0 || Object.keys(description.immediateBind).length > 0 || Object.keys(description.events).length > 0;
+}
 
 // node_modules/butterfloat/butterfly.js
 function butterfly(startingValue) {
@@ -9216,6 +9622,374 @@ function jsx(element, attributes, ...children) {
 /* @__PURE__ */ (function(jsx2) {
 })(jsx || (jsx = {}));
 
+// node_modules/butterfloat/binding.js
+function bindObjectKey(item, key, observable2, error, complete) {
+  return observable2.subscribe({
+    next: (value) => {
+      item[key] = value;
+    },
+    error,
+    complete
+  });
+}
+function bindObjectChanges(item, observable2, error, complete) {
+  return observable2.subscribe({
+    next: (changes) => {
+      Object.assign(item, changes);
+    },
+    error,
+    complete
+  });
+}
+function bufferEntries(observable2, suspense) {
+  if (suspense) {
+    return combineLatest([suspense, observable2]).pipe(bufferTime(0, animationFrameScheduler), map((states) => states.reduce((acc, [suspend, entry]) => ({
+      suspend,
+      entries: [...acc.entries, entry]
+    }), { suspend: false, entries: [] })), scan((acc, cur) => ({
+      changes: acc.suspend && cur.suspend ? Object.assign(acc.changes, Object.fromEntries(cur.entries)) : Object.fromEntries(cur.entries),
+      suspend: cur.suspend
+    }), { suspend: false, changes: {} }), filter(({ suspend }) => !suspend), map(({ changes }) => changes));
+  }
+  return observable2.pipe(bufferTime(0, animationFrameScheduler), map((entries) => Object.fromEntries(entries)));
+}
+function schedulable(key, immediate) {
+  return !(immediate || key === "value");
+}
+function makeEntries(key, observable2) {
+  return observable2.pipe(map((value) => [key, value]));
+}
+function bindElement(element, description, context2, document2 = globalThis.document) {
+  const { complete, componentRunner, error, eventBinder, suspense, subscription } = context2;
+  const schedulables = [];
+  const binds = [
+    ...Object.entries(description.bind).map(([key, observable2]) => [key, observable2, false]),
+    ...Object.entries(description.immediateBind).map(([key, observable2]) => [key, observable2, true])
+  ];
+  for (const [key, observable2, immediate] of binds) {
+    if (schedulable(key, immediate)) {
+      schedulables.push([key, observable2]);
+    } else {
+      subscription.add(bindObjectKey(element, key, observable2, error, complete));
+    }
+  }
+  const scheduled2 = schedulables.map(([key, observable2]) => makeEntries(key, observable2));
+  subscription.add(bindObjectChanges(element, bufferEntries(merge(...scheduled2), suspense), error, complete));
+  for (const [key, event] of Object.entries(description.events)) {
+    subscription.add(eventBinder.applyEvent(event, element, key));
+  }
+  if (description.childrenBind) {
+    subscription.add(description.childrenBind.subscribe({
+      next(child) {
+        const placeholder = document2.createComment(`${child.name} component`);
+        if (description.childrenPrepend) {
+          element.prepend(placeholder);
+        } else {
+          element.append(placeholder);
+        }
+        subscription.add(componentRunner(element, {
+          type: "component",
+          component: child,
+          properties: {},
+          children: []
+        }, context2, placeholder));
+      },
+      error,
+      complete
+    }));
+  }
+  return subscription;
+}
+function bindFragmentChildren(nodeDescription, node, subscription, context2) {
+  const { complete, error, componentRunner } = context2;
+  if (nodeDescription.childrenBind) {
+    subscription.add(nodeDescription.childrenBind.subscribe({
+      next(child) {
+        const parent = node.parentElement;
+        if (!parent) {
+          throw new Error("Attempted to bind children to an unattached fragment");
+        }
+        const placeholder = document.createComment(`${child.name} component`);
+        if (nodeDescription.childrenPrepend) {
+          parent.insertBefore(node, placeholder);
+        } else {
+          const next = node.nextSibling;
+          if (next) {
+            parent.insertBefore(next, placeholder);
+          } else {
+            parent.append(placeholder);
+          }
+        }
+        subscription.add(componentRunner(parent, {
+          type: "component",
+          component: child,
+          properties: {},
+          children: []
+        }, context2, placeholder));
+      },
+      error,
+      complete
+    }));
+  }
+}
+
+// node_modules/butterfloat/static-dom.js
+function buildElement(description, document2 = globalThis.document) {
+  const element = document2.createElement(description.element);
+  for (const [key, value] of Object.entries(description.attributes)) {
+    ;
+    element[key] = value;
+  }
+  return element;
+}
+function buildNode(description, container2, elementBinds, nodeBinds, document2 = globalThis.document) {
+  switch (description.type) {
+    case "element": {
+      const element = buildElement(description, document2);
+      if (hasAnyBinds(description)) {
+        elementBinds.push([element, description]);
+      }
+      container2.appendChild(element);
+      return element;
+    }
+    case "children": {
+      const childrenComment = document2.createComment("Children component");
+      container2.appendChild(childrenComment);
+      nodeBinds.push([childrenComment, description]);
+      return null;
+    }
+    case "component": {
+      const componentComment = document2.createComment(`${description.component.name} component`);
+      container2.appendChild(componentComment);
+      nodeBinds.push([componentComment, description]);
+      return null;
+    }
+    case "fragment":
+      if (description.childrenBind && description.childrenPrepend) {
+        const fragmentComment = document2.createComment("fragment children binding");
+        container2.appendChild(fragmentComment);
+        nodeBinds.push([fragmentComment, description]);
+      }
+      for (const child of description.children) {
+        if (typeof child === "string") {
+          container2.appendChild(document2.createTextNode(child));
+          continue;
+        }
+        buildTree(child, container2, elementBinds, nodeBinds, document2);
+      }
+      if (description.childrenBind && !description.childrenPrepend) {
+        const fragmentComment = document2.createComment("fragment children binding");
+        container2.appendChild(fragmentComment);
+        nodeBinds.push([fragmentComment, description]);
+      }
+      return container2;
+  }
+}
+function buildTree(description, container2 = null, elementBinds = [], nodeBinds = [], document2 = globalThis.document) {
+  if (!container2 && description.type === "element") {
+    const element = buildElement(description, document2);
+    container2 = element;
+    if (hasAnyBinds(description)) {
+      elementBinds.push([element, description]);
+    }
+  } else if (!container2) {
+    container2 = document2.createDocumentFragment();
+    buildNode(description, container2, elementBinds, nodeBinds, document2);
+  } else {
+    const nextNode = buildNode(description, container2, elementBinds, nodeBinds, document2);
+    if (nextNode !== null) {
+      container2 = nextNode;
+    }
+  }
+  if (description.type !== "children" && description.type !== "fragment") {
+    for (const child of description.children) {
+      if (typeof child === "string") {
+        container2.appendChild(document2.createTextNode(child));
+        continue;
+      }
+      buildTree(child, container2, elementBinds, nodeBinds, document2);
+    }
+  }
+  return {
+    elementBinds,
+    nodeBinds,
+    container: container2
+  };
+}
+
+// node_modules/butterfloat/wiring.js
+var contextChildrenDescriptions = /* @__PURE__ */ new WeakMap();
+function wireInternal(description, subscriber, context2, document2 = globalThis.document) {
+  const subscription = new Subscription();
+  const error = (error2) => {
+    console.error(`Error in component ${description.component.name}`, error2);
+  };
+  const complete = () => subscriber.complete();
+  const { events, handler } = makeEventProxy(description.component.name);
+  const componentContext = {
+    bindEffect(observable2, effect) {
+      context2.isStaticComponent = false;
+      subscription.add(observable2.pipe(delay(0, animationFrameScheduler)).subscribe({
+        next: effect,
+        error,
+        complete
+      }));
+    },
+    bindImmediateEffect(observable2, effect) {
+      context2.isStaticComponent = false;
+      subscription.add(observable2.subscribe({
+        next: effect,
+        error,
+        complete
+      }));
+    },
+    events
+  };
+  contextChildrenDescriptions.set(componentContext, description);
+  const tree = description.component(description.properties, componentContext);
+  const { elementBinds, nodeBinds, container: container2 } = buildTree(tree, void 0, void 0, void 0, document2);
+  context2.isStaticComponent &&= elementBinds.length === 0;
+  context2.isStaticTree &&= context2.isStaticComponent;
+  subscriber.next(container2);
+  const bindContext = {
+    ...context2,
+    complete,
+    error,
+    componentRunner: run,
+    eventBinder: handler,
+    subscription
+  };
+  for (const [element, bindDescription] of elementBinds) {
+    subscription.add(bindElement(element, bindDescription, bindContext, document2));
+  }
+  for (const [node, nodeDescription] of nodeBinds) {
+    switch (nodeDescription.type) {
+      case "component": {
+        const nestedContext = {
+          ...context2,
+          isStaticComponent: true,
+          isStaticTree: true
+        };
+        subscription.add(run(container2, nodeDescription, nestedContext, node));
+        context2.isStaticTree &&= nestedContext.isStaticTree;
+        break;
+      }
+      case "children": {
+        const nestedContext = {
+          ...context2,
+          isStaticComponent: true,
+          isStaticTree: true
+        };
+        subscription.add(wireChildrenComponent(nodeDescription, componentContext, description, container2, nestedContext, node));
+        context2.isStaticTree &&= nestedContext.isStaticTree;
+        break;
+      }
+      case "fragment":
+        context2.isStaticComponent = false;
+        context2.isStaticTree = false;
+        bindFragmentChildren(nodeDescription, node, subscription, bindContext);
+        break;
+    }
+  }
+  return () => {
+    subscription.unsubscribe();
+  };
+}
+function wireChildrenComponent(nodeDescription, componentContext, description, container2, context2, node) {
+  const parentDescription = contextChildrenDescriptions.get(nodeDescription.context ?? componentContext);
+  if (!parentDescription) {
+    throw new Error(`Unable to bind children for Children request in ${description.component.name}`);
+  }
+  const childrenComponent = () => ({
+    type: "fragment",
+    attributes: {},
+    children: [...parentDescription.children],
+    childrenBind: parentDescription.childrenBind,
+    childrenPrepend: parentDescription.childrenPrepend
+  });
+  return run(container2, {
+    type: "component",
+    component: childrenComponent,
+    properties: {},
+    children: []
+  }, context2, node);
+}
+function wire(component, context2, document2 = globalThis.document) {
+  let description;
+  if ("type" in component) {
+    description = component;
+  } else {
+    description = {
+      type: "component",
+      component,
+      children: [],
+      properties: {}
+    };
+  }
+  if (description.component === Suspense) {
+    return wireSuspense(description, context2, document2);
+  }
+  return new Observable((subscriber) => wireInternal(description, subscriber, context2, document2));
+}
+function run(container2, component, context2, placeholder, document2 = globalThis.document) {
+  const observable2 = wire(component, context2 ?? { isStaticComponent: true, isStaticTree: true }, document2);
+  let previousNode = null;
+  return observable2.subscribe({
+    next(node) {
+      if (previousNode) {
+        container2.replaceChild(previousNode, node);
+      } else if (placeholder) {
+        container2.replaceChild(placeholder, node);
+      } else {
+        container2.appendChild(node);
+      }
+      previousNode = node;
+    },
+    error(error) {
+      if ("type" in component) {
+        console.error(`Error in component ${component.component.name}`, error);
+      } else {
+        console.error(`Error in component ${component.name}`, error);
+      }
+    },
+    complete() {
+      if (!context2?.preserveOnComplete && previousNode) {
+        container2.removeChild(previousNode);
+      }
+    }
+  });
+}
+
+// node_modules/butterfloat/suspense.js
+var Suspense = () => {
+  throw new Error("Suspense is a custom-wired component");
+};
+function wireSuspense(description, context2, document2 = globalThis.document) {
+  context2.isStaticComponent = false;
+  context2.isStaticTree = false;
+  const props = description.properties;
+  const suspense = context2.suspense ? combineLatest([props.when, context2.suspense]).pipe(map(([a, b]) => a || b)) : props.when;
+  const mainComponentFragment = {
+    type: "fragment",
+    attributes: {},
+    children: description.children,
+    childrenBind: description.childrenBind,
+    childrenPrepend: description.childrenPrepend
+  };
+  const mainComponent = () => mainComponentFragment;
+  const mainContext = { ...context2, suspense };
+  const main = wire(mainComponent, mainContext, document2);
+  if (props.suspenseView) {
+    const suspenseView = wire(props.suspenseView, { ...context2 }, document2);
+    return combineLatest([props.when, main, suspenseView]).pipe(map(([suspend, main2, suspenseView2]) => suspend ? suspenseView2 : main2), distinctUntilChanged());
+  } else {
+    return main;
+  }
+}
+
+// main.tsx
+var import_jquery = __toESM(require_jquery(), 1);
+
 // progvm.ts
 var BaseSpeed = 5e-3;
 var SpeedMultiplier = 2;
@@ -9251,7 +10025,7 @@ var ProgVm = class {
     [this.#paused, this.#setPaused] = butterfly(false);
     [this.#perTick, this.#setPerTick] = butterfly(BaseSpeed);
     this.#roundPercent = this.percent.pipe(
-      map((percent) => Math.round(percent * 100))
+      map((percent) => percent.toLocaleString(void 0, { style: "percent" }))
     );
   }
   pause() {
@@ -9322,7 +10096,7 @@ var CompRadProgVm = class {
   get currentOffset() {
     return this.#currentOffset;
   }
-  constructor(dial2, ticks) {
+  constructor(dial, ticks) {
     ;
     [this.#progressAdded, this.#addProgress] = butterfly(null);
     this.#targetPercent = this.progressAdded.pipe(
@@ -9335,7 +10109,7 @@ var CompRadProgVm = class {
       shareReplay(1)
     );
     this.#targetRoundPercent = this.targetPercent.pipe(
-      map((target) => Math.round(target * 100))
+      map((target) => target.toLocaleString(void 0, { style: "percent" }))
     );
     this.#targetVal = this.targetPercent.pipe(
       map((target) => Math.round(target * 360))
@@ -9358,15 +10132,15 @@ var CompRadProgVm = class {
     this.#currentOffset = current.pipe(
       map(([, currentOffset]) => currentOffset)
     );
-    if (dial2) {
+    if (dial) {
       this.#subscription.add(
         this.currentVal.subscribe(
-          (currentVal) => dial2.val(currentVal).trigger("change")
+          (currentVal) => dial.val(currentVal).trigger("change")
         )
       );
       this.#subscription.add(
         this.currentOffset.subscribe(
-          (currentOffset) => dial2.trigger("configure", { angleOffset: currentOffset })
+          (currentOffset) => dial.trigger("configure", { angleOffset: currentOffset })
         )
       );
     } else {
@@ -9417,13 +10191,176 @@ var CompRadProgVm = class {
   }
 };
 
-// main.ts
-var dial = (0, import_jquery.default)("#dial");
+// progress.tsx
+function Progress({ item }, { bindEffect, events }) {
+  const { finish, pause, slowDown, speedUp, unpause } = events;
+  const progressStyle = item.roundPercent.pipe(
+    map((percent) => `min-width: 2em; width: ${percent}`)
+  );
+  const pauseVisible = item.paused.pipe(
+    map((paused) => paused ? `visibility: hidden` : `visibility: visible`)
+  );
+  const unpauseVisible = item.paused.pipe(
+    map((paused) => paused ? `visibility: visible` : `visibility: hidden`)
+  );
+  bindEffect(finish, item.finish);
+  bindEffect(pause, item.pause);
+  bindEffect(slowDown, item.slowDown);
+  bindEffect(speedUp, item.speedUp);
+  bindEffect(unpause, item.unpause);
+  return /* @__PURE__ */ jsx("div", { className: "list-group-item" }, /* @__PURE__ */ jsx("div", { className: "progress" }, /* @__PURE__ */ jsx(
+    "div",
+    {
+      title: "Item Progress",
+      className: "progress-bar",
+      role: "progressbar",
+      style: "min-width: 2em",
+      bind: { innerText: item.roundPercent, style: progressStyle }
+    }
+  )), /* @__PURE__ */ jsx("div", { className: "btn-group" }, /* @__PURE__ */ jsx(
+    "button",
+    {
+      type: "button",
+      title: "Pause",
+      className: "btn btn-default",
+      bind: { style: pauseVisible },
+      events: { click: pause }
+    },
+    /* @__PURE__ */ jsx("span", { className: "glyphicon glyphicon-pause" })
+  ), /* @__PURE__ */ jsx(
+    "button",
+    {
+      type: "button",
+      title: "Unpause",
+      className: "btn btn-default",
+      bind: { style: unpauseVisible },
+      events: { click: unpause }
+    },
+    /* @__PURE__ */ jsx("span", { class: "glyphicon glyphicon-play" })
+  ), /* @__PURE__ */ jsx(
+    "button",
+    {
+      type: "button",
+      title: "Slow Down",
+      className: "btn btn-default",
+      events: { click: slowDown }
+    },
+    /* @__PURE__ */ jsx("span", { class: "glyphicon glyphicon-backward" })
+  ), /* @__PURE__ */ jsx(
+    "button",
+    {
+      type: "button",
+      title: "Speed Up",
+      className: "btn btn-default",
+      events: { click: speedUp }
+    },
+    /* @__PURE__ */ jsx("span", { class: "glyphicon glyphicon-forward" })
+  ), /* @__PURE__ */ jsx(
+    "button",
+    {
+      type: "button",
+      title: "Finish",
+      className: "btn btn-default",
+      events: { click: finish }
+    },
+    /* @__PURE__ */ jsx("span", { class: "glyphicon glyphicon-fast-forward" })
+  )));
+}
+
+// main.tsx
 var w = window;
 w.jQuery = w.$ = import_jquery.default;
 await Promise.resolve().then(() => __toESM(require_jquery_knob_min(), 1));
-dial.knob();
-var vm = new CompRadProgVm(dial, interval(500));
+function Main(_props, { bindEffect, events }) {
+  const { addItem, pauseAll, unpauseAll } = events;
+  const bfDomAttach = events.attach;
+  const dial = bfDomAttach.pipe(
+    switchMap((element) => {
+      console.log("dial attach");
+      return new Observable((subscriber) => {
+        element.dataset.min = "0";
+        element.dataset.max = "360";
+        element.dataset.readOnly = "true";
+        element.dataset.displayInput = "false";
+        const dial2 = (0, import_jquery.default)(element);
+        dial2.knob();
+        subscriber.next(dial2);
+      });
+    })
+  );
+  const vm = dial.pipe(
+    switchMap((dial2) => {
+      return new Observable((subscriber) => {
+        const vm2 = new CompRadProgVm(dial2, interval(500));
+        subscriber.next(vm2);
+        return () => vm2.unsubscribe();
+      });
+    }),
+    shareReplay(1)
+  );
+  const targetRoundPercent = vm.pipe(
+    switchMap((vm2) => vm2.targetRoundPercent),
+    shareReplay(1)
+  );
+  const progressStyle = targetRoundPercent.pipe(
+    map((targetRoundPercent2) => `min-width: 2em; width: ${targetRoundPercent2}`)
+  );
+  bindEffect(addItem.pipe(withLatestFrom(vm)), ([, vm2]) => vm2.addItem());
+  bindEffect(pauseAll.pipe(withLatestFrom(vm)), ([, vm2]) => vm2.unpauseAll());
+  bindEffect(unpauseAll.pipe(withLatestFrom(vm)), ([, vm2]) => vm2.unpauseAll());
+  const children = vm.pipe(
+    switchMap((vm2) => vm2.progressAdded),
+    filter((progVm) => progVm !== null),
+    map((progVm) => () => /* @__PURE__ */ jsx(Progress, { item: progVm }))
+  );
+  return /* @__PURE__ */ jsx("div", { className: "row" }, /* @__PURE__ */ jsx("div", { className: "col-md-6" }, /* @__PURE__ */ jsx(
+    "input",
+    {
+      type: "text",
+      id: "dial",
+      className: "dial",
+      value: "0",
+      bind: { bfDomAttach }
+    }
+  ), /* @__PURE__ */ jsx("label", { htmlFor: "dial", className: "hidden" }, "Total Progress")), /* @__PURE__ */ jsx("div", { className: "col-md-6" }, /* @__PURE__ */ jsx("div", { className: "progress" }, /* @__PURE__ */ jsx(
+    "div",
+    {
+      className: "progress-bar",
+      role: "progressbar",
+      style: "min-width: 2em",
+      bind: { innerText: targetRoundPercent, style: progressStyle }
+    }
+  )), /* @__PURE__ */ jsx(
+    "button",
+    {
+      type: "button",
+      className: "btn btn-default",
+      events: { click: addItem }
+    },
+    /* @__PURE__ */ jsx("span", { className: "glyphicon glyphicon-plus" }),
+    " Add Item"
+  ), /* @__PURE__ */ jsx("div", { className: "btn-group" }, /* @__PURE__ */ jsx(
+    "button",
+    {
+      type: "button",
+      className: "btn btn-default",
+      events: { click: pauseAll }
+    },
+    /* @__PURE__ */ jsx("span", { className: "glyphicon glyphicon-pause" }),
+    " All"
+  ), /* @__PURE__ */ jsx(
+    "button",
+    {
+      type: "button",
+      className: "btn btn-default",
+      events: { click: unpauseAll }
+    },
+    /* @__PURE__ */ jsx("span", { className: "glyphicon glyphicon-play" }),
+    " All"
+  )), /* @__PURE__ */ jsx("div", { className: "list-group", childrenBind: children, childrenPrepend: true })));
+}
+var container = document.getElementById("container");
+run(container, Main);
 /*! Bundled license information:
 
 jquery/dist/jquery.js:
