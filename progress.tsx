@@ -32,11 +32,11 @@ export function Progress(
     map((paused) => (paused ? `visibility: visible` : `visibility: hidden`)),
   )
 
-  bindEffect(finish, item.finish)
-  bindEffect(pause, item.pause)
-  bindEffect(slowDown, item.slowDown)
-  bindEffect(speedUp, item.speedUp)
-  bindEffect(unpause, item.unpause)
+  bindEffect(finish, () => item.finish())
+  bindEffect(pause, () => item.pause())
+  bindEffect(slowDown, () => item.slowDown())
+  bindEffect(speedUp, () => item.speedUp())
+  bindEffect(unpause, () => item.unpause())
 
   return (
     <div className="list-group-item">
