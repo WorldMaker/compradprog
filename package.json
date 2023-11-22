@@ -5,9 +5,12 @@
   "main": "main.js",
   "type": "module",
   "dependencies": {
+    "@types/node": "^20.9.3",
+    "butterfloat": "^0.3.0",
     "jquery": "^3.6.0",
     "jquery-knob": "^1.2.11",
-    "knockout": "^3.5.1"
+    "rxjs": "^7.8.1",
+    "rxjs-spy": "^8.0.2"
   },
   "devDependencies": {
     "@types/jquery": "^3.5.20",
@@ -23,6 +26,7 @@
     "build": "node _build.js",
     "prettier:check": "prettier --check .",
     "prettier": "prettier --write .",
+    "pretest": "node _build.js",
     "test": "node --test"
   },
   "repository": {

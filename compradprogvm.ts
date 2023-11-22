@@ -1,95 +1,193 @@
-import * as ko from 'knockout'
+import {
+  Observable,
+  Subscription,
+  combineLatest,
+  combineLatestAll,
+  concat,
+  filter,
+  interval,
+  map,
+  of,
+  scan,
+  shareReplay,
+  switchMap,
+  withLatestFrom,
+} from 'rxjs'
+import { tag } from 'rxjs-spy/operators'
 import { ProgVm } from './progvm'
+import { butterfly } from 'butterfloat'
 
 export class CompRadProgVm {
-    minBar = 1
-    maxGrowthPerTick = 90
-    maxCatchPerTick = 15
-    catchSpinRate = 2
-    growthSpinRate = 1
-    spinTicks = 2
-    spinTickCount = 0
-    spinRate = 1
-  
-    inprogress = ko.observableArray<ProgVm>()
-  
-    targetPercent = ko.computed(() =>
-      this.inprogress().length > 0
-        ? this.inprogress()
-            .map((item) => item.percent())
-            .reduce((a, b) => a + b) / this.inprogress().length
-        : 0,
+  // *** Experiment modification fields ***
+  minBar = 1
+  maxGrowthPerTick = 90
+  maxCatchPerTick = 15
+  catchSpinRate = 2
+  growthSpinRate = 1
+  spinTicks = 2
+  spinRate = 1
+
+  // Internal counter during ticks
+  #spinTickCount = 0
+
+  readonly #subscription = new Subscription()
+
+  // *** Butterflies and observables ***
+
+  readonly #progressAdded: Observable<ProgVm | null>
+  readonly #addProgress: (progress: ProgVm) => void
+  get progressAdded() {
+    return this.#progressAdded
+  }
+  readonly #inprogress: ProgVm[] = []
+  get progressCount() {
+    return this.#inprogress.length
+  }
+  get pausedStatus() {
+    return combineLatest(this.#inprogress.map((prog) => prog.paused))
+  }
+
+  readonly #targetPercent: Observable<number>
+  get targetPercent() {
+    return this.#targetPercent
+  }
+
+  readonly #targetRoundPercent: Observable<string>
+  get targetRoundPercent() {
+    return this.#targetRoundPercent
+  }
+
+  readonly #targetVal: Observable<number>
+  get targetVal() {
+    return this.#targetVal
+  }
+
+  readonly #currentVal: Observable<number>
+  get currentVal() {
+    return this.#currentVal
+  }
+
+  readonly #currentOffset: Observable<number>
+  get currentOffset() {
+    return this.#currentOffset
+  }
+
+  constructor(dial?: JQuery<HTMLElement>, ticks?: Observable<unknown>) {
+    ;[this.#progressAdded, this.#addProgress] = butterfly<ProgVm | null>(null)
+
+    this.#targetPercent = concat(
+      of(0),
+      this.progressAdded.pipe(
+        switchMap(() => {
+          return combineLatest(
+            this.#inprogress.map((progress) => progress.percent),
+          )
+        }),
+        tag('target-percent-progresses'),
+        map((progresses) =>
+          progresses.length
+            ? progresses.reduce((a, b) => a + b, 0) / progresses.length
+            : 0,
+        ),
+      ),
+    ).pipe(tag('target-percent-raw'), shareReplay(1))
+
+    this.#targetRoundPercent = this.targetPercent.pipe(
+      map((target) => target.toLocaleString(undefined, { style: 'percent' })),
     )
-    targetRoundPercent = ko.computed(() => Math.round(this.targetPercent() * 100))
-    targetVal = ko.computed(() => Math.round(this.targetPercent() * 360))
-    currentVal = ko.observable(0)
-    currentOffset = ko.observable(0)
-  
-    constructor(dial: JQuery<HTMLElement> | undefined) {
-      if (dial) {
-      this.currentVal.subscribe((v) => dial.val(v).trigger('change'))
-  
-      this.currentOffset.subscribe((v) =>
-        dial.trigger('configure', { angleOffset: this.currentOffset() }),
+
+    this.#targetVal = this.targetPercent.pipe(
+      map((target) => Math.round(target * 360)),
+    )
+
+    const current = concat(
+      of([0, 0]),
+      (ticks ?? interval(500)).pipe(
+        switchMap(() =>
+          Promise.all(this.#inprogress.map((item) => item.tick())),
+        ),
+        withLatestFrom(this.targetVal),
+        scan(
+          ([currentVal, currentOffset], [, targetVal]) =>
+            this.#onTick(currentVal, currentOffset, targetVal),
+          [0, 0],
+        ),
+      ),
+    ).pipe(tag('vm-current'), shareReplay(1))
+
+    this.#currentVal = current.pipe(map(([currentVal]) => currentVal))
+    this.#currentOffset = current.pipe(
+      map(([, currentOffset]) => currentOffset),
+    )
+
+    if (dial) {
+      this.#subscription.add(
+        this.currentVal.subscribe((currentVal) =>
+          dial.val(currentVal).trigger('change'),
+        ),
       )
-      } else {
-        console.warn('Unable to subscribe jQuery Knob dial to progress changes')
-      }
-    }
-  
-    pauseAll() {
-      this.inprogress().forEach((item) => item.pause())
-    }
-  
-    unpauseAll() {
-      this.inprogress().forEach((item) => item.unpause())
-    }
-  
-    addItem() {
-      this.inprogress.unshift(new ProgVm())
-    }
-  
-    tick() {
-      // update item percentages
-      this.inprogress().forEach((item) => item.tick())
-  
-      // update radial
-      if (this.currentVal() < this.minBar) {
-        this.currentVal(this.minBar)
-      }
-  
-      if (this.targetVal() > this.currentVal()) {
-        const diff = Math.min(
-          this.targetVal() - this.currentVal(),
-          this.maxGrowthPerTick,
-        )
-        this.currentVal(this.currentVal() + diff)
-        if (this.growthSpinRate) {
-          this.currentOffset(this.currentOffset() + this.growthSpinRate)
-        }
-        this.spinTickCount = 0
-      } else if (
-        this.targetVal() < this.currentVal() &&
-        this.currentVal() > this.minBar
-      ) {
-        const diff = Math.min(
-          this.currentVal() - this.targetVal(),
-          this.maxCatchPerTick,
-        )
-        this.currentVal(Math.max(this.currentVal() - diff, this.minBar))
-        const offset = (this.currentOffset() + diff + this.catchSpinRate) % 360
-        this.currentOffset(offset)
-        this.spinTickCount = 0
-      } else if (this.currentVal() < 360) {
-        this.spinTickCount++
-        if (this.spinTickCount == this.spinTicks) {
-          this.currentOffset((this.currentOffset() + this.spinRate) % 360)
-          this.spinTickCount = 0
-        }
-      } else if (this.currentVal() == 360 && this.currentOffset() != 0) {
-        // once complete, reset the offset for the next run
-        this.currentOffset(0)
-      }
+
+      this.#subscription.add(
+        this.currentOffset.subscribe((currentOffset) =>
+          dial.trigger('configure', { angleOffset: currentOffset }),
+        ),
+      )
+    } else {
+      console.warn('Unable to subscribe jQuery Knob dial to progress changes')
     }
   }
-  
+
+  pauseAll() {
+    this.#inprogress.forEach((item) => item.pause())
+  }
+
+  unpauseAll() {
+    this.#inprogress.forEach((item) => item.unpause())
+  }
+
+  addItem() {
+    const progress = new ProgVm()
+    this.#inprogress.unshift(progress)
+    this.#addProgress(progress)
+  }
+
+  #onTick(
+    currentVal: number,
+    currentOffset: number,
+    targetVal: number,
+  ): [currentVal: number, currentOffset: number] {
+    // update radial
+    if (currentVal < this.minBar) {
+      currentVal = this.minBar
+    }
+
+    if (targetVal > currentVal) {
+      const diff = Math.min(targetVal - currentVal, this.maxGrowthPerTick)
+      currentVal += diff
+      if (this.growthSpinRate) {
+        currentOffset = (currentOffset + this.growthSpinRate) % 360
+      }
+      this.#spinTickCount = 0
+    } else if (targetVal < currentVal && currentVal > this.minBar) {
+      const diff = Math.min(currentVal - targetVal, this.maxCatchPerTick)
+      currentVal = Math.max(currentVal - diff, this.minBar)
+      const offset = (currentOffset + diff + this.catchSpinRate) % 360
+      currentOffset = offset
+      this.#spinTickCount = 0
+    } else if (currentVal < 360) {
+      this.#spinTickCount++
+      if (this.#spinTickCount == this.spinTicks) {
+        currentOffset = (currentOffset + this.spinRate) % 360
+        this.#spinTickCount = 0
+      }
+    } else if (currentVal == 360 && currentOffset != 0) {
+      // once complete, reset the offset for the next run
+      currentOffset = 0
+    }
+    return [currentVal, currentOffset]
+  }
+
+  unsubscribe() {
+    this.#subscription.unsubscribe()
+  }
+}
