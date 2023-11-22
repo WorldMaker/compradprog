@@ -9970,7 +9970,6 @@ function wireInternal(description, subscriber, context2, document2 = globalThis.
   const error = (error2) => {
     console.error(`Error in component ${description.component.name}`, error2);
   };
-  const complete = () => subscriber.complete();
   const { events, handler } = makeEventProxy(description.component.name);
   const componentContext = {
     bindEffect(observable3, effect) {
@@ -9978,7 +9977,10 @@ function wireInternal(description, subscriber, context2, document2 = globalThis.
       subscription.add(observable3.pipe(delay(0, animationFrameScheduler)).subscribe({
         next: effect,
         error,
-        complete
+        complete: () => {
+          console.debug(`Effect in component ${description.component.name} completed`);
+          subscriber.complete();
+        }
       }));
     },
     bindImmediateEffect(observable3, effect) {
@@ -9986,7 +9988,10 @@ function wireInternal(description, subscriber, context2, document2 = globalThis.
       subscription.add(observable3.subscribe({
         next: effect,
         error,
-        complete
+        complete: () => {
+          console.debug(`Immediate effect in component ${description.component.name} completed`);
+          subscriber.complete();
+        }
       }));
     },
     events
@@ -9999,7 +10004,10 @@ function wireInternal(description, subscriber, context2, document2 = globalThis.
   subscriber.next(container2);
   const bindContext = {
     ...context2,
-    complete,
+    complete: () => {
+      console.debug(`Binding in component ${description.component.name} completed`);
+      subscriber.complete();
+    },
     error,
     componentRunner: run,
     eventBinder: handler,
