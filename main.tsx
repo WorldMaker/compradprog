@@ -9,8 +9,13 @@ import {
   switchMap,
   withLatestFrom,
 } from 'rxjs'
+import { create } from 'rxjs-spy'
+import { tag } from 'rxjs-spy/operators'
 import { CompRadProgVm } from './compradprogvm'
 import { Progress } from './progress'
+
+const spy = create()
+spy.log(/./)
 
 // Set global for jquery-knob
 const w = window as any
@@ -52,28 +57,39 @@ function Main(
         return () => vm.unsubscribe()
       })
     }),
+    tag('vm'),
     shareReplay(1),
   )
 
   const targetRoundPercent = vm.pipe(
     switchMap((vm) => vm.targetRoundPercent),
+    tag('target-percent'),
     shareReplay(1),
   )
 
   const progressStyle = targetRoundPercent.pipe(
     map((targetRoundPercent) => `min-width: 2em; width: ${targetRoundPercent}`),
+    tag('progress-style'),
   )
 
-  bindEffect(addItem.pipe(withLatestFrom(vm)), ([, vm]) => vm.addItem())
+  bindEffect(addItem.pipe(withLatestFrom(vm), tag('add-item')), ([, vm]) =>
+    vm.addItem(),
+  )
 
-  bindEffect(pauseAll.pipe(withLatestFrom(vm)), ([, vm]) => vm.unpauseAll())
+  bindEffect(pauseAll.pipe(withLatestFrom(vm), tag('pause-all')), ([, vm]) =>
+    vm.unpauseAll(),
+  )
 
-  bindEffect(unpauseAll.pipe(withLatestFrom(vm)), ([, vm]) => vm.unpauseAll())
+  bindEffect(
+    unpauseAll.pipe(withLatestFrom(vm), tag('unpause-all')),
+    ([, vm]) => vm.unpauseAll(),
+  )
 
   const children = vm.pipe(
     switchMap((vm) => vm.progressAdded),
     filter((progVm) => progVm !== null),
     map((progVm) => () => <Progress item={progVm!} />),
+    tag('children'),
   )
 
   return (
@@ -130,4 +146,8 @@ function Main(
 }
 
 const container = document.getElementById('container')!
-run(container, Main)
+run(container, Main, {
+  isStaticComponent: true,
+  isStaticTree: true,
+  preserveOnComplete: true,
+})

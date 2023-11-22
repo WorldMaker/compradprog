@@ -27,17 +27,17 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
 // node_modules/jquery/dist/jquery.js
 var require_jquery = __commonJS({
   "node_modules/jquery/dist/jquery.js"(exports, module) {
-    (function(global, factory) {
+    (function(global2, factory) {
       "use strict";
       if (typeof module === "object" && typeof module.exports === "object") {
-        module.exports = global.document ? factory(global, true) : function(w2) {
+        module.exports = global2.document ? factory(global2, true) : function(w2) {
           if (!w2.document) {
             throw new Error("jQuery requires a window with a document");
           }
           return factory(w2);
         };
       } else {
-        factory(global);
+        factory(global2);
       }
     })(typeof window !== "undefined" ? window : exports, function(window2, noGlobal) {
       "use strict";
@@ -52,7 +52,7 @@ var require_jquery = __commonJS({
       var push = arr.push;
       var indexOf = arr.indexOf;
       var class2type = {};
-      var toString = class2type.toString;
+      var toString2 = class2type.toString;
       var hasOwn = class2type.hasOwnProperty;
       var fnToString = hasOwn.toString;
       var ObjectFunctionString = fnToString.call(Object);
@@ -88,7 +88,7 @@ var require_jquery = __commonJS({
         if (obj == null) {
           return obj + "";
         }
-        return typeof obj === "object" || typeof obj === "function" ? class2type[toString.call(obj)] || "object" : typeof obj;
+        return typeof obj === "object" || typeof obj === "function" ? class2type[toString2.call(obj)] || "object" : typeof obj;
       }
       var version = "3.6.0", jQuery2 = function(selector, context2) {
         return new jQuery2.fn.init(selector, context2);
@@ -210,7 +210,7 @@ var require_jquery = __commonJS({
         },
         isPlainObject: function(obj) {
           var proto, Ctor;
-          if (!obj || toString.call(obj) !== "[object Object]") {
+          if (!obj || toString2.call(obj) !== "[object Object]") {
             return false;
           }
           proto = getProto(obj);
@@ -279,14 +279,14 @@ var require_jquery = __commonJS({
           return first;
         },
         grep: function(elems, callback, invert) {
-          var callbackInverse, matches = [], i = 0, length = elems.length, callbackExpect = !invert;
+          var callbackInverse, matches2 = [], i = 0, length = elems.length, callbackExpect = !invert;
           for (; i < length; i++) {
             callbackInverse = !callback(elems[i], i);
             if (callbackInverse !== callbackExpect) {
-              matches.push(elems[i]);
+              matches2.push(elems[i]);
             }
           }
-          return matches;
+          return matches2;
         },
         // arg is for internal usage only
         map: function(elems, callback, arg) {
@@ -343,7 +343,7 @@ var require_jquery = __commonJS({
          * Date: 2021-02-16
          */
         function(window3) {
-          var i, support2, Expr, getText, isXML, tokenize, compile, select, outermostContext, sortInput, hasDuplicate, setDocument, document3, docElem, documentIsHTML, rbuggyQSA, rbuggyMatches, matches, contains, expando = "sizzle" + 1 * /* @__PURE__ */ new Date(), preferredDoc = window3.document, dirruns = 0, done = 0, classCache = createCache(), tokenCache = createCache(), compilerCache = createCache(), nonnativeSelectorCache = createCache(), sortOrder = function(a, b) {
+          var i, support2, Expr, getText, isXML, tokenize, compile, select, outermostContext, sortInput, hasDuplicate, setDocument, document3, docElem, documentIsHTML, rbuggyQSA, rbuggyMatches, matches2, contains, expando = "sizzle" + 1 * /* @__PURE__ */ new Date(), preferredDoc = window3.document, dirruns = 0, done = 0, classCache = createCache(), tokenCache = createCache(), compilerCache = createCache(), nonnativeSelectorCache = createCache(), sortOrder = function(a, b) {
             if (a === b) {
               hasDuplicate = true;
             }
@@ -581,11 +581,11 @@ var require_jquery = __commonJS({
           function createPositionalPseudo(fn) {
             return markFunction(function(argument) {
               argument = +argument;
-              return markFunction(function(seed, matches2) {
+              return markFunction(function(seed, matches3) {
                 var j, matchIndexes = fn([], seed.length, argument), i2 = matchIndexes.length;
                 while (i2--) {
                   if (seed[j = matchIndexes[i2]]) {
-                    seed[j] = !(matches2[j] = seed[j]);
+                    seed[j] = !(matches3[j] = seed[j]);
                   }
                 }
               });
@@ -673,15 +673,15 @@ var require_jquery = __commonJS({
                 }
               };
             }
-            Expr.find["TAG"] = support2.getElementsByTagName ? function(tag, context2) {
+            Expr.find["TAG"] = support2.getElementsByTagName ? function(tag2, context2) {
               if (typeof context2.getElementsByTagName !== "undefined") {
-                return context2.getElementsByTagName(tag);
+                return context2.getElementsByTagName(tag2);
               } else if (support2.qsa) {
-                return context2.querySelectorAll(tag);
+                return context2.querySelectorAll(tag2);
               }
-            } : function(tag, context2) {
-              var elem, tmp = [], i2 = 0, results = context2.getElementsByTagName(tag);
-              if (tag === "*") {
+            } : function(tag2, context2) {
+              var elem, tmp = [], i2 = 0, results = context2.getElementsByTagName(tag2);
+              if (tag2 === "*") {
                 while (elem = results[i2++]) {
                   if (elem.nodeType === 1) {
                     tmp.push(elem);
@@ -745,10 +745,10 @@ var require_jquery = __commonJS({
                 rbuggyQSA.push(",.*:");
               });
             }
-            if (support2.matchesSelector = rnative.test(matches = docElem.matches || docElem.webkitMatchesSelector || docElem.mozMatchesSelector || docElem.oMatchesSelector || docElem.msMatchesSelector)) {
+            if (support2.matchesSelector = rnative.test(matches2 = docElem.matches || docElem.webkitMatchesSelector || docElem.mozMatchesSelector || docElem.oMatchesSelector || docElem.msMatchesSelector)) {
               assert(function(el) {
-                support2.disconnectedMatch = matches.call(el, "*");
-                matches.call(el, "[s!='']:x");
+                support2.disconnectedMatch = matches2.call(el, "*");
+                matches2.call(el, "[s!='']:x");
                 rbuggyMatches.push("!=", pseudos);
               });
             }
@@ -840,7 +840,7 @@ var require_jquery = __commonJS({
             setDocument(elem);
             if (support2.matchesSelector && documentIsHTML && !nonnativeSelectorCache[expr + " "] && (!rbuggyMatches || !rbuggyMatches.test(expr)) && (!rbuggyQSA || !rbuggyQSA.test(expr))) {
               try {
-                var ret = matches.call(elem, expr);
+                var ret = matches2.call(elem, expr);
                 if (ret || support2.disconnectedMatch || // As well, disconnected nodes are said to be in a document
                 // fragment in IE 9
                 elem.document && elem.document.nodeType !== 11) {
@@ -1066,11 +1066,11 @@ var require_jquery = __commonJS({
                 }
                 if (fn.length > 1) {
                   args = [pseudo, pseudo, "", argument];
-                  return Expr.setFilters.hasOwnProperty(pseudo.toLowerCase()) ? markFunction(function(seed, matches2) {
+                  return Expr.setFilters.hasOwnProperty(pseudo.toLowerCase()) ? markFunction(function(seed, matches3) {
                     var idx, matched = fn(seed, argument), i2 = matched.length;
                     while (i2--) {
                       idx = indexOf2(seed, matched[i2]);
-                      seed[idx] = !(matches2[idx] = matched[i2]);
+                      seed[idx] = !(matches3[idx] = matched[i2]);
                     }
                   }) : function(elem) {
                     return fn(elem, 0, args);
@@ -1083,11 +1083,11 @@ var require_jquery = __commonJS({
               // Potentially complex pseudos
               "not": markFunction(function(selector) {
                 var input = [], results = [], matcher = compile(selector.replace(rtrim2, "$1"));
-                return matcher[expando] ? markFunction(function(seed, matches2, _context, xml) {
+                return matcher[expando] ? markFunction(function(seed, matches3, _context, xml) {
                   var elem, unmatched = matcher(seed, null, xml, []), i2 = seed.length;
                   while (i2--) {
                     if (elem = unmatched[i2]) {
-                      seed[i2] = !(matches2[i2] = elem);
+                      seed[i2] = !(matches3[i2] = elem);
                     }
                   }
                 }) : function(elem, _context, xml) {
@@ -1705,11 +1705,11 @@ var require_jquery = __commonJS({
       };
       jQuery2.fn.extend({
         find: function(selector) {
-          var i, ret, len = this.length, self = this;
+          var i, ret, len = this.length, self2 = this;
           if (typeof selector !== "string") {
             return this.pushStack(jQuery2(selector).filter(function() {
               for (i = 0; i < len; i++) {
-                if (jQuery2.contains(self[i], this)) {
+                if (jQuery2.contains(self2[i], this)) {
                   return true;
                 }
               }
@@ -1717,7 +1717,7 @@ var require_jquery = __commonJS({
           }
           ret = this.pushStack([]);
           for (i = 0; i < len; i++) {
-            jQuery2.find(selector, self[i], ret);
+            jQuery2.find(selector, self2[i], ret);
           }
           return len > 1 ? jQuery2.uniqueSort(ret) : ret;
         },
@@ -1961,7 +1961,7 @@ var require_jquery = __commonJS({
               list = "";
             }
           }
-        }, self = {
+        }, self2 = {
           // Add a callback or a collection of callbacks to the list
           add: function() {
             if (list) {
@@ -1972,7 +1972,7 @@ var require_jquery = __commonJS({
               (function add(args) {
                 jQuery2.each(args, function(_, arg) {
                   if (isFunction2(arg)) {
-                    if (!options.unique || !self.has(arg)) {
+                    if (!options.unique || !self2.has(arg)) {
                       list.push(arg);
                     }
                   } else if (arg && arg.length && toType(arg) !== "string") {
@@ -2049,7 +2049,7 @@ var require_jquery = __commonJS({
           },
           // Call all the callbacks with the given arguments
           fire: function() {
-            self.fireWith(this, arguments);
+            self2.fireWith(this, arguments);
             return this;
           },
           // To know if the callbacks have already been called at least once
@@ -2057,7 +2057,7 @@ var require_jquery = __commonJS({
             return !!fired;
           }
         };
-        return self;
+        return self2;
       };
       function Identity(v) {
         return v;
@@ -2664,9 +2664,9 @@ var require_jquery = __commonJS({
         // Get a promise resolved when queues of a certain type
         // are emptied (fx is the type by default)
         promise: function(type, obj) {
-          var tmp, count = 1, defer = jQuery2.Deferred(), elements = this, i = this.length, resolve = function() {
+          var tmp, count = 1, defer2 = jQuery2.Deferred(), elements = this, i = this.length, resolve = function() {
             if (!--count) {
-              defer.resolveWith(elements, [elements]);
+              defer2.resolveWith(elements, [elements]);
             }
           };
           if (typeof type !== "string") {
@@ -2682,7 +2682,7 @@ var require_jquery = __commonJS({
             }
           }
           resolve();
-          return defer.promise(obj);
+          return defer2.promise(obj);
         }
       });
       var pnum = /[+-]?(?:\d*\.|)\d+(?:[eE][+-]?\d+|)/.source;
@@ -2834,16 +2834,16 @@ var require_jquery = __commonJS({
       if (!support.option) {
         wrapMap.optgroup = wrapMap.option = [1, "<select multiple='multiple'>", "</select>"];
       }
-      function getAll(context2, tag) {
+      function getAll(context2, tag2) {
         var ret;
         if (typeof context2.getElementsByTagName !== "undefined") {
-          ret = context2.getElementsByTagName(tag || "*");
+          ret = context2.getElementsByTagName(tag2 || "*");
         } else if (typeof context2.querySelectorAll !== "undefined") {
-          ret = context2.querySelectorAll(tag || "*");
+          ret = context2.querySelectorAll(tag2 || "*");
         } else {
           ret = [];
         }
-        if (tag === void 0 || tag && nodeName(context2, tag)) {
+        if (tag2 === void 0 || tag2 && nodeName(context2, tag2)) {
           return jQuery2.merge([context2], ret);
         }
         return ret;
@@ -2860,7 +2860,7 @@ var require_jquery = __commonJS({
       }
       var rhtml = /<|&#?\w+;/;
       function buildFragment(elems, context2, scripts, selection, ignored) {
-        var elem, tmp, tag, wrap, attached, j, fragment = context2.createDocumentFragment(), nodes = [], i = 0, l = elems.length;
+        var elem, tmp, tag2, wrap2, attached, j, fragment = context2.createDocumentFragment(), nodes = [], i = 0, l = elems.length;
         for (; i < l; i++) {
           elem = elems[i];
           if (elem || elem === 0) {
@@ -2870,10 +2870,10 @@ var require_jquery = __commonJS({
               nodes.push(context2.createTextNode(elem));
             } else {
               tmp = tmp || fragment.appendChild(context2.createElement("div"));
-              tag = (rtagName.exec(elem) || ["", ""])[1].toLowerCase();
-              wrap = wrapMap[tag] || wrapMap._default;
-              tmp.innerHTML = wrap[1] + jQuery2.htmlPrefilter(elem) + wrap[2];
-              j = wrap[0];
+              tag2 = (rtagName.exec(elem) || ["", ""])[1].toLowerCase();
+              wrap2 = wrapMap[tag2] || wrapMap._default;
+              tmp.innerHTML = wrap2[1] + jQuery2.htmlPrefilter(elem) + wrap2[2];
+              j = wrap2[0];
               while (j--) {
                 tmp = tmp.lastChild;
               }
@@ -3153,13 +3153,13 @@ var require_jquery = __commonJS({
           }
           return handlerQueue;
         },
-        addProp: function(name, hook) {
+        addProp: function(name, hook2) {
           Object.defineProperty(jQuery2.Event.prototype, name, {
             enumerable: true,
             configurable: true,
-            get: isFunction2(hook) ? function() {
+            get: isFunction2(hook2) ? function() {
               if (this.originalEvent) {
-                return hook(this.originalEvent);
+                return hook2(this.originalEvent);
               }
             } : function() {
               if (this.originalEvent) {
@@ -3481,11 +3481,11 @@ var require_jquery = __commonJS({
         var fragment, first, scripts, hasScripts, node, doc, i = 0, l = collection.length, iNoClone = l - 1, value = args[0], valueIsFunction = isFunction2(value);
         if (valueIsFunction || l > 1 && typeof value === "string" && !support.checkClone && rchecked.test(value)) {
           return collection.each(function(index) {
-            var self = collection.eq(index);
+            var self2 = collection.eq(index);
             if (valueIsFunction) {
-              args[0] = value.call(this, index, self.html());
+              args[0] = value.call(this, index, self2.html());
             }
-            domManip(self, args, callback, ignored);
+            domManip(self2, args, callback, ignored);
           });
         }
         if (l) {
@@ -3723,7 +3723,7 @@ var require_jquery = __commonJS({
         }
         return view.getComputedStyle(elem);
       };
-      var swap = function(elem, options, callback) {
+      var swap2 = function(elem, options, callback) {
         var ret, name, old = {};
         for (name in options) {
           old[name] = elem.style[name];
@@ -3876,10 +3876,10 @@ var require_jquery = __commonJS({
         fontWeight: "400"
       };
       function setPositiveNumber(_elem, value, subtract) {
-        var matches = rcssNum.exec(value);
-        return matches ? (
+        var matches2 = rcssNum.exec(value);
+        return matches2 ? (
           // Guard against undefined "subtract", e.g., when used as in cssHooks
-          Math.max(0, matches[2] - (subtract || 0)) + (matches[3] || "px")
+          Math.max(0, matches2[2] - (subtract || 0)) + (matches2[3] || "px")
         ) : value;
       }
       function boxModelAdjustment(elem, dimension, box, isBorderBox, styles, computedVal) {
@@ -4061,13 +4061,13 @@ var require_jquery = __commonJS({
               // Support: IE <=11 only
               // Running getBoundingClientRect on a disconnected node
               // in IE throws an error.
-              (!elem.getClientRects().length || !elem.getBoundingClientRect().width) ? swap(elem, cssShow, function() {
+              (!elem.getClientRects().length || !elem.getBoundingClientRect().width) ? swap2(elem, cssShow, function() {
                 return getWidthOrHeight(elem, dimension, extra);
               }) : getWidthOrHeight(elem, dimension, extra);
             }
           },
           set: function(elem, value, extra) {
-            var matches, styles = getStyles(elem), scrollboxSizeBuggy = !support.scrollboxSize() && styles.position === "absolute", boxSizingNeeded = scrollboxSizeBuggy || extra, isBorderBox = boxSizingNeeded && jQuery2.css(elem, "boxSizing", false, styles) === "border-box", subtract = extra ? boxModelAdjustment(
+            var matches2, styles = getStyles(elem), scrollboxSizeBuggy = !support.scrollboxSize() && styles.position === "absolute", boxSizingNeeded = scrollboxSizeBuggy || extra, isBorderBox = boxSizingNeeded && jQuery2.css(elem, "boxSizing", false, styles) === "border-box", subtract = extra ? boxModelAdjustment(
               elem,
               dimension,
               extra,
@@ -4079,7 +4079,7 @@ var require_jquery = __commonJS({
                 elem["offset" + dimension[0].toUpperCase() + dimension.slice(1)] - parseFloat(styles[dimension]) - boxModelAdjustment(elem, dimension, "border", false, styles) - 0.5
               );
             }
-            if (subtract && (matches = rcssNum.exec(value)) && (matches[3] || "px") !== "px") {
+            if (subtract && (matches2 = rcssNum.exec(value)) && (matches2[3] || "px") !== "px") {
               elem.style[dimension] = value;
               value = jQuery2.css(elem, dimension);
             }
@@ -4091,7 +4091,7 @@ var require_jquery = __commonJS({
         support.reliableMarginLeft,
         function(elem, computed) {
           if (computed) {
-            return (parseFloat(curCSS(elem, "marginLeft")) || elem.getBoundingClientRect().left - swap(elem, { marginLeft: 0 }, function() {
+            return (parseFloat(curCSS(elem, "marginLeft")) || elem.getBoundingClientRect().left - swap2(elem, { marginLeft: 0 }, function() {
               return elem.getBoundingClientRect().left;
             })) + "px";
           }
@@ -4253,7 +4253,7 @@ var require_jquery = __commonJS({
         }
       }
       function defaultPrefilter(elem, props, opts) {
-        var prop, value, toggle, hooks, oldfire, propTween, restoreDisplay, display, isBox = "width" in props || "height" in props, anim = this, orig = {}, style = elem.style, hidden = elem.nodeType && isHiddenWithinTree(elem), dataShow = dataPriv.get(elem, "fxshow");
+        var prop, value, toggle, hooks, oldfire, propTween, restoreDisplay, display, isBox = "width" in props || "height" in props, anim = this, orig = {}, style = elem.style, hidden2 = elem.nodeType && isHiddenWithinTree(elem), dataShow = dataPriv.get(elem, "fxshow");
         if (!opts.queue) {
           hooks = jQuery2._queueHooks(elem, "fx");
           if (hooks.unqueued == null) {
@@ -4280,9 +4280,9 @@ var require_jquery = __commonJS({
           if (rfxtypes.test(value)) {
             delete props[prop];
             toggle = toggle || value === "toggle";
-            if (value === (hidden ? "hide" : "show")) {
+            if (value === (hidden2 ? "hide" : "show")) {
               if (value === "show" && dataShow && dataShow[prop] !== void 0) {
-                hidden = true;
+                hidden2 = true;
               } else {
                 continue;
               }
@@ -4339,19 +4339,19 @@ var require_jquery = __commonJS({
           if (!propTween) {
             if (dataShow) {
               if ("hidden" in dataShow) {
-                hidden = dataShow.hidden;
+                hidden2 = dataShow.hidden;
               }
             } else {
               dataShow = dataPriv.access(elem, "fxshow", { display: restoreDisplay });
             }
             if (toggle) {
-              dataShow.hidden = !hidden;
+              dataShow.hidden = !hidden2;
             }
-            if (hidden) {
+            if (hidden2) {
               showHide([elem], true);
             }
             anim.done(function() {
-              if (!hidden) {
+              if (!hidden2) {
                 showHide([elem]);
               }
               dataPriv.remove(elem, "fxshow");
@@ -4360,10 +4360,10 @@ var require_jquery = __commonJS({
               }
             });
           }
-          propTween = createTween(hidden ? dataShow[prop] : 0, prop, anim);
+          propTween = createTween(hidden2 ? dataShow[prop] : 0, prop, anim);
           if (!(prop in dataShow)) {
             dataShow[prop] = propTween.start;
-            if (hidden) {
+            if (hidden2) {
               propTween.end = propTween.start;
               propTween.start = 0;
             }
@@ -4960,16 +4960,16 @@ var require_jquery = __commonJS({
             });
           }
           return this.each(function() {
-            var className, i, self, classNames;
+            var className, i, self2, classNames;
             if (isValidValue) {
               i = 0;
-              self = jQuery2(this);
+              self2 = jQuery2(this);
               classNames = classesToArray(value);
               while (className = classNames[i++]) {
-                if (self.hasClass(className)) {
-                  self.removeClass(className);
+                if (self2.hasClass(className)) {
+                  self2.removeClass(className);
                 } else {
-                  self.addClass(className);
+                  self2.addClass(className);
                 }
               }
             } else if (value === void 0 || type === "boolean") {
@@ -5847,16 +5847,16 @@ var require_jquery = __commonJS({
       };
       jQuery2.fn.extend({
         wrapAll: function(html) {
-          var wrap;
+          var wrap2;
           if (this[0]) {
             if (isFunction2(html)) {
               html = html.call(this[0]);
             }
-            wrap = jQuery2(html, this[0].ownerDocument).eq(0).clone(true);
+            wrap2 = jQuery2(html, this[0].ownerDocument).eq(0).clone(true);
             if (this[0].parentNode) {
-              wrap.insertBefore(this[0]);
+              wrap2.insertBefore(this[0]);
             }
-            wrap.map(function() {
+            wrap2.map(function() {
               var elem = this;
               while (elem.firstElementChild) {
                 elem = elem.firstElementChild;
@@ -5873,11 +5873,11 @@ var require_jquery = __commonJS({
             });
           }
           return this.each(function() {
-            var self = jQuery2(this), contents = self.contents();
+            var self2 = jQuery2(this), contents = self2.contents();
             if (contents.length) {
               contents.wrapAll(html);
             } else {
-              self.append(html);
+              self2.append(html);
             }
           });
         },
@@ -6136,7 +6136,7 @@ var require_jquery = __commonJS({
         return jQuery2.merge([], parsed.childNodes);
       };
       jQuery2.fn.load = function(url, params, callback) {
-        var selector, type, response, self = this, off = url.indexOf(" ");
+        var selector, type, response, self2 = this, off = url.indexOf(" ");
         if (off > -1) {
           selector = stripAndCollapse(url.slice(off));
           url = url.slice(0, off);
@@ -6147,7 +6147,7 @@ var require_jquery = __commonJS({
         } else if (params && typeof params === "object") {
           type = "POST";
         }
-        if (self.length > 0) {
+        if (self2.length > 0) {
           jQuery2.ajax({
             url,
             // If "type" variable is undefined, then "GET" method will be used.
@@ -6158,7 +6158,7 @@ var require_jquery = __commonJS({
             data: params
           }).done(function(responseText) {
             response = arguments;
-            self.html(selector ? (
+            self2.html(selector ? (
               // If a selector was specified, locate the right elements in a dummy div
               // Exclude scripts to avoid IE 'Permission Denied' errors
               jQuery2("<div>").append(jQuery2.parseHTML(responseText)).find(selector)
@@ -6167,7 +6167,7 @@ var require_jquery = __commonJS({
               responseText
             ));
           }).always(callback && function(jqXHR, status) {
-            self.each(function() {
+            self2.each(function() {
               callback.apply(this, response || [jqXHR.responseText, status, jqXHR]);
             });
           });
@@ -7594,10 +7594,10 @@ var Observable = function() {
     }
   }
   Observable4.prototype.lift = function(operator) {
-    var observable2 = new Observable4();
-    observable2.source = this;
-    observable2.operator = operator;
-    return observable2;
+    var observable3 = new Observable4();
+    observable3.source = this;
+    observable3.operator = operator;
+    return observable3;
   };
   Observable4.prototype.subscribe = function(observerOrNext, error, complete) {
     var _this = this;
@@ -7912,9 +7912,9 @@ var Subject = function(_super) {
     }
   };
   Subject2.prototype.asObservable = function() {
-    var observable2 = new Observable();
-    observable2.source = this;
-    return observable2;
+    var observable3 = new Observable();
+    observable3.source = this;
+    return observable3;
   };
   Subject2.create = function(destination, source) {
     return new AnonymousSubject(destination, source);
@@ -8737,6 +8737,75 @@ function of() {
   return from(args, scheduler);
 }
 
+// node_modules/rxjs/dist/esm5/internal/observable/throwError.js
+function throwError(errorOrErrorFactory, scheduler) {
+  var errorFactory = isFunction(errorOrErrorFactory) ? errorOrErrorFactory : function() {
+    return errorOrErrorFactory;
+  };
+  var init = function(subscriber) {
+    return subscriber.error(errorFactory());
+  };
+  return new Observable(scheduler ? function(subscriber) {
+    return scheduler.schedule(init, 0, subscriber);
+  } : init);
+}
+
+// node_modules/rxjs/dist/esm5/internal/Notification.js
+var NotificationKind;
+(function(NotificationKind2) {
+  NotificationKind2["NEXT"] = "N";
+  NotificationKind2["ERROR"] = "E";
+  NotificationKind2["COMPLETE"] = "C";
+})(NotificationKind || (NotificationKind = {}));
+var Notification = function() {
+  function Notification2(kind, value, error) {
+    this.kind = kind;
+    this.value = value;
+    this.error = error;
+    this.hasValue = kind === "N";
+  }
+  Notification2.prototype.observe = function(observer) {
+    return observeNotification(this, observer);
+  };
+  Notification2.prototype.do = function(nextHandler, errorHandler, completeHandler) {
+    var _a = this, kind = _a.kind, value = _a.value, error = _a.error;
+    return kind === "N" ? nextHandler === null || nextHandler === void 0 ? void 0 : nextHandler(value) : kind === "E" ? errorHandler === null || errorHandler === void 0 ? void 0 : errorHandler(error) : completeHandler === null || completeHandler === void 0 ? void 0 : completeHandler();
+  };
+  Notification2.prototype.accept = function(nextOrObserver, error, complete) {
+    var _a;
+    return isFunction((_a = nextOrObserver) === null || _a === void 0 ? void 0 : _a.next) ? this.observe(nextOrObserver) : this.do(nextOrObserver, error, complete);
+  };
+  Notification2.prototype.toObservable = function() {
+    var _a = this, kind = _a.kind, value = _a.value, error = _a.error;
+    var result = kind === "N" ? of(value) : kind === "E" ? throwError(function() {
+      return error;
+    }) : kind === "C" ? EMPTY : 0;
+    if (!result) {
+      throw new TypeError("Unexpected notification kind " + kind);
+    }
+    return result;
+  };
+  Notification2.createNext = function(value) {
+    return new Notification2("N", value);
+  };
+  Notification2.createError = function(err) {
+    return new Notification2("E", void 0, err);
+  };
+  Notification2.createComplete = function() {
+    return Notification2.completeNotification;
+  };
+  Notification2.completeNotification = new Notification2("C");
+  return Notification2;
+}();
+function observeNotification(notification, observer) {
+  var _a, _b, _c;
+  var _d = notification, kind = _d.kind, value = _d.value, error = _d.error;
+  if (typeof kind !== "string") {
+    throw new TypeError('Invalid notification, missing "kind"');
+  }
+  kind === "N" ? (_a = observer.next) === null || _a === void 0 ? void 0 : _a.call(observer, value) : kind === "E" ? (_b = observer.error) === null || _b === void 0 ? void 0 : _b.call(observer, error) : (_c = observer.complete) === null || _c === void 0 ? void 0 : _c.call(observer);
+}
+
 // node_modules/rxjs/dist/esm5/internal/util/EmptyError.js
 var EmptyError = createErrorClass(function(_super) {
   return function EmptyErrorImpl() {
@@ -8990,6 +9059,56 @@ function concat() {
   return concatAll()(from(args, popScheduler(args)));
 }
 
+// node_modules/rxjs/dist/esm5/internal/observable/defer.js
+function defer(observableFactory) {
+  return new Observable(function(subscriber) {
+    innerFrom(observableFactory()).subscribe(subscriber);
+  });
+}
+
+// node_modules/rxjs/dist/esm5/internal/observable/forkJoin.js
+function forkJoin() {
+  var args = [];
+  for (var _i = 0; _i < arguments.length; _i++) {
+    args[_i] = arguments[_i];
+  }
+  var resultSelector = popResultSelector(args);
+  var _a = argsArgArrayOrObject(args), sources = _a.args, keys = _a.keys;
+  var result = new Observable(function(subscriber) {
+    var length = sources.length;
+    if (!length) {
+      subscriber.complete();
+      return;
+    }
+    var values = new Array(length);
+    var remainingCompletions = length;
+    var remainingEmissions = length;
+    var _loop_1 = function(sourceIndex2) {
+      var hasValue = false;
+      innerFrom(sources[sourceIndex2]).subscribe(createOperatorSubscriber(subscriber, function(value) {
+        if (!hasValue) {
+          hasValue = true;
+          remainingEmissions--;
+        }
+        values[sourceIndex2] = value;
+      }, function() {
+        return remainingCompletions--;
+      }, void 0, function() {
+        if (!remainingCompletions || !hasValue) {
+          if (!remainingEmissions) {
+            subscriber.next(keys ? createObject(keys, values) : values);
+          }
+          subscriber.complete();
+        }
+      }));
+    };
+    for (var sourceIndex = 0; sourceIndex < length; sourceIndex++) {
+      _loop_1(sourceIndex);
+    }
+  });
+  return resultSelector ? result.pipe(mapOneOrManyArgs(resultSelector)) : result;
+}
+
 // node_modules/rxjs/dist/esm5/internal/observable/fromEvent.js
 var nodeEventEmitterMethods = ["addListener", "removeListener"];
 var eventTargetMethods = ["addEventListener", "removeEventListener"];
@@ -9108,6 +9227,9 @@ function merge() {
   var sources = args;
   return !sources.length ? EMPTY : sources.length === 1 ? innerFrom(sources[0]) : mergeAll(concurrent)(from(sources, scheduler));
 }
+
+// node_modules/rxjs/dist/esm5/internal/observable/never.js
+var NEVER = new Observable(noop);
 
 // node_modules/rxjs/dist/esm5/internal/operators/filter.js
 function filter(predicate, thisArg) {
@@ -9298,6 +9420,15 @@ function delay(due, scheduler) {
   });
 }
 
+// node_modules/rxjs/dist/esm5/internal/operators/dematerialize.js
+function dematerialize() {
+  return operate(function(source, subscriber) {
+    source.subscribe(createOperatorSubscriber(subscriber, function(notification) {
+      return observeNotification(notification, subscriber);
+    }));
+  });
+}
+
 // node_modules/rxjs/dist/esm5/internal/operators/distinctUntilChanged.js
 function distinctUntilChanged(comparator, keySelector) {
   if (keySelector === void 0) {
@@ -9319,6 +9450,21 @@ function distinctUntilChanged(comparator, keySelector) {
 }
 function defaultCompare(a, b) {
   return a === b;
+}
+
+// node_modules/rxjs/dist/esm5/internal/operators/materialize.js
+function materialize() {
+  return operate(function(source, subscriber) {
+    source.subscribe(createOperatorSubscriber(subscriber, function(value) {
+      subscriber.next(Notification.createNext(value));
+    }, function() {
+      subscriber.next(Notification.createComplete());
+      subscriber.complete();
+    }, function(err) {
+      subscriber.next(Notification.createError(err));
+      subscriber.complete();
+    }));
+  });
 }
 
 // node_modules/rxjs/dist/esm5/internal/operators/scan.js
@@ -9509,10 +9655,10 @@ var EventProxyHandler = class {
       return target[prop];
     }
     const subject = new Subject();
-    const observable2 = subject.asObservable();
-    observable2[ButterfloatEvent] = `${this.componentName} ${prop}`;
-    this.#subjects.set(observable2, subject);
-    target[prop] = observable2;
+    const observable3 = subject.asObservable();
+    observable3[ButterfloatEvent] = `${this.componentName} ${prop}`;
+    this.#subjects.set(observable3, subject);
+    target[prop] = observable3;
     return target[prop];
   }
   applyEvent(event, element, eventName) {
@@ -9524,8 +9670,8 @@ var EventProxyHandler = class {
       subject.next(element);
       return new Subscription();
     }
-    const observable2 = fromEvent(element, eventName);
-    return observable2.subscribe(subject);
+    const observable3 = fromEvent(element, eventName);
+    return observable3.subscribe(subject);
   }
 };
 function makeEventProxy(componentName, baseEvents = {}) {
@@ -9623,8 +9769,8 @@ function jsx(element, attributes, ...children) {
 })(jsx || (jsx = {}));
 
 // node_modules/butterfloat/binding.js
-function bindObjectKey(item, key, observable2, error, complete) {
-  return observable2.subscribe({
+function bindObjectKey(item, key, observable3, error, complete) {
+  return observable3.subscribe({
     next: (value) => {
       item[key] = value;
     },
@@ -9632,8 +9778,8 @@ function bindObjectKey(item, key, observable2, error, complete) {
     complete
   });
 }
-function bindObjectChanges(item, observable2, error, complete) {
-  return observable2.subscribe({
+function bindObjectChanges(item, observable3, error, complete) {
+  return observable3.subscribe({
     next: (changes) => {
       Object.assign(item, changes);
     },
@@ -9641,9 +9787,9 @@ function bindObjectChanges(item, observable2, error, complete) {
     complete
   });
 }
-function bufferEntries(observable2, suspense) {
+function bufferEntries(observable3, suspense) {
   if (suspense) {
-    return combineLatest([suspense, observable2]).pipe(bufferTime(0, animationFrameScheduler), map((states) => states.reduce((acc, [suspend, entry]) => ({
+    return combineLatest([suspense, observable3]).pipe(bufferTime(0, animationFrameScheduler), map((states) => states.reduce((acc, [suspend, entry]) => ({
       suspend,
       entries: [...acc.entries, entry]
     }), { suspend: false, entries: [] })), scan((acc, cur) => ({
@@ -9651,29 +9797,29 @@ function bufferEntries(observable2, suspense) {
       suspend: cur.suspend
     }), { suspend: false, changes: {} }), filter(({ suspend }) => !suspend), map(({ changes }) => changes));
   }
-  return observable2.pipe(bufferTime(0, animationFrameScheduler), map((entries) => Object.fromEntries(entries)));
+  return observable3.pipe(bufferTime(0, animationFrameScheduler), map((entries) => Object.fromEntries(entries)));
 }
 function schedulable(key, immediate) {
   return !(immediate || key === "value");
 }
-function makeEntries(key, observable2) {
-  return observable2.pipe(map((value) => [key, value]));
+function makeEntries(key, observable3) {
+  return observable3.pipe(map((value) => [key, value]));
 }
 function bindElement(element, description, context2, document2 = globalThis.document) {
   const { complete, componentRunner, error, eventBinder, suspense, subscription } = context2;
   const schedulables = [];
   const binds = [
-    ...Object.entries(description.bind).map(([key, observable2]) => [key, observable2, false]),
-    ...Object.entries(description.immediateBind).map(([key, observable2]) => [key, observable2, true])
+    ...Object.entries(description.bind).map(([key, observable3]) => [key, observable3, false]),
+    ...Object.entries(description.immediateBind).map(([key, observable3]) => [key, observable3, true])
   ];
-  for (const [key, observable2, immediate] of binds) {
+  for (const [key, observable3, immediate] of binds) {
     if (schedulable(key, immediate)) {
-      schedulables.push([key, observable2]);
+      schedulables.push([key, observable3]);
     } else {
-      subscription.add(bindObjectKey(element, key, observable2, error, complete));
+      subscription.add(bindObjectKey(element, key, observable3, error, complete));
     }
   }
-  const scheduled2 = schedulables.map(([key, observable2]) => makeEntries(key, observable2));
+  const scheduled2 = schedulables.map(([key, observable3]) => makeEntries(key, observable3));
   subscription.add(bindObjectChanges(element, bufferEntries(merge(...scheduled2), suspense), error, complete));
   for (const [key, event] of Object.entries(description.events)) {
     subscription.add(eventBinder.applyEvent(event, element, key));
@@ -9827,17 +9973,17 @@ function wireInternal(description, subscriber, context2, document2 = globalThis.
   const complete = () => subscriber.complete();
   const { events, handler } = makeEventProxy(description.component.name);
   const componentContext = {
-    bindEffect(observable2, effect) {
+    bindEffect(observable3, effect) {
       context2.isStaticComponent = false;
-      subscription.add(observable2.pipe(delay(0, animationFrameScheduler)).subscribe({
+      subscription.add(observable3.pipe(delay(0, animationFrameScheduler)).subscribe({
         next: effect,
         error,
         complete
       }));
     },
-    bindImmediateEffect(observable2, effect) {
+    bindImmediateEffect(observable3, effect) {
       context2.isStaticComponent = false;
-      subscription.add(observable2.subscribe({
+      subscription.add(observable3.subscribe({
         next: effect,
         error,
         complete
@@ -9932,14 +10078,14 @@ function wire(component, context2, document2 = globalThis.document) {
   return new Observable((subscriber) => wireInternal(description, subscriber, context2, document2));
 }
 function run(container2, component, context2, placeholder, document2 = globalThis.document) {
-  const observable2 = wire(component, context2 ?? { isStaticComponent: true, isStaticTree: true }, document2);
+  const observable3 = wire(component, context2 ?? { isStaticComponent: true, isStaticTree: true }, document2);
   let previousNode = null;
-  return observable2.subscribe({
+  return observable3.subscribe({
     next(node) {
       if (previousNode) {
-        container2.replaceChild(previousNode, node);
+        container2.replaceChild(node, previousNode);
       } else if (placeholder) {
-        container2.replaceChild(placeholder, node);
+        container2.replaceChild(node, placeholder);
       } else {
         container2.appendChild(node);
       }
@@ -9989,6 +10135,4081 @@ function wireSuspense(description, context2, document2 = globalThis.document) {
 
 // main.tsx
 var import_jquery = __toESM(require_jquery(), 1);
+
+// node_modules/rxjs-spy/esm/index.js
+var noop_ = function noop_2() {
+};
+var hook_ = noop_;
+function detect(id) {
+  hook_(id);
+}
+function hook(hook2) {
+  hook_ = hook2 || noop_;
+}
+var defaultLogger = console;
+function toLogger(partialLogger) {
+  if (partialLogger.error && partialLogger.group && partialLogger.groupCollapsed && partialLogger.groupEnd && partialLogger.warn) {
+    return partialLogger;
+  }
+  var spaces = 2;
+  var indent = 0;
+  return {
+    error: function error(message) {
+      for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+        args[_key - 1] = arguments[_key];
+      }
+      call.apply(void 0, ["error", message].concat(args));
+    },
+    group: function group(title) {
+      call("log", title);
+      indent += spaces;
+    },
+    groupCollapsed: function groupCollapsed(title) {
+      call("log", title);
+      indent += spaces;
+    },
+    groupEnd: function groupEnd() {
+      indent = Math.max(0, indent - spaces);
+    },
+    log: function log(message) {
+      for (var _len2 = arguments.length, args = new Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
+        args[_key2 - 1] = arguments[_key2];
+      }
+      call.apply(void 0, ["log", message].concat(args));
+    },
+    warn: function warn(message) {
+      for (var _len3 = arguments.length, args = new Array(_len3 > 1 ? _len3 - 1 : 0), _key3 = 1; _key3 < _len3; _key3++) {
+        args[_key3 - 1] = arguments[_key3];
+      }
+      call.apply(void 0, ["warn", message].concat(args));
+    }
+  };
+  function call(method, message) {
+    var _ref;
+    var padding = " ".repeat(indent);
+    if (message) {
+      message = padding + message;
+    } else {
+      message = padding;
+    }
+    for (var _len4 = arguments.length, args = new Array(_len4 > 2 ? _len4 - 2 : 0), _key4 = 2; _key4 < _len4; _key4++) {
+      args[_key4 - 2] = arguments[_key4];
+    }
+    (_ref = partialLogger[method] || partialLogger.log).call.apply(_ref, [partialLogger, message].concat(args));
+  }
+}
+var idSymbol = Symbol("id");
+var lastId = 0;
+function identify(instance) {
+  var id = instance[idSymbol] = instance[idSymbol] || (++lastId).toString();
+  return id;
+}
+function isSubscriptionRef(subscriberRef) {
+  return subscriberRef && subscriberRef["subscription"];
+}
+function inferPath(observable3) {
+  var _ref = observable3, source = _ref.source;
+  if (source) {
+    return "".concat(inferPath(source), "/").concat(inferType(observable3));
+  }
+  return "/".concat(inferType(observable3));
+}
+function inferType(observable3) {
+  var _ref2 = observable3, operator = _ref2.operator;
+  var prototype = Object.getPrototypeOf(operator ? operator : observable3);
+  if (prototype.constructor && prototype.constructor.name) {
+    var name = prototype.constructor.name;
+    name = "".concat(name.charAt(0).toLowerCase()).concat(name.substring(1));
+    return name.replace(/^(\w+)(Observable|Operator)$/, function(match, p) {
+      return p;
+    });
+  }
+  return "unknown";
+}
+function isObservable(arg) {
+  return arg && arg.subscribe;
+}
+var SafeSubscriberCtor;
+var observable2 = new Observable(function(subscriber) {
+  SafeSubscriberCtor = Object.getPrototypeOf(subscriber).constructor;
+});
+observable2.subscribe(function() {
+}).unsubscribe();
+function toSubscriber(observerOrNext, error, complete) {
+  if (observerOrNext instanceof Subscriber) {
+    return observerOrNext;
+  }
+  var next;
+  if (typeof observerOrNext === "function") {
+    next = observerOrNext;
+  } else if (observerOrNext) {
+    complete = observerOrNext.complete;
+    error = observerOrNext.error;
+    next = observerOrNext.next;
+    next = next ? function(value) {
+      return observerOrNext.next(value);
+    } : void 0;
+    error = error ? function(error2) {
+      return observerOrNext.error(error2);
+    } : void 0;
+    complete = complete ? function() {
+      return observerOrNext.complete();
+    } : void 0;
+  }
+  return new SafeSubscriberCtor({
+    complete,
+    error,
+    next
+  });
+}
+function matches(arg, match, value) {
+  var observable3;
+  var subscriber = void 0;
+  var subscription = void 0;
+  if (isObservable(arg)) {
+    observable3 = arg;
+  } else {
+    observable3 = arg.observable;
+    subscriber = arg.subscriber;
+    subscription = isSubscriptionRef(arg) ? arg.subscription : void 0;
+  }
+  if (isObservable(match)) {
+    return observable3 === match;
+  }
+  var observableId = identify(observable3);
+  var subscriberId = subscriber ? identify(subscriber) : void 0;
+  var subscriptionId = subscription ? identify(subscription) : void 0;
+  var tag2 = value || read(observable3);
+  if (typeof match === "function") {
+    return match(tag2, observable3);
+  }
+  if (typeof match === "string") {
+    return match === observableId || match === subscriberId || match === subscriptionId || match === tag2;
+  }
+  if (tag2 === void 0) {
+    return false;
+  }
+  return match.test(tag2);
+}
+function read(observable3) {
+  var operator = observable3["operator"];
+  if (!operator) {
+    return void 0;
+  }
+  var tag2 = operator["tag"];
+  if (!tag2) {
+    return void 0;
+  }
+  return tag2;
+}
+function toString(match) {
+  if (isObservable(match)) {
+    return "[Observable]";
+  } else if (typeof match === "function") {
+    return "[Function]";
+  }
+  return match.toString();
+}
+function ownKeys(object, enumerableOnly) {
+  var keys = Object.keys(object);
+  if (Object.getOwnPropertySymbols) {
+    var symbols = Object.getOwnPropertySymbols(object);
+    if (enumerableOnly) {
+      symbols = symbols.filter(function(sym) {
+        return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+      });
+    }
+    keys.push.apply(keys, symbols);
+  }
+  return keys;
+}
+function _objectSpread2(target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = arguments[i] != null ? arguments[i] : {};
+    if (i % 2) {
+      ownKeys(Object(source), true).forEach(function(key) {
+        _defineProperty(target, key, source[key]);
+      });
+    } else if (Object.getOwnPropertyDescriptors) {
+      Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
+    } else {
+      ownKeys(Object(source)).forEach(function(key) {
+        Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
+      });
+    }
+  }
+  return target;
+}
+function _typeof(obj) {
+  "@babel/helpers - typeof";
+  if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+    _typeof = function(obj2) {
+      return typeof obj2;
+    };
+  } else {
+    _typeof = function(obj2) {
+      return obj2 && typeof Symbol === "function" && obj2.constructor === Symbol && obj2 !== Symbol.prototype ? "symbol" : typeof obj2;
+    };
+  }
+  return _typeof(obj);
+}
+function _classCallCheck(instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+}
+function _defineProperties(target, props) {
+  for (var i = 0; i < props.length; i++) {
+    var descriptor = props[i];
+    descriptor.enumerable = descriptor.enumerable || false;
+    descriptor.configurable = true;
+    if ("value" in descriptor)
+      descriptor.writable = true;
+    Object.defineProperty(target, descriptor.key, descriptor);
+  }
+}
+function _createClass(Constructor, protoProps, staticProps) {
+  if (protoProps)
+    _defineProperties(Constructor.prototype, protoProps);
+  if (staticProps)
+    _defineProperties(Constructor, staticProps);
+  return Constructor;
+}
+function _defineProperty(obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+  return obj;
+}
+function _inherits(subClass, superClass) {
+  if (typeof superClass !== "function" && superClass !== null) {
+    throw new TypeError("Super expression must either be null or a function");
+  }
+  subClass.prototype = Object.create(superClass && superClass.prototype, {
+    constructor: {
+      value: subClass,
+      writable: true,
+      configurable: true
+    }
+  });
+  if (superClass)
+    _setPrototypeOf(subClass, superClass);
+}
+function _getPrototypeOf(o) {
+  _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf2(o2) {
+    return o2.__proto__ || Object.getPrototypeOf(o2);
+  };
+  return _getPrototypeOf(o);
+}
+function _setPrototypeOf(o, p) {
+  _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf2(o2, p2) {
+    o2.__proto__ = p2;
+    return o2;
+  };
+  return _setPrototypeOf(o, p);
+}
+function _isNativeReflectConstruct() {
+  if (typeof Reflect === "undefined" || !Reflect.construct)
+    return false;
+  if (Reflect.construct.sham)
+    return false;
+  if (typeof Proxy === "function")
+    return true;
+  try {
+    Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function() {
+    }));
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+function _assertThisInitialized(self2) {
+  if (self2 === void 0) {
+    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+  }
+  return self2;
+}
+function _possibleConstructorReturn(self2, call) {
+  if (call && (typeof call === "object" || typeof call === "function")) {
+    return call;
+  }
+  return _assertThisInitialized(self2);
+}
+function _createSuper(Derived) {
+  var hasNativeReflectConstruct = _isNativeReflectConstruct();
+  return function _createSuperInternal() {
+    var Super = _getPrototypeOf(Derived), result;
+    if (hasNativeReflectConstruct) {
+      var NewTarget = _getPrototypeOf(this).constructor;
+      result = Reflect.construct(Super, arguments, NewTarget);
+    } else {
+      result = Super.apply(this, arguments);
+    }
+    return _possibleConstructorReturn(this, result);
+  };
+}
+function _slicedToArray(arr, i) {
+  return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest();
+}
+function _toConsumableArray(arr) {
+  return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();
+}
+function _arrayWithoutHoles(arr) {
+  if (Array.isArray(arr))
+    return _arrayLikeToArray(arr);
+}
+function _arrayWithHoles(arr) {
+  if (Array.isArray(arr))
+    return arr;
+}
+function _iterableToArray(iter) {
+  if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null)
+    return Array.from(iter);
+}
+function _iterableToArrayLimit(arr, i) {
+  var _i = arr && (typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]);
+  if (_i == null)
+    return;
+  var _arr = [];
+  var _n = true;
+  var _d = false;
+  var _s, _e;
+  try {
+    for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) {
+      _arr.push(_s.value);
+      if (i && _arr.length === i)
+        break;
+    }
+  } catch (err) {
+    _d = true;
+    _e = err;
+  } finally {
+    try {
+      if (!_n && _i["return"] != null)
+        _i["return"]();
+    } finally {
+      if (_d)
+        throw _e;
+    }
+  }
+  return _arr;
+}
+function _unsupportedIterableToArray(o, minLen) {
+  if (!o)
+    return;
+  if (typeof o === "string")
+    return _arrayLikeToArray(o, minLen);
+  var n = Object.prototype.toString.call(o).slice(8, -1);
+  if (n === "Object" && o.constructor)
+    n = o.constructor.name;
+  if (n === "Map" || n === "Set")
+    return Array.from(o);
+  if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n))
+    return _arrayLikeToArray(o, minLen);
+}
+function _arrayLikeToArray(arr, len) {
+  if (len == null || len > arr.length)
+    len = arr.length;
+  for (var i = 0, arr2 = new Array(len); i < len; i++)
+    arr2[i] = arr[i];
+  return arr2;
+}
+function _nonIterableSpread() {
+  throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+}
+function _nonIterableRest() {
+  throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+}
+var BasePlugin = /* @__PURE__ */ function() {
+  function BasePlugin2(name) {
+    _classCallCheck(this, BasePlugin2);
+    this.name = name;
+  }
+  _createClass(BasePlugin2, [{
+    key: "afterComplete",
+    value: function afterComplete(ref) {
+    }
+  }, {
+    key: "afterError",
+    value: function afterError(ref, error) {
+    }
+  }, {
+    key: "afterNext",
+    value: function afterNext(ref, value) {
+    }
+  }, {
+    key: "afterSubscribe",
+    value: function afterSubscribe(ref) {
+    }
+  }, {
+    key: "afterUnsubscribe",
+    value: function afterUnsubscribe(ref) {
+    }
+  }, {
+    key: "beforeComplete",
+    value: function beforeComplete(ref) {
+    }
+  }, {
+    key: "beforeError",
+    value: function beforeError(ref, error) {
+    }
+  }, {
+    key: "beforeNext",
+    value: function beforeNext(ref, value) {
+    }
+  }, {
+    key: "beforeSubscribe",
+    value: function beforeSubscribe(ref) {
+    }
+  }, {
+    key: "beforeUnsubscribe",
+    value: function beforeUnsubscribe(ref) {
+    }
+  }, {
+    key: "flush",
+    value: function flush() {
+    }
+  }, {
+    key: "select",
+    value: function select(ref) {
+      return void 0;
+    }
+  }, {
+    key: "teardown",
+    value: function teardown() {
+    }
+  }]);
+  return BasePlugin2;
+}();
+var commonjsGlobal = typeof globalThis !== "undefined" ? globalThis : typeof window !== "undefined" ? window : typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : {};
+function createCommonjsModule(fn, basedir, module) {
+  return module = {
+    path: basedir,
+    exports: {},
+    require: function(path, base) {
+      return commonjsRequire(path, base === void 0 || base === null ? module.path : base);
+    }
+  }, fn(module, module.exports), module.exports;
+}
+function commonjsRequire() {
+  throw new Error("Dynamic requires are not currently supported by @rollup/plugin-commonjs");
+}
+var stackframe = createCommonjsModule(function(module, exports) {
+  (function(root, factory) {
+    {
+      module.exports = factory();
+    }
+  })(commonjsGlobal, function() {
+    function _isNumber(n) {
+      return !isNaN(parseFloat(n)) && isFinite(n);
+    }
+    function _capitalize(str) {
+      return str.charAt(0).toUpperCase() + str.substring(1);
+    }
+    function _getter(p) {
+      return function() {
+        return this[p];
+      };
+    }
+    var booleanProps = ["isConstructor", "isEval", "isNative", "isToplevel"];
+    var numericProps = ["columnNumber", "lineNumber"];
+    var stringProps = ["fileName", "functionName", "source"];
+    var arrayProps = ["args"];
+    var objectProps = ["evalOrigin"];
+    var props = booleanProps.concat(numericProps, stringProps, arrayProps, objectProps);
+    function StackFrame(obj) {
+      if (!obj)
+        return;
+      for (var i2 = 0; i2 < props.length; i2++) {
+        if (obj[props[i2]] !== void 0) {
+          this["set" + _capitalize(props[i2])](obj[props[i2]]);
+        }
+      }
+    }
+    StackFrame.prototype = {
+      getArgs: function getArgs() {
+        return this.args;
+      },
+      setArgs: function setArgs(v) {
+        if (Object.prototype.toString.call(v) !== "[object Array]") {
+          throw new TypeError("Args must be an Array");
+        }
+        this.args = v;
+      },
+      getEvalOrigin: function getEvalOrigin() {
+        return this.evalOrigin;
+      },
+      setEvalOrigin: function setEvalOrigin(v) {
+        if (v instanceof StackFrame) {
+          this.evalOrigin = v;
+        } else if (v instanceof Object) {
+          this.evalOrigin = new StackFrame(v);
+        } else {
+          throw new TypeError("Eval Origin must be an Object or StackFrame");
+        }
+      },
+      toString: function toString2() {
+        var fileName = this.getFileName() || "";
+        var lineNumber = this.getLineNumber() || "";
+        var columnNumber = this.getColumnNumber() || "";
+        var functionName = this.getFunctionName() || "";
+        if (this.getIsEval()) {
+          if (fileName) {
+            return "[eval] (" + fileName + ":" + lineNumber + ":" + columnNumber + ")";
+          }
+          return "[eval]:" + lineNumber + ":" + columnNumber;
+        }
+        if (functionName) {
+          return functionName + " (" + fileName + ":" + lineNumber + ":" + columnNumber + ")";
+        }
+        return fileName + ":" + lineNumber + ":" + columnNumber;
+      }
+    };
+    StackFrame.fromString = function StackFrame$$fromString(str) {
+      var argsStartIndex = str.indexOf("(");
+      var argsEndIndex = str.lastIndexOf(")");
+      var functionName = str.substring(0, argsStartIndex);
+      var args = str.substring(argsStartIndex + 1, argsEndIndex).split(",");
+      var locationString = str.substring(argsEndIndex + 1);
+      if (locationString.indexOf("@") === 0) {
+        var parts = /@(.+?)(?::(\d+))?(?::(\d+))?$/.exec(locationString, "");
+        var fileName = parts[1];
+        var lineNumber = parts[2];
+        var columnNumber = parts[3];
+      }
+      return new StackFrame({
+        functionName,
+        args: args || void 0,
+        fileName,
+        lineNumber: lineNumber || void 0,
+        columnNumber: columnNumber || void 0
+      });
+    };
+    for (var i = 0; i < booleanProps.length; i++) {
+      StackFrame.prototype["get" + _capitalize(booleanProps[i])] = _getter(booleanProps[i]);
+      StackFrame.prototype["set" + _capitalize(booleanProps[i])] = function(p) {
+        return function(v) {
+          this[p] = Boolean(v);
+        };
+      }(booleanProps[i]);
+    }
+    for (var j = 0; j < numericProps.length; j++) {
+      StackFrame.prototype["get" + _capitalize(numericProps[j])] = _getter(numericProps[j]);
+      StackFrame.prototype["set" + _capitalize(numericProps[j])] = function(p) {
+        return function(v) {
+          if (!_isNumber(v)) {
+            throw new TypeError(p + " must be a Number");
+          }
+          this[p] = Number(v);
+        };
+      }(numericProps[j]);
+    }
+    for (var k = 0; k < stringProps.length; k++) {
+      StackFrame.prototype["get" + _capitalize(stringProps[k])] = _getter(stringProps[k]);
+      StackFrame.prototype["set" + _capitalize(stringProps[k])] = function(p) {
+        return function(v) {
+          this[p] = String(v);
+        };
+      }(stringProps[k]);
+    }
+    return StackFrame;
+  });
+});
+var errorStackParser = createCommonjsModule(function(module, exports) {
+  (function(root, factory) {
+    {
+      module.exports = factory(stackframe);
+    }
+  })(commonjsGlobal, function ErrorStackParser(StackFrame) {
+    var FIREFOX_SAFARI_STACK_REGEXP = /(^|@)\S+:\d+/;
+    var CHROME_IE_STACK_REGEXP = /^\s*at .*(\S+:\d+|\(native\))/m;
+    var SAFARI_NATIVE_CODE_REGEXP = /^(eval@)?(\[native code])?$/;
+    return {
+      /**
+       * Given an Error object, extract the most information from it.
+       *
+       * @param {Error} error object
+       * @return {Array} of StackFrames
+       */
+      parse: function ErrorStackParser$$parse(error) {
+        if (typeof error.stacktrace !== "undefined" || typeof error["opera#sourceloc"] !== "undefined") {
+          return this.parseOpera(error);
+        } else if (error.stack && error.stack.match(CHROME_IE_STACK_REGEXP)) {
+          return this.parseV8OrIE(error);
+        } else if (error.stack) {
+          return this.parseFFOrSafari(error);
+        } else {
+          throw new Error("Cannot parse given Error object");
+        }
+      },
+      // Separate line and column numbers from a string of the form: (URI:Line:Column)
+      extractLocation: function ErrorStackParser$$extractLocation(urlLike) {
+        if (urlLike.indexOf(":") === -1) {
+          return [urlLike];
+        }
+        var regExp = /(.+?)(?::(\d+))?(?::(\d+))?$/;
+        var parts = regExp.exec(urlLike.replace(/[()]/g, ""));
+        return [parts[1], parts[2] || void 0, parts[3] || void 0];
+      },
+      parseV8OrIE: function ErrorStackParser$$parseV8OrIE(error) {
+        var filtered = error.stack.split("\n").filter(function(line) {
+          return !!line.match(CHROME_IE_STACK_REGEXP);
+        }, this);
+        return filtered.map(function(line) {
+          if (line.indexOf("(eval ") > -1) {
+            line = line.replace(/eval code/g, "eval").replace(/(\(eval at [^()]*)|(\),.*$)/g, "");
+          }
+          var sanitizedLine = line.replace(/^\s+/, "").replace(/\(eval code/g, "(");
+          var location = sanitizedLine.match(/ (\((.+):(\d+):(\d+)\)$)/);
+          sanitizedLine = location ? sanitizedLine.replace(location[0], "") : sanitizedLine;
+          var tokens = sanitizedLine.split(/\s+/).slice(1);
+          var locationParts = this.extractLocation(location ? location[1] : tokens.pop());
+          var functionName = tokens.join(" ") || void 0;
+          var fileName = ["eval", "<anonymous>"].indexOf(locationParts[0]) > -1 ? void 0 : locationParts[0];
+          return new StackFrame({
+            functionName,
+            fileName,
+            lineNumber: locationParts[1],
+            columnNumber: locationParts[2],
+            source: line
+          });
+        }, this);
+      },
+      parseFFOrSafari: function ErrorStackParser$$parseFFOrSafari(error) {
+        var filtered = error.stack.split("\n").filter(function(line) {
+          return !line.match(SAFARI_NATIVE_CODE_REGEXP);
+        }, this);
+        return filtered.map(function(line) {
+          if (line.indexOf(" > eval") > -1) {
+            line = line.replace(/ line (\d+)(?: > eval line \d+)* > eval:\d+:\d+/g, ":$1");
+          }
+          if (line.indexOf("@") === -1 && line.indexOf(":") === -1) {
+            return new StackFrame({
+              functionName: line
+            });
+          } else {
+            var functionNameRegex = /((.*".+"[^@]*)?[^@]*)(?:@)/;
+            var matches2 = line.match(functionNameRegex);
+            var functionName = matches2 && matches2[1] ? matches2[1] : void 0;
+            var locationParts = this.extractLocation(line.replace(functionNameRegex, ""));
+            return new StackFrame({
+              functionName,
+              fileName: locationParts[0],
+              lineNumber: locationParts[1],
+              columnNumber: locationParts[2],
+              source: line
+            });
+          }
+        }, this);
+      },
+      parseOpera: function ErrorStackParser$$parseOpera(e) {
+        if (!e.stacktrace || e.message.indexOf("\n") > -1 && e.message.split("\n").length > e.stacktrace.split("\n").length) {
+          return this.parseOpera9(e);
+        } else if (!e.stack) {
+          return this.parseOpera10(e);
+        } else {
+          return this.parseOpera11(e);
+        }
+      },
+      parseOpera9: function ErrorStackParser$$parseOpera9(e) {
+        var lineRE = /Line (\d+).*script (?:in )?(\S+)/i;
+        var lines = e.message.split("\n");
+        var result = [];
+        for (var i = 2, len = lines.length; i < len; i += 2) {
+          var match = lineRE.exec(lines[i]);
+          if (match) {
+            result.push(new StackFrame({
+              fileName: match[2],
+              lineNumber: match[1],
+              source: lines[i]
+            }));
+          }
+        }
+        return result;
+      },
+      parseOpera10: function ErrorStackParser$$parseOpera10(e) {
+        var lineRE = /Line (\d+).*script (?:in )?(\S+)(?:: In function (\S+))?$/i;
+        var lines = e.stacktrace.split("\n");
+        var result = [];
+        for (var i = 0, len = lines.length; i < len; i += 2) {
+          var match = lineRE.exec(lines[i]);
+          if (match) {
+            result.push(new StackFrame({
+              functionName: match[3] || void 0,
+              fileName: match[2],
+              lineNumber: match[1],
+              source: lines[i]
+            }));
+          }
+        }
+        return result;
+      },
+      // Opera 10.65+ Error.stack very similar to FF/Safari
+      parseOpera11: function ErrorStackParser$$parseOpera11(error) {
+        var filtered = error.stack.split("\n").filter(function(line) {
+          return !!line.match(FIREFOX_SAFARI_STACK_REGEXP) && !line.match(/^Error created at/);
+        }, this);
+        return filtered.map(function(line) {
+          var tokens = line.split("@");
+          var locationParts = this.extractLocation(tokens.pop());
+          var functionCall = tokens.shift() || "";
+          var functionName = functionCall.replace(/<anonymous function(: (\w+))?>/, "$2").replace(/\([^)]*\)/g, "") || void 0;
+          var argsRaw;
+          if (functionCall.match(/\(([^)]*)\)/)) {
+            argsRaw = functionCall.replace(/^[^(]+\(([^)]*)\)$/, "$1");
+          }
+          var args = argsRaw === void 0 || argsRaw === "[arguments not available]" ? void 0 : argsRaw.split(",");
+          return new StackFrame({
+            functionName,
+            args,
+            fileName: locationParts[0],
+            lineNumber: locationParts[1],
+            columnNumber: locationParts[2],
+            source: line
+          });
+        }, this);
+      }
+    };
+  });
+});
+var util = createCommonjsModule(function(module, exports) {
+  function getArg(aArgs, aName, aDefaultValue) {
+    if (aName in aArgs) {
+      return aArgs[aName];
+    } else if (arguments.length === 3) {
+      return aDefaultValue;
+    } else {
+      throw new Error('"' + aName + '" is a required argument.');
+    }
+  }
+  exports.getArg = getArg;
+  var urlRegexp = /^(?:([\w+\-.]+):)?\/\/(?:(\w+:\w+)@)?([\w.]*)(?::(\d+))?(\S*)$/;
+  var dataUrlRegexp = /^data:.+\,.+$/;
+  function urlParse(aUrl) {
+    var match = aUrl.match(urlRegexp);
+    if (!match) {
+      return null;
+    }
+    return {
+      scheme: match[1],
+      auth: match[2],
+      host: match[3],
+      port: match[4],
+      path: match[5]
+    };
+  }
+  exports.urlParse = urlParse;
+  function urlGenerate(aParsedUrl) {
+    var url = "";
+    if (aParsedUrl.scheme) {
+      url += aParsedUrl.scheme + ":";
+    }
+    url += "//";
+    if (aParsedUrl.auth) {
+      url += aParsedUrl.auth + "@";
+    }
+    if (aParsedUrl.host) {
+      url += aParsedUrl.host;
+    }
+    if (aParsedUrl.port) {
+      url += ":" + aParsedUrl.port;
+    }
+    if (aParsedUrl.path) {
+      url += aParsedUrl.path;
+    }
+    return url;
+  }
+  exports.urlGenerate = urlGenerate;
+  function normalize(aPath) {
+    var path = aPath;
+    var url = urlParse(aPath);
+    if (url) {
+      if (!url.path) {
+        return aPath;
+      }
+      path = url.path;
+    }
+    var isAbsolute = exports.isAbsolute(path);
+    var parts = path.split(/\/+/);
+    for (var part, up = 0, i = parts.length - 1; i >= 0; i--) {
+      part = parts[i];
+      if (part === ".") {
+        parts.splice(i, 1);
+      } else if (part === "..") {
+        up++;
+      } else if (up > 0) {
+        if (part === "") {
+          parts.splice(i + 1, up);
+          up = 0;
+        } else {
+          parts.splice(i, 2);
+          up--;
+        }
+      }
+    }
+    path = parts.join("/");
+    if (path === "") {
+      path = isAbsolute ? "/" : ".";
+    }
+    if (url) {
+      url.path = path;
+      return urlGenerate(url);
+    }
+    return path;
+  }
+  exports.normalize = normalize;
+  function join(aRoot, aPath) {
+    if (aRoot === "") {
+      aRoot = ".";
+    }
+    if (aPath === "") {
+      aPath = ".";
+    }
+    var aPathUrl = urlParse(aPath);
+    var aRootUrl = urlParse(aRoot);
+    if (aRootUrl) {
+      aRoot = aRootUrl.path || "/";
+    }
+    if (aPathUrl && !aPathUrl.scheme) {
+      if (aRootUrl) {
+        aPathUrl.scheme = aRootUrl.scheme;
+      }
+      return urlGenerate(aPathUrl);
+    }
+    if (aPathUrl || aPath.match(dataUrlRegexp)) {
+      return aPath;
+    }
+    if (aRootUrl && !aRootUrl.host && !aRootUrl.path) {
+      aRootUrl.host = aPath;
+      return urlGenerate(aRootUrl);
+    }
+    var joined = aPath.charAt(0) === "/" ? aPath : normalize(aRoot.replace(/\/+$/, "") + "/" + aPath);
+    if (aRootUrl) {
+      aRootUrl.path = joined;
+      return urlGenerate(aRootUrl);
+    }
+    return joined;
+  }
+  exports.join = join;
+  exports.isAbsolute = function(aPath) {
+    return aPath.charAt(0) === "/" || !!aPath.match(urlRegexp);
+  };
+  function relative(aRoot, aPath) {
+    if (aRoot === "") {
+      aRoot = ".";
+    }
+    aRoot = aRoot.replace(/\/$/, "");
+    var level = 0;
+    while (aPath.indexOf(aRoot + "/") !== 0) {
+      var index = aRoot.lastIndexOf("/");
+      if (index < 0) {
+        return aPath;
+      }
+      aRoot = aRoot.slice(0, index);
+      if (aRoot.match(/^([^\/]+:\/)?\/*$/)) {
+        return aPath;
+      }
+      ++level;
+    }
+    return Array(level + 1).join("../") + aPath.substr(aRoot.length + 1);
+  }
+  exports.relative = relative;
+  var supportsNullProto = function() {
+    var obj = /* @__PURE__ */ Object.create(null);
+    return !("__proto__" in obj);
+  }();
+  function identity2(s) {
+    return s;
+  }
+  function toSetString(aStr) {
+    if (isProtoString(aStr)) {
+      return "$" + aStr;
+    }
+    return aStr;
+  }
+  exports.toSetString = supportsNullProto ? identity2 : toSetString;
+  function fromSetString(aStr) {
+    if (isProtoString(aStr)) {
+      return aStr.slice(1);
+    }
+    return aStr;
+  }
+  exports.fromSetString = supportsNullProto ? identity2 : fromSetString;
+  function isProtoString(s) {
+    if (!s) {
+      return false;
+    }
+    var length = s.length;
+    if (length < 9) {
+      return false;
+    }
+    if (s.charCodeAt(length - 1) !== 95 || s.charCodeAt(length - 2) !== 95 || s.charCodeAt(length - 3) !== 111 || s.charCodeAt(length - 4) !== 116 || s.charCodeAt(length - 5) !== 111 || s.charCodeAt(length - 6) !== 114 || s.charCodeAt(length - 7) !== 112 || s.charCodeAt(length - 8) !== 95 || s.charCodeAt(length - 9) !== 95) {
+      return false;
+    }
+    for (var i = length - 10; i >= 0; i--) {
+      if (s.charCodeAt(i) !== 36) {
+        return false;
+      }
+    }
+    return true;
+  }
+  function compareByOriginalPositions(mappingA, mappingB, onlyCompareOriginal) {
+    var cmp = mappingA.source - mappingB.source;
+    if (cmp !== 0) {
+      return cmp;
+    }
+    cmp = mappingA.originalLine - mappingB.originalLine;
+    if (cmp !== 0) {
+      return cmp;
+    }
+    cmp = mappingA.originalColumn - mappingB.originalColumn;
+    if (cmp !== 0 || onlyCompareOriginal) {
+      return cmp;
+    }
+    cmp = mappingA.generatedColumn - mappingB.generatedColumn;
+    if (cmp !== 0) {
+      return cmp;
+    }
+    cmp = mappingA.generatedLine - mappingB.generatedLine;
+    if (cmp !== 0) {
+      return cmp;
+    }
+    return mappingA.name - mappingB.name;
+  }
+  exports.compareByOriginalPositions = compareByOriginalPositions;
+  function compareByGeneratedPositionsDeflated(mappingA, mappingB, onlyCompareGenerated) {
+    var cmp = mappingA.generatedLine - mappingB.generatedLine;
+    if (cmp !== 0) {
+      return cmp;
+    }
+    cmp = mappingA.generatedColumn - mappingB.generatedColumn;
+    if (cmp !== 0 || onlyCompareGenerated) {
+      return cmp;
+    }
+    cmp = mappingA.source - mappingB.source;
+    if (cmp !== 0) {
+      return cmp;
+    }
+    cmp = mappingA.originalLine - mappingB.originalLine;
+    if (cmp !== 0) {
+      return cmp;
+    }
+    cmp = mappingA.originalColumn - mappingB.originalColumn;
+    if (cmp !== 0) {
+      return cmp;
+    }
+    return mappingA.name - mappingB.name;
+  }
+  exports.compareByGeneratedPositionsDeflated = compareByGeneratedPositionsDeflated;
+  function strcmp(aStr1, aStr2) {
+    if (aStr1 === aStr2) {
+      return 0;
+    }
+    if (aStr1 > aStr2) {
+      return 1;
+    }
+    return -1;
+  }
+  function compareByGeneratedPositionsInflated(mappingA, mappingB) {
+    var cmp = mappingA.generatedLine - mappingB.generatedLine;
+    if (cmp !== 0) {
+      return cmp;
+    }
+    cmp = mappingA.generatedColumn - mappingB.generatedColumn;
+    if (cmp !== 0) {
+      return cmp;
+    }
+    cmp = strcmp(mappingA.source, mappingB.source);
+    if (cmp !== 0) {
+      return cmp;
+    }
+    cmp = mappingA.originalLine - mappingB.originalLine;
+    if (cmp !== 0) {
+      return cmp;
+    }
+    cmp = mappingA.originalColumn - mappingB.originalColumn;
+    if (cmp !== 0) {
+      return cmp;
+    }
+    return strcmp(mappingA.name, mappingB.name);
+  }
+  exports.compareByGeneratedPositionsInflated = compareByGeneratedPositionsInflated;
+});
+var binarySearch = createCommonjsModule(function(module, exports) {
+  exports.GREATEST_LOWER_BOUND = 1;
+  exports.LEAST_UPPER_BOUND = 2;
+  function recursiveSearch(aLow, aHigh, aNeedle, aHaystack, aCompare, aBias) {
+    var mid = Math.floor((aHigh - aLow) / 2) + aLow;
+    var cmp = aCompare(aNeedle, aHaystack[mid], true);
+    if (cmp === 0) {
+      return mid;
+    } else if (cmp > 0) {
+      if (aHigh - mid > 1) {
+        return recursiveSearch(mid, aHigh, aNeedle, aHaystack, aCompare, aBias);
+      }
+      if (aBias == exports.LEAST_UPPER_BOUND) {
+        return aHigh < aHaystack.length ? aHigh : -1;
+      } else {
+        return mid;
+      }
+    } else {
+      if (mid - aLow > 1) {
+        return recursiveSearch(aLow, mid, aNeedle, aHaystack, aCompare, aBias);
+      }
+      if (aBias == exports.LEAST_UPPER_BOUND) {
+        return mid;
+      } else {
+        return aLow < 0 ? -1 : aLow;
+      }
+    }
+  }
+  exports.search = function search(aNeedle, aHaystack, aCompare, aBias) {
+    if (aHaystack.length === 0) {
+      return -1;
+    }
+    var index = recursiveSearch(-1, aHaystack.length, aNeedle, aHaystack, aCompare, aBias || exports.GREATEST_LOWER_BOUND);
+    if (index < 0) {
+      return -1;
+    }
+    while (index - 1 >= 0) {
+      if (aCompare(aHaystack[index], aHaystack[index - 1], true) !== 0) {
+        break;
+      }
+      --index;
+    }
+    return index;
+  };
+});
+var has = Object.prototype.hasOwnProperty;
+function ArraySet$1() {
+  this._array = [];
+  this._set = /* @__PURE__ */ Object.create(null);
+}
+ArraySet$1.fromArray = function ArraySet_fromArray(aArray, aAllowDuplicates) {
+  var set = new ArraySet$1();
+  for (var i = 0, len = aArray.length; i < len; i++) {
+    set.add(aArray[i], aAllowDuplicates);
+  }
+  return set;
+};
+ArraySet$1.prototype.size = function ArraySet_size() {
+  return Object.getOwnPropertyNames(this._set).length;
+};
+ArraySet$1.prototype.add = function ArraySet_add(aStr, aAllowDuplicates) {
+  var sStr = util.toSetString(aStr);
+  var isDuplicate = has.call(this._set, sStr);
+  var idx = this._array.length;
+  if (!isDuplicate || aAllowDuplicates) {
+    this._array.push(aStr);
+  }
+  if (!isDuplicate) {
+    this._set[sStr] = idx;
+  }
+};
+ArraySet$1.prototype.has = function ArraySet_has(aStr) {
+  var sStr = util.toSetString(aStr);
+  return has.call(this._set, sStr);
+};
+ArraySet$1.prototype.indexOf = function ArraySet_indexOf(aStr) {
+  var sStr = util.toSetString(aStr);
+  if (has.call(this._set, sStr)) {
+    return this._set[sStr];
+  }
+  throw new Error('"' + aStr + '" is not in the set.');
+};
+ArraySet$1.prototype.at = function ArraySet_at(aIdx) {
+  if (aIdx >= 0 && aIdx < this._array.length) {
+    return this._array[aIdx];
+  }
+  throw new Error("No element indexed by " + aIdx);
+};
+ArraySet$1.prototype.toArray = function ArraySet_toArray() {
+  return this._array.slice();
+};
+var ArraySet_1 = ArraySet$1;
+var arraySet = {
+  ArraySet: ArraySet_1
+};
+var intToCharMap = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".split("");
+var encode$1 = function encode(number) {
+  if (0 <= number && number < intToCharMap.length) {
+    return intToCharMap[number];
+  }
+  throw new TypeError("Must be between 0 and 63: " + number);
+};
+var decode$1 = function decode(charCode) {
+  var bigA = 65;
+  var bigZ = 90;
+  var littleA = 97;
+  var littleZ = 122;
+  var zero = 48;
+  var nine = 57;
+  var plus = 43;
+  var slash = 47;
+  var littleOffset = 26;
+  var numberOffset = 52;
+  if (bigA <= charCode && charCode <= bigZ) {
+    return charCode - bigA;
+  }
+  if (littleA <= charCode && charCode <= littleZ) {
+    return charCode - littleA + littleOffset;
+  }
+  if (zero <= charCode && charCode <= nine) {
+    return charCode - zero + numberOffset;
+  }
+  if (charCode == plus) {
+    return 62;
+  }
+  if (charCode == slash) {
+    return 63;
+  }
+  return -1;
+};
+var base64 = {
+  encode: encode$1,
+  decode: decode$1
+};
+var VLQ_BASE_SHIFT = 5;
+var VLQ_BASE = 1 << VLQ_BASE_SHIFT;
+var VLQ_BASE_MASK = VLQ_BASE - 1;
+var VLQ_CONTINUATION_BIT = VLQ_BASE;
+function toVLQSigned(aValue) {
+  return aValue < 0 ? (-aValue << 1) + 1 : (aValue << 1) + 0;
+}
+function fromVLQSigned(aValue) {
+  var isNegative = (aValue & 1) === 1;
+  var shifted = aValue >> 1;
+  return isNegative ? -shifted : shifted;
+}
+var encode2 = function base64VLQ_encode(aValue) {
+  var encoded = "";
+  var digit;
+  var vlq = toVLQSigned(aValue);
+  do {
+    digit = vlq & VLQ_BASE_MASK;
+    vlq >>>= VLQ_BASE_SHIFT;
+    if (vlq > 0) {
+      digit |= VLQ_CONTINUATION_BIT;
+    }
+    encoded += base64.encode(digit);
+  } while (vlq > 0);
+  return encoded;
+};
+var decode2 = function base64VLQ_decode(aStr, aIndex, aOutParam) {
+  var strLen = aStr.length;
+  var result = 0;
+  var shift = 0;
+  var continuation, digit;
+  do {
+    if (aIndex >= strLen) {
+      throw new Error("Expected more digits in base 64 VLQ value.");
+    }
+    digit = base64.decode(aStr.charCodeAt(aIndex++));
+    if (digit === -1) {
+      throw new Error("Invalid base64 digit: " + aStr.charAt(aIndex - 1));
+    }
+    continuation = !!(digit & VLQ_CONTINUATION_BIT);
+    digit &= VLQ_BASE_MASK;
+    result = result + (digit << shift);
+    shift += VLQ_BASE_SHIFT;
+  } while (continuation);
+  aOutParam.value = fromVLQSigned(result);
+  aOutParam.rest = aIndex;
+};
+var base64Vlq = {
+  encode: encode2,
+  decode: decode2
+};
+function swap(ary, x, y) {
+  var temp = ary[x];
+  ary[x] = ary[y];
+  ary[y] = temp;
+}
+function randomIntInRange(low, high) {
+  return Math.round(low + Math.random() * (high - low));
+}
+function doQuickSort(ary, comparator, p, r) {
+  if (p < r) {
+    var pivotIndex = randomIntInRange(p, r);
+    var i = p - 1;
+    swap(ary, pivotIndex, r);
+    var pivot = ary[r];
+    for (var j = p; j < r; j++) {
+      if (comparator(ary[j], pivot) <= 0) {
+        i += 1;
+        swap(ary, i, j);
+      }
+    }
+    swap(ary, i + 1, j);
+    var q = i + 1;
+    doQuickSort(ary, comparator, p, q - 1);
+    doQuickSort(ary, comparator, q + 1, r);
+  }
+}
+var quickSort_1 = function quickSort_12(ary, comparator) {
+  doQuickSort(ary, comparator, 0, ary.length - 1);
+};
+var quickSort$1 = {
+  quickSort: quickSort_1
+};
+var ArraySet = arraySet.ArraySet;
+var quickSort = quickSort$1.quickSort;
+function SourceMapConsumer(aSourceMap) {
+  var sourceMap = aSourceMap;
+  if (typeof aSourceMap === "string") {
+    sourceMap = JSON.parse(aSourceMap.replace(/^\)\]\}'/, ""));
+  }
+  return sourceMap.sections != null ? new IndexedSourceMapConsumer(sourceMap) : new BasicSourceMapConsumer(sourceMap);
+}
+SourceMapConsumer.fromSourceMap = function(aSourceMap) {
+  return BasicSourceMapConsumer.fromSourceMap(aSourceMap);
+};
+SourceMapConsumer.prototype._version = 3;
+SourceMapConsumer.prototype.__generatedMappings = null;
+Object.defineProperty(SourceMapConsumer.prototype, "_generatedMappings", {
+  get: function get() {
+    if (!this.__generatedMappings) {
+      this._parseMappings(this._mappings, this.sourceRoot);
+    }
+    return this.__generatedMappings;
+  }
+});
+SourceMapConsumer.prototype.__originalMappings = null;
+Object.defineProperty(SourceMapConsumer.prototype, "_originalMappings", {
+  get: function get2() {
+    if (!this.__originalMappings) {
+      this._parseMappings(this._mappings, this.sourceRoot);
+    }
+    return this.__originalMappings;
+  }
+});
+SourceMapConsumer.prototype._charIsMappingSeparator = function SourceMapConsumer_charIsMappingSeparator(aStr, index) {
+  var c = aStr.charAt(index);
+  return c === ";" || c === ",";
+};
+SourceMapConsumer.prototype._parseMappings = function SourceMapConsumer_parseMappings(aStr, aSourceRoot) {
+  throw new Error("Subclasses must implement _parseMappings");
+};
+SourceMapConsumer.GENERATED_ORDER = 1;
+SourceMapConsumer.ORIGINAL_ORDER = 2;
+SourceMapConsumer.GREATEST_LOWER_BOUND = 1;
+SourceMapConsumer.LEAST_UPPER_BOUND = 2;
+SourceMapConsumer.prototype.eachMapping = function SourceMapConsumer_eachMapping(aCallback, aContext, aOrder) {
+  var context2 = aContext || null;
+  var order = aOrder || SourceMapConsumer.GENERATED_ORDER;
+  var mappings;
+  switch (order) {
+    case SourceMapConsumer.GENERATED_ORDER:
+      mappings = this._generatedMappings;
+      break;
+    case SourceMapConsumer.ORIGINAL_ORDER:
+      mappings = this._originalMappings;
+      break;
+    default:
+      throw new Error("Unknown order of iteration.");
+  }
+  var sourceRoot = this.sourceRoot;
+  mappings.map(function(mapping) {
+    var source = mapping.source === null ? null : this._sources.at(mapping.source);
+    if (source != null && sourceRoot != null) {
+      source = util.join(sourceRoot, source);
+    }
+    return {
+      source,
+      generatedLine: mapping.generatedLine,
+      generatedColumn: mapping.generatedColumn,
+      originalLine: mapping.originalLine,
+      originalColumn: mapping.originalColumn,
+      name: mapping.name === null ? null : this._names.at(mapping.name)
+    };
+  }, this).forEach(aCallback, context2);
+};
+SourceMapConsumer.prototype.allGeneratedPositionsFor = function SourceMapConsumer_allGeneratedPositionsFor(aArgs) {
+  var line = util.getArg(aArgs, "line");
+  var needle = {
+    source: util.getArg(aArgs, "source"),
+    originalLine: line,
+    originalColumn: util.getArg(aArgs, "column", 0)
+  };
+  if (this.sourceRoot != null) {
+    needle.source = util.relative(this.sourceRoot, needle.source);
+  }
+  if (!this._sources.has(needle.source)) {
+    return [];
+  }
+  needle.source = this._sources.indexOf(needle.source);
+  var mappings = [];
+  var index = this._findMapping(needle, this._originalMappings, "originalLine", "originalColumn", util.compareByOriginalPositions, binarySearch.LEAST_UPPER_BOUND);
+  if (index >= 0) {
+    var mapping = this._originalMappings[index];
+    if (aArgs.column === void 0) {
+      var originalLine = mapping.originalLine;
+      while (mapping && mapping.originalLine === originalLine) {
+        mappings.push({
+          line: util.getArg(mapping, "generatedLine", null),
+          column: util.getArg(mapping, "generatedColumn", null),
+          lastColumn: util.getArg(mapping, "lastGeneratedColumn", null)
+        });
+        mapping = this._originalMappings[++index];
+      }
+    } else {
+      var originalColumn = mapping.originalColumn;
+      while (mapping && mapping.originalLine === line && mapping.originalColumn == originalColumn) {
+        mappings.push({
+          line: util.getArg(mapping, "generatedLine", null),
+          column: util.getArg(mapping, "generatedColumn", null),
+          lastColumn: util.getArg(mapping, "lastGeneratedColumn", null)
+        });
+        mapping = this._originalMappings[++index];
+      }
+    }
+  }
+  return mappings;
+};
+var SourceMapConsumer_1 = SourceMapConsumer;
+function BasicSourceMapConsumer(aSourceMap) {
+  var sourceMap = aSourceMap;
+  if (typeof aSourceMap === "string") {
+    sourceMap = JSON.parse(aSourceMap.replace(/^\)\]\}'/, ""));
+  }
+  var version = util.getArg(sourceMap, "version");
+  var sources = util.getArg(sourceMap, "sources");
+  var names = util.getArg(sourceMap, "names", []);
+  var sourceRoot = util.getArg(sourceMap, "sourceRoot", null);
+  var sourcesContent = util.getArg(sourceMap, "sourcesContent", null);
+  var mappings = util.getArg(sourceMap, "mappings");
+  var file = util.getArg(sourceMap, "file", null);
+  if (version != this._version) {
+    throw new Error("Unsupported version: " + version);
+  }
+  sources = sources.map(String).map(util.normalize).map(function(source) {
+    return sourceRoot && util.isAbsolute(sourceRoot) && util.isAbsolute(source) ? util.relative(sourceRoot, source) : source;
+  });
+  this._names = ArraySet.fromArray(names.map(String), true);
+  this._sources = ArraySet.fromArray(sources, true);
+  this.sourceRoot = sourceRoot;
+  this.sourcesContent = sourcesContent;
+  this._mappings = mappings;
+  this.file = file;
+}
+BasicSourceMapConsumer.prototype = Object.create(SourceMapConsumer.prototype);
+BasicSourceMapConsumer.prototype.consumer = SourceMapConsumer;
+BasicSourceMapConsumer.fromSourceMap = function SourceMapConsumer_fromSourceMap(aSourceMap) {
+  var smc = Object.create(BasicSourceMapConsumer.prototype);
+  var names = smc._names = ArraySet.fromArray(aSourceMap._names.toArray(), true);
+  var sources = smc._sources = ArraySet.fromArray(aSourceMap._sources.toArray(), true);
+  smc.sourceRoot = aSourceMap._sourceRoot;
+  smc.sourcesContent = aSourceMap._generateSourcesContent(smc._sources.toArray(), smc.sourceRoot);
+  smc.file = aSourceMap._file;
+  var generatedMappings = aSourceMap._mappings.toArray().slice();
+  var destGeneratedMappings = smc.__generatedMappings = [];
+  var destOriginalMappings = smc.__originalMappings = [];
+  for (var i = 0, length = generatedMappings.length; i < length; i++) {
+    var srcMapping = generatedMappings[i];
+    var destMapping = new Mapping();
+    destMapping.generatedLine = srcMapping.generatedLine;
+    destMapping.generatedColumn = srcMapping.generatedColumn;
+    if (srcMapping.source) {
+      destMapping.source = sources.indexOf(srcMapping.source);
+      destMapping.originalLine = srcMapping.originalLine;
+      destMapping.originalColumn = srcMapping.originalColumn;
+      if (srcMapping.name) {
+        destMapping.name = names.indexOf(srcMapping.name);
+      }
+      destOriginalMappings.push(destMapping);
+    }
+    destGeneratedMappings.push(destMapping);
+  }
+  quickSort(smc.__originalMappings, util.compareByOriginalPositions);
+  return smc;
+};
+BasicSourceMapConsumer.prototype._version = 3;
+Object.defineProperty(BasicSourceMapConsumer.prototype, "sources", {
+  get: function get3() {
+    return this._sources.toArray().map(function(s) {
+      return this.sourceRoot != null ? util.join(this.sourceRoot, s) : s;
+    }, this);
+  }
+});
+function Mapping() {
+  this.generatedLine = 0;
+  this.generatedColumn = 0;
+  this.source = null;
+  this.originalLine = null;
+  this.originalColumn = null;
+  this.name = null;
+}
+BasicSourceMapConsumer.prototype._parseMappings = function SourceMapConsumer_parseMappings2(aStr, aSourceRoot) {
+  var generatedLine = 1;
+  var previousGeneratedColumn = 0;
+  var previousOriginalLine = 0;
+  var previousOriginalColumn = 0;
+  var previousSource = 0;
+  var previousName = 0;
+  var length = aStr.length;
+  var index = 0;
+  var cachedSegments = {};
+  var temp = {};
+  var originalMappings = [];
+  var generatedMappings = [];
+  var mapping, str, segment, end, value;
+  while (index < length) {
+    if (aStr.charAt(index) === ";") {
+      generatedLine++;
+      index++;
+      previousGeneratedColumn = 0;
+    } else if (aStr.charAt(index) === ",") {
+      index++;
+    } else {
+      mapping = new Mapping();
+      mapping.generatedLine = generatedLine;
+      for (end = index; end < length; end++) {
+        if (this._charIsMappingSeparator(aStr, end)) {
+          break;
+        }
+      }
+      str = aStr.slice(index, end);
+      segment = cachedSegments[str];
+      if (segment) {
+        index += str.length;
+      } else {
+        segment = [];
+        while (index < end) {
+          base64Vlq.decode(aStr, index, temp);
+          value = temp.value;
+          index = temp.rest;
+          segment.push(value);
+        }
+        if (segment.length === 2) {
+          throw new Error("Found a source, but no line and column");
+        }
+        if (segment.length === 3) {
+          throw new Error("Found a source and line, but no column");
+        }
+        cachedSegments[str] = segment;
+      }
+      mapping.generatedColumn = previousGeneratedColumn + segment[0];
+      previousGeneratedColumn = mapping.generatedColumn;
+      if (segment.length > 1) {
+        mapping.source = previousSource + segment[1];
+        previousSource += segment[1];
+        mapping.originalLine = previousOriginalLine + segment[2];
+        previousOriginalLine = mapping.originalLine;
+        mapping.originalLine += 1;
+        mapping.originalColumn = previousOriginalColumn + segment[3];
+        previousOriginalColumn = mapping.originalColumn;
+        if (segment.length > 4) {
+          mapping.name = previousName + segment[4];
+          previousName += segment[4];
+        }
+      }
+      generatedMappings.push(mapping);
+      if (typeof mapping.originalLine === "number") {
+        originalMappings.push(mapping);
+      }
+    }
+  }
+  quickSort(generatedMappings, util.compareByGeneratedPositionsDeflated);
+  this.__generatedMappings = generatedMappings;
+  quickSort(originalMappings, util.compareByOriginalPositions);
+  this.__originalMappings = originalMappings;
+};
+BasicSourceMapConsumer.prototype._findMapping = function SourceMapConsumer_findMapping(aNeedle, aMappings, aLineName, aColumnName, aComparator, aBias) {
+  if (aNeedle[aLineName] <= 0) {
+    throw new TypeError("Line must be greater than or equal to 1, got " + aNeedle[aLineName]);
+  }
+  if (aNeedle[aColumnName] < 0) {
+    throw new TypeError("Column must be greater than or equal to 0, got " + aNeedle[aColumnName]);
+  }
+  return binarySearch.search(aNeedle, aMappings, aComparator, aBias);
+};
+BasicSourceMapConsumer.prototype.computeColumnSpans = function SourceMapConsumer_computeColumnSpans() {
+  for (var index = 0; index < this._generatedMappings.length; ++index) {
+    var mapping = this._generatedMappings[index];
+    if (index + 1 < this._generatedMappings.length) {
+      var nextMapping = this._generatedMappings[index + 1];
+      if (mapping.generatedLine === nextMapping.generatedLine) {
+        mapping.lastGeneratedColumn = nextMapping.generatedColumn - 1;
+        continue;
+      }
+    }
+    mapping.lastGeneratedColumn = Infinity;
+  }
+};
+BasicSourceMapConsumer.prototype.originalPositionFor = function SourceMapConsumer_originalPositionFor(aArgs) {
+  var needle = {
+    generatedLine: util.getArg(aArgs, "line"),
+    generatedColumn: util.getArg(aArgs, "column")
+  };
+  var index = this._findMapping(needle, this._generatedMappings, "generatedLine", "generatedColumn", util.compareByGeneratedPositionsDeflated, util.getArg(aArgs, "bias", SourceMapConsumer.GREATEST_LOWER_BOUND));
+  if (index >= 0) {
+    var mapping = this._generatedMappings[index];
+    if (mapping.generatedLine === needle.generatedLine) {
+      var source = util.getArg(mapping, "source", null);
+      if (source !== null) {
+        source = this._sources.at(source);
+        if (this.sourceRoot != null) {
+          source = util.join(this.sourceRoot, source);
+        }
+      }
+      var name = util.getArg(mapping, "name", null);
+      if (name !== null) {
+        name = this._names.at(name);
+      }
+      return {
+        source,
+        line: util.getArg(mapping, "originalLine", null),
+        column: util.getArg(mapping, "originalColumn", null),
+        name
+      };
+    }
+  }
+  return {
+    source: null,
+    line: null,
+    column: null,
+    name: null
+  };
+};
+BasicSourceMapConsumer.prototype.hasContentsOfAllSources = function BasicSourceMapConsumer_hasContentsOfAllSources() {
+  if (!this.sourcesContent) {
+    return false;
+  }
+  return this.sourcesContent.length >= this._sources.size() && !this.sourcesContent.some(function(sc) {
+    return sc == null;
+  });
+};
+BasicSourceMapConsumer.prototype.sourceContentFor = function SourceMapConsumer_sourceContentFor(aSource, nullOnMissing) {
+  if (!this.sourcesContent) {
+    return null;
+  }
+  if (this.sourceRoot != null) {
+    aSource = util.relative(this.sourceRoot, aSource);
+  }
+  if (this._sources.has(aSource)) {
+    return this.sourcesContent[this._sources.indexOf(aSource)];
+  }
+  var url;
+  if (this.sourceRoot != null && (url = util.urlParse(this.sourceRoot))) {
+    var fileUriAbsPath = aSource.replace(/^file:\/\//, "");
+    if (url.scheme == "file" && this._sources.has(fileUriAbsPath)) {
+      return this.sourcesContent[this._sources.indexOf(fileUriAbsPath)];
+    }
+    if ((!url.path || url.path == "/") && this._sources.has("/" + aSource)) {
+      return this.sourcesContent[this._sources.indexOf("/" + aSource)];
+    }
+  }
+  if (nullOnMissing) {
+    return null;
+  } else {
+    throw new Error('"' + aSource + '" is not in the SourceMap.');
+  }
+};
+BasicSourceMapConsumer.prototype.generatedPositionFor = function SourceMapConsumer_generatedPositionFor(aArgs) {
+  var source = util.getArg(aArgs, "source");
+  if (this.sourceRoot != null) {
+    source = util.relative(this.sourceRoot, source);
+  }
+  if (!this._sources.has(source)) {
+    return {
+      line: null,
+      column: null,
+      lastColumn: null
+    };
+  }
+  source = this._sources.indexOf(source);
+  var needle = {
+    source,
+    originalLine: util.getArg(aArgs, "line"),
+    originalColumn: util.getArg(aArgs, "column")
+  };
+  var index = this._findMapping(needle, this._originalMappings, "originalLine", "originalColumn", util.compareByOriginalPositions, util.getArg(aArgs, "bias", SourceMapConsumer.GREATEST_LOWER_BOUND));
+  if (index >= 0) {
+    var mapping = this._originalMappings[index];
+    if (mapping.source === needle.source) {
+      return {
+        line: util.getArg(mapping, "generatedLine", null),
+        column: util.getArg(mapping, "generatedColumn", null),
+        lastColumn: util.getArg(mapping, "lastGeneratedColumn", null)
+      };
+    }
+  }
+  return {
+    line: null,
+    column: null,
+    lastColumn: null
+  };
+};
+var BasicSourceMapConsumer_1 = BasicSourceMapConsumer;
+function IndexedSourceMapConsumer(aSourceMap) {
+  var sourceMap = aSourceMap;
+  if (typeof aSourceMap === "string") {
+    sourceMap = JSON.parse(aSourceMap.replace(/^\)\]\}'/, ""));
+  }
+  var version = util.getArg(sourceMap, "version");
+  var sections = util.getArg(sourceMap, "sections");
+  if (version != this._version) {
+    throw new Error("Unsupported version: " + version);
+  }
+  this._sources = new ArraySet();
+  this._names = new ArraySet();
+  var lastOffset = {
+    line: -1,
+    column: 0
+  };
+  this._sections = sections.map(function(s) {
+    if (s.url) {
+      throw new Error("Support for url field in sections not implemented.");
+    }
+    var offset = util.getArg(s, "offset");
+    var offsetLine = util.getArg(offset, "line");
+    var offsetColumn = util.getArg(offset, "column");
+    if (offsetLine < lastOffset.line || offsetLine === lastOffset.line && offsetColumn < lastOffset.column) {
+      throw new Error("Section offsets must be ordered and non-overlapping.");
+    }
+    lastOffset = offset;
+    return {
+      generatedOffset: {
+        // The offset fields are 0-based, but we use 1-based indices when
+        // encoding/decoding from VLQ.
+        generatedLine: offsetLine + 1,
+        generatedColumn: offsetColumn + 1
+      },
+      consumer: new SourceMapConsumer(util.getArg(s, "map"))
+    };
+  });
+}
+IndexedSourceMapConsumer.prototype = Object.create(SourceMapConsumer.prototype);
+IndexedSourceMapConsumer.prototype.constructor = SourceMapConsumer;
+IndexedSourceMapConsumer.prototype._version = 3;
+Object.defineProperty(IndexedSourceMapConsumer.prototype, "sources", {
+  get: function get4() {
+    var sources = [];
+    for (var i = 0; i < this._sections.length; i++) {
+      for (var j = 0; j < this._sections[i].consumer.sources.length; j++) {
+        sources.push(this._sections[i].consumer.sources[j]);
+      }
+    }
+    return sources;
+  }
+});
+IndexedSourceMapConsumer.prototype.originalPositionFor = function IndexedSourceMapConsumer_originalPositionFor(aArgs) {
+  var needle = {
+    generatedLine: util.getArg(aArgs, "line"),
+    generatedColumn: util.getArg(aArgs, "column")
+  };
+  var sectionIndex = binarySearch.search(needle, this._sections, function(needle2, section2) {
+    var cmp = needle2.generatedLine - section2.generatedOffset.generatedLine;
+    if (cmp) {
+      return cmp;
+    }
+    return needle2.generatedColumn - section2.generatedOffset.generatedColumn;
+  });
+  var section = this._sections[sectionIndex];
+  if (!section) {
+    return {
+      source: null,
+      line: null,
+      column: null,
+      name: null
+    };
+  }
+  return section.consumer.originalPositionFor({
+    line: needle.generatedLine - (section.generatedOffset.generatedLine - 1),
+    column: needle.generatedColumn - (section.generatedOffset.generatedLine === needle.generatedLine ? section.generatedOffset.generatedColumn - 1 : 0),
+    bias: aArgs.bias
+  });
+};
+IndexedSourceMapConsumer.prototype.hasContentsOfAllSources = function IndexedSourceMapConsumer_hasContentsOfAllSources() {
+  return this._sections.every(function(s) {
+    return s.consumer.hasContentsOfAllSources();
+  });
+};
+IndexedSourceMapConsumer.prototype.sourceContentFor = function IndexedSourceMapConsumer_sourceContentFor(aSource, nullOnMissing) {
+  for (var i = 0; i < this._sections.length; i++) {
+    var section = this._sections[i];
+    var content = section.consumer.sourceContentFor(aSource, true);
+    if (content) {
+      return content;
+    }
+  }
+  if (nullOnMissing) {
+    return null;
+  } else {
+    throw new Error('"' + aSource + '" is not in the SourceMap.');
+  }
+};
+IndexedSourceMapConsumer.prototype.generatedPositionFor = function IndexedSourceMapConsumer_generatedPositionFor(aArgs) {
+  for (var i = 0; i < this._sections.length; i++) {
+    var section = this._sections[i];
+    if (section.consumer.sources.indexOf(util.getArg(aArgs, "source")) === -1) {
+      continue;
+    }
+    var generatedPosition = section.consumer.generatedPositionFor(aArgs);
+    if (generatedPosition) {
+      var ret = {
+        line: generatedPosition.line + (section.generatedOffset.generatedLine - 1),
+        column: generatedPosition.column + (section.generatedOffset.generatedLine === generatedPosition.line ? section.generatedOffset.generatedColumn - 1 : 0)
+      };
+      return ret;
+    }
+  }
+  return {
+    line: null,
+    column: null
+  };
+};
+IndexedSourceMapConsumer.prototype._parseMappings = function IndexedSourceMapConsumer_parseMappings(aStr, aSourceRoot) {
+  this.__generatedMappings = [];
+  this.__originalMappings = [];
+  for (var i = 0; i < this._sections.length; i++) {
+    var section = this._sections[i];
+    var sectionMappings = section.consumer._generatedMappings;
+    for (var j = 0; j < sectionMappings.length; j++) {
+      var mapping = sectionMappings[j];
+      var source = section.consumer._sources.at(mapping.source);
+      if (section.consumer.sourceRoot !== null) {
+        source = util.join(section.consumer.sourceRoot, source);
+      }
+      this._sources.add(source);
+      source = this._sources.indexOf(source);
+      var name = section.consumer._names.at(mapping.name);
+      this._names.add(name);
+      name = this._names.indexOf(name);
+      var adjustedMapping = {
+        source,
+        generatedLine: mapping.generatedLine + (section.generatedOffset.generatedLine - 1),
+        generatedColumn: mapping.generatedColumn + (section.generatedOffset.generatedLine === mapping.generatedLine ? section.generatedOffset.generatedColumn - 1 : 0),
+        originalLine: mapping.originalLine,
+        originalColumn: mapping.originalColumn,
+        name
+      };
+      this.__generatedMappings.push(adjustedMapping);
+      if (typeof adjustedMapping.originalLine === "number") {
+        this.__originalMappings.push(adjustedMapping);
+      }
+    }
+  }
+  quickSort(this.__generatedMappings, util.compareByGeneratedPositionsDeflated);
+  quickSort(this.__originalMappings, util.compareByOriginalPositions);
+};
+var IndexedSourceMapConsumer_1 = IndexedSourceMapConsumer;
+var sourceMapConsumer = {
+  SourceMapConsumer: SourceMapConsumer_1,
+  BasicSourceMapConsumer: BasicSourceMapConsumer_1,
+  IndexedSourceMapConsumer: IndexedSourceMapConsumer_1
+};
+var stacktraceGps = createCommonjsModule(function(module, exports) {
+  (function(root, factory) {
+    {
+      module.exports = factory(sourceMapConsumer, stackframe);
+    }
+  })(commonjsGlobal, function(SourceMap, StackFrame) {
+    function _xdr(url) {
+      return new Promise(function(resolve, reject) {
+        var req = new XMLHttpRequest();
+        req.open("get", url);
+        req.onerror = reject;
+        req.onreadystatechange = function onreadystatechange() {
+          if (req.readyState === 4) {
+            if (req.status >= 200 && req.status < 300 || url.substr(0, 7) === "file://" && req.responseText) {
+              resolve(req.responseText);
+            } else {
+              reject(new Error("HTTP status: " + req.status + " retrieving " + url));
+            }
+          }
+        };
+        req.send();
+      });
+    }
+    function _atob(b64str) {
+      if (typeof window !== "undefined" && window.atob) {
+        return window.atob(b64str);
+      } else {
+        throw new Error("You must supply a polyfill for window.atob in this environment");
+      }
+    }
+    function _parseJson(string) {
+      if (typeof JSON !== "undefined" && JSON.parse) {
+        return JSON.parse(string);
+      } else {
+        throw new Error("You must supply a polyfill for JSON.parse in this environment");
+      }
+    }
+    function _findFunctionName(source, lineNumber) {
+      var syntaxes = [
+        // {name} = function ({args}) TODO args capture
+        /['"]?([$_A-Za-z][$_A-Za-z0-9]*)['"]?\s*[:=]\s*function\b/,
+        // function {name}({args}) m[1]=name m[2]=args
+        /function\s+([^('"`]*?)\s*\(([^)]*)\)/,
+        // {name} = eval()
+        /['"]?([$_A-Za-z][$_A-Za-z0-9]*)['"]?\s*[:=]\s*(?:eval|new Function)\b/,
+        // fn_name() {
+        /\b(?!(?:if|for|switch|while|with|catch)\b)(?:(?:static)\s+)?(\S+)\s*\(.*?\)\s*\{/,
+        // {name} = () => {
+        /['"]?([$_A-Za-z][$_A-Za-z0-9]*)['"]?\s*[:=]\s*\(.*?\)\s*=>/
+      ];
+      var lines = source.split("\n");
+      var code = "";
+      var maxLines = Math.min(lineNumber, 20);
+      for (var i = 0; i < maxLines; ++i) {
+        var line = lines[lineNumber - i - 1];
+        var commentPos = line.indexOf("//");
+        if (commentPos >= 0) {
+          line = line.substr(0, commentPos);
+        }
+        if (line) {
+          code = line + code;
+          var len = syntaxes.length;
+          for (var index = 0; index < len; index++) {
+            var m = syntaxes[index].exec(code);
+            if (m && m[1]) {
+              return m[1];
+            }
+          }
+        }
+      }
+      return void 0;
+    }
+    function _ensureSupportedEnvironment() {
+      if (typeof Object.defineProperty !== "function" || typeof Object.create !== "function") {
+        throw new Error("Unable to consume source maps in older browsers");
+      }
+    }
+    function _ensureStackFrameIsLegit(stackframe2) {
+      if (_typeof(stackframe2) !== "object") {
+        throw new TypeError("Given StackFrame is not an object");
+      } else if (typeof stackframe2.fileName !== "string") {
+        throw new TypeError("Given file name is not a String");
+      } else if (typeof stackframe2.lineNumber !== "number" || stackframe2.lineNumber % 1 !== 0 || stackframe2.lineNumber < 1) {
+        throw new TypeError("Given line number must be a positive integer");
+      } else if (typeof stackframe2.columnNumber !== "number" || stackframe2.columnNumber % 1 !== 0 || stackframe2.columnNumber < 0) {
+        throw new TypeError("Given column number must be a non-negative integer");
+      }
+      return true;
+    }
+    function _findSourceMappingURL(source) {
+      var sourceMappingUrlRegExp = /\/\/[#@] ?sourceMappingURL=([^\s'"]+)\s*$/mg;
+      var lastSourceMappingUrl;
+      var matchSourceMappingUrl;
+      while (matchSourceMappingUrl = sourceMappingUrlRegExp.exec(source)) {
+        lastSourceMappingUrl = matchSourceMappingUrl[1];
+      }
+      if (lastSourceMappingUrl) {
+        return lastSourceMappingUrl;
+      } else {
+        throw new Error("sourceMappingURL not found");
+      }
+    }
+    function _extractLocationInfoFromSourceMapSource(stackframe2, sourceMapConsumer2, sourceCache) {
+      return new Promise(function(resolve, reject) {
+        var loc = sourceMapConsumer2.originalPositionFor({
+          line: stackframe2.lineNumber,
+          column: stackframe2.columnNumber
+        });
+        if (loc.source) {
+          var mappedSource = sourceMapConsumer2.sourceContentFor(loc.source);
+          if (mappedSource) {
+            sourceCache[loc.source] = mappedSource;
+          }
+          resolve(
+            // given stackframe and source location, update stackframe
+            new StackFrame({
+              functionName: loc.name || stackframe2.functionName,
+              args: stackframe2.args,
+              fileName: loc.source,
+              lineNumber: loc.line,
+              columnNumber: loc.column
+            })
+          );
+        } else {
+          reject(new Error("Could not get original source for given stackframe and source map"));
+        }
+      });
+    }
+    return function StackTraceGPS(opts) {
+      if (!(this instanceof StackTraceGPS)) {
+        return new StackTraceGPS(opts);
+      }
+      opts = opts || {};
+      this.sourceCache = opts.sourceCache || {};
+      this.sourceMapConsumerCache = opts.sourceMapConsumerCache || {};
+      this.ajax = opts.ajax || _xdr;
+      this._atob = opts.atob || _atob;
+      this._get = function _get(location) {
+        return new Promise(function(resolve, reject) {
+          var isDataUrl = location.substr(0, 5) === "data:";
+          if (this.sourceCache[location]) {
+            resolve(this.sourceCache[location]);
+          } else if (opts.offline && !isDataUrl) {
+            reject(new Error("Cannot make network requests in offline mode"));
+          } else {
+            if (isDataUrl) {
+              var supportedEncodingRegexp = /^data:application\/json;([\w=:"-]+;)*base64,/;
+              var match = location.match(supportedEncodingRegexp);
+              if (match) {
+                var sourceMapStart = match[0].length;
+                var encodedSource = location.substr(sourceMapStart);
+                var source = this._atob(encodedSource);
+                this.sourceCache[location] = source;
+                resolve(source);
+              } else {
+                reject(new Error("The encoding of the inline sourcemap is not supported"));
+              }
+            } else {
+              var xhrPromise = this.ajax(location, {
+                method: "get"
+              });
+              this.sourceCache[location] = xhrPromise;
+              xhrPromise.then(resolve, reject);
+            }
+          }
+        }.bind(this));
+      };
+      this._getSourceMapConsumer = function _getSourceMapConsumer(sourceMappingURL, defaultSourceRoot) {
+        return new Promise(function(resolve) {
+          if (this.sourceMapConsumerCache[sourceMappingURL]) {
+            resolve(this.sourceMapConsumerCache[sourceMappingURL]);
+          } else {
+            var sourceMapConsumerPromise = new Promise(function(resolve2, reject) {
+              return this._get(sourceMappingURL).then(function(sourceMapSource) {
+                if (typeof sourceMapSource === "string") {
+                  sourceMapSource = _parseJson(sourceMapSource.replace(/^\)\]\}'/, ""));
+                }
+                if (typeof sourceMapSource.sourceRoot === "undefined") {
+                  sourceMapSource.sourceRoot = defaultSourceRoot;
+                }
+                resolve2(new SourceMap.SourceMapConsumer(sourceMapSource));
+              }, reject);
+            }.bind(this));
+            this.sourceMapConsumerCache[sourceMappingURL] = sourceMapConsumerPromise;
+            resolve(sourceMapConsumerPromise);
+          }
+        }.bind(this));
+      };
+      this.pinpoint = function StackTraceGPS$$pinpoint(stackframe2) {
+        return new Promise(function(resolve, reject) {
+          this.getMappedLocation(stackframe2).then(function(mappedStackFrame) {
+            function resolveMappedStackFrame() {
+              resolve(mappedStackFrame);
+            }
+            this.findFunctionName(mappedStackFrame).then(resolve, resolveMappedStackFrame)["catch"](resolveMappedStackFrame);
+          }.bind(this), reject);
+        }.bind(this));
+      };
+      this.findFunctionName = function StackTraceGPS$$findFunctionName(stackframe2) {
+        return new Promise(function(resolve, reject) {
+          _ensureStackFrameIsLegit(stackframe2);
+          this._get(stackframe2.fileName).then(function getSourceCallback(source) {
+            var lineNumber = stackframe2.lineNumber;
+            var columnNumber = stackframe2.columnNumber;
+            var guessedFunctionName = _findFunctionName(source, lineNumber);
+            if (guessedFunctionName) {
+              resolve(new StackFrame({
+                functionName: guessedFunctionName,
+                args: stackframe2.args,
+                fileName: stackframe2.fileName,
+                lineNumber,
+                columnNumber
+              }));
+            } else {
+              resolve(stackframe2);
+            }
+          }, reject)["catch"](reject);
+        }.bind(this));
+      };
+      this.getMappedLocation = function StackTraceGPS$$getMappedLocation(stackframe2) {
+        return new Promise(function(resolve, reject) {
+          _ensureSupportedEnvironment();
+          _ensureStackFrameIsLegit(stackframe2);
+          var sourceCache = this.sourceCache;
+          var fileName = stackframe2.fileName;
+          this._get(fileName).then(function(source) {
+            var sourceMappingURL = _findSourceMappingURL(source);
+            var isDataUrl = sourceMappingURL.substr(0, 5) === "data:";
+            var defaultSourceRoot = fileName.substring(0, fileName.lastIndexOf("/") + 1);
+            if (sourceMappingURL[0] !== "/" && !isDataUrl && !/^https?:\/\/|^\/\//i.test(sourceMappingURL)) {
+              sourceMappingURL = defaultSourceRoot + sourceMappingURL;
+            }
+            return this._getSourceMapConsumer(sourceMappingURL, defaultSourceRoot).then(function(sourceMapConsumer2) {
+              return _extractLocationInfoFromSourceMapSource(stackframe2, sourceMapConsumer2, sourceCache).then(resolve)["catch"](function() {
+                resolve(stackframe2);
+              });
+            });
+          }.bind(this), reject)["catch"](reject);
+        }.bind(this));
+      };
+    };
+  });
+});
+var StackTraceGps = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.assign(/* @__PURE__ */ Object.create(null), stacktraceGps, {
+  "default": stacktraceGps
+}));
+function hide() {
+  return function hideOperation(source) {
+    return source.lift(new HideOperator());
+  };
+}
+var HideOperator = /* @__PURE__ */ function() {
+  function HideOperator2() {
+    _classCallCheck(this, HideOperator2);
+    _defineProperty(this, "hide", true);
+  }
+  _createClass(HideOperator2, [{
+    key: "call",
+    value: function call(subscriber, source) {
+      return source.subscribe(subscriber);
+    }
+  }]);
+  return HideOperator2;
+}();
+var stackTraceRefSymbol = Symbol("stackTraceRef");
+function getMappedStackTrace(ref) {
+  var stackTraceRef = getStackTraceRef(ref);
+  return stackTraceRef ? stackTraceRef.mappedStackTrace : of([]);
+}
+function getStackTrace(ref) {
+  var stackTraceRef = getStackTraceRef(ref);
+  return stackTraceRef ? stackTraceRef.stackTrace : [];
+}
+function getStackTraceRef(ref) {
+  return ref[stackTraceRefSymbol];
+}
+function setStackTraceRef(ref, value) {
+  ref[stackTraceRefSymbol] = value;
+  return value;
+}
+var StackTracePlugin = /* @__PURE__ */ function(_BasePlugin) {
+  _inherits(StackTracePlugin2, _BasePlugin);
+  var _super = _createSuper(StackTracePlugin2);
+  function StackTracePlugin2() {
+    var _this;
+    var _ref = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : {}, _ref$sourceMaps = _ref.sourceMaps, sourceMaps = _ref$sourceMaps === void 0 ? false : _ref$sourceMaps;
+    _classCallCheck(this, StackTracePlugin2);
+    _this = _super.call(this, "stackTrace");
+    _defineProperty(_assertThisInitialized(_this), "sourceCache_", void 0);
+    _defineProperty(_assertThisInitialized(_this), "sourceMaps_", void 0);
+    _this.sourceCache_ = {};
+    _this.sourceMaps_ = sourceMaps;
+    return _this;
+  }
+  _createClass(StackTracePlugin2, [{
+    key: "beforeSubscribe",
+    value: function beforeSubscribe(ref) {
+      var _this2 = this;
+      var stackFrames = this.getStackFrames_();
+      if (this.sourceMaps_ && typeof window !== "undefined" && window.location.protocol !== "file:") {
+        setStackTraceRef(ref, {
+          mappedStackTrace: defer(function() {
+            var gps = new StackTraceGps({
+              sourceCache: _this2.sourceCache_
+            });
+            return Promise.all(stackFrames.map(function(stackFrame) {
+              return gps.pinpoint(stackFrame)["catch"](function() {
+                return stackFrame;
+              });
+            }));
+          }).pipe(shareReplay(1), hide()),
+          stackTrace: stackFrames
+        });
+      } else {
+        setStackTraceRef(ref, {
+          mappedStackTrace: of(stackFrames).pipe(hide()),
+          stackTrace: stackFrames
+        });
+      }
+    }
+  }, {
+    key: "teardown",
+    value: function teardown() {
+      this.sourceCache_ = {};
+    }
+  }, {
+    key: "getStackFrames_",
+    value: function getStackFrames_() {
+      try {
+        throw new Error();
+      } catch (error) {
+        var core = true;
+        return errorStackParser.parse(error).filter(function(stackFrame) {
+          var result = !core;
+          if (/coreSubscribe_/.test(stackFrame.functionName || "")) {
+            core = false;
+          }
+          return result;
+        });
+      }
+    }
+  }]);
+  return StackTracePlugin2;
+}(BasePlugin);
+var cycleDetectedSymbol = Symbol("cycleDetected");
+var cycleWarnedSymbol = Symbol("cycleWarned");
+var CyclePlugin = /* @__PURE__ */ function(_BasePlugin) {
+  _inherits(CyclePlugin2, _BasePlugin);
+  var _super = _createSuper(CyclePlugin2);
+  function CyclePlugin2(spy2, partialLogger) {
+    var _this;
+    _classCallCheck(this, CyclePlugin2);
+    _this = _super.call(this, "cycle");
+    _defineProperty(_assertThisInitialized(_this), "logger_", void 0);
+    _defineProperty(_assertThisInitialized(_this), "nexts_", []);
+    _defineProperty(_assertThisInitialized(_this), "spy_", void 0);
+    _this.logger_ = toLogger(partialLogger);
+    _this.spy_ = spy2;
+    return _this;
+  }
+  _createClass(CyclePlugin2, [{
+    key: "afterNext",
+    value: function afterNext(ref, value) {
+      var nexts_ = this.nexts_;
+      nexts_.pop();
+    }
+  }, {
+    key: "beforeNext",
+    value: function beforeNext(ref, value) {
+      var logger_ = this.logger_, nexts_ = this.nexts_, spy_ = this.spy_;
+      var observable3 = ref.observable, subscription = ref.subscription;
+      if (nexts_.indexOf(ref) !== -1) {
+        if (!subscription[cycleDetectedSymbol]) {
+          subscription[cycleDetectedSymbol] = true;
+          if (nexts_.findIndex(function(n) {
+            return n.subscription[cycleWarnedSymbol];
+          }) === -1) {
+            subscription[cycleWarnedSymbol] = true;
+            var stackFrames = getStackTrace(ref);
+            if (stackFrames.length === 0) {
+              spy_.warnOnce(console, "Stack tracing is not enabled; add the StackTracePlugin before the CyclePlugin.");
+            }
+            var stackTrace = stackFrames.length ? "; subscribed at\n".concat(stackFrames.join("\n")) : "";
+            var type = inferType(observable3);
+            logger_.warn("Cyclic next detected; type = ".concat(type, "; value = ").concat(value).concat(stackTrace));
+          }
+        }
+      }
+      nexts_.push(ref);
+    }
+  }]);
+  return CyclePlugin2;
+}(BasePlugin);
+var DebugPlugin = /* @__PURE__ */ function(_BasePlugin) {
+  _inherits(DebugPlugin2, _BasePlugin);
+  var _super = _createSuper(DebugPlugin2);
+  function DebugPlugin2(match, notifications) {
+    var _this;
+    _classCallCheck(this, DebugPlugin2);
+    _this = _super.call(this, "debug(".concat(toString(match), ")"));
+    _defineProperty(_assertThisInitialized(_this), "notifications_", void 0);
+    _defineProperty(_assertThisInitialized(_this), "matcher_", void 0);
+    _this.notifications_ = notifications;
+    _this.matcher_ = function(ref, notification) {
+      return matches(ref, match) && _this.notifications_.indexOf(notification) !== -1;
+    };
+    return _this;
+  }
+  _createClass(DebugPlugin2, [{
+    key: "beforeComplete",
+    value: function beforeComplete(ref) {
+      var matcher_ = this.matcher_;
+      if (matcher_(ref, "complete")) {
+        debugger;
+      }
+    }
+  }, {
+    key: "beforeError",
+    value: function beforeError(ref, error) {
+      var matcher_ = this.matcher_;
+      if (matcher_(ref, "error")) {
+        debugger;
+      }
+    }
+  }, {
+    key: "beforeNext",
+    value: function beforeNext(ref, value) {
+      var matcher_ = this.matcher_;
+      if (matcher_(ref, "next")) {
+        debugger;
+      }
+    }
+  }, {
+    key: "beforeSubscribe",
+    value: function beforeSubscribe(ref) {
+      var matcher_ = this.matcher_;
+      if (matcher_(ref, "subscribe")) {
+        debugger;
+      }
+    }
+  }, {
+    key: "beforeUnsubscribe",
+    value: function beforeUnsubscribe(ref) {
+      var matcher_ = this.matcher_;
+      if (matcher_(ref, "unsubscribe")) {
+        debugger;
+      }
+    }
+  }]);
+  return DebugPlugin2;
+}(BasePlugin);
+var graphRefSymbol = Symbol("graphRef");
+function getGraphRef(ref) {
+  return ref[graphRefSymbol];
+}
+function setGraphRef(ref, value) {
+  ref[graphRefSymbol] = value;
+  return value;
+}
+var GraphPlugin = /* @__PURE__ */ function(_BasePlugin) {
+  _inherits(GraphPlugin2, _BasePlugin);
+  var _super = _createSuper(GraphPlugin2);
+  function GraphPlugin2() {
+    var _this;
+    var _ref = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : {}, _ref$keptDuration = _ref.keptDuration, keptDuration = _ref$keptDuration === void 0 ? 3e4 : _ref$keptDuration;
+    _classCallCheck(this, GraphPlugin2);
+    _this = _super.call(this, "graph");
+    _defineProperty(_assertThisInitialized(_this), "flushIntervalId_", void 0);
+    _defineProperty(_assertThisInitialized(_this), "flushQueue_", void 0);
+    _defineProperty(_assertThisInitialized(_this), "keptDuration_", void 0);
+    _defineProperty(_assertThisInitialized(_this), "notifications_", void 0);
+    _defineProperty(_assertThisInitialized(_this), "sentinel_", void 0);
+    _this.flushIntervalId_ = void 0;
+    _this.flushQueue_ = [];
+    _this.keptDuration_ = keptDuration;
+    _this.notifications_ = [];
+    _this.sentinel_ = {
+      depth: 0,
+      flattened: false,
+      flattenings: [],
+      flatteningsFlushed: 0,
+      link: void 0,
+      rootSink: void 0,
+      sentinel: void 0,
+      sink: void 0,
+      sources: [],
+      sourcesFlushed: 0
+    };
+    _this.sentinel_.link = _this.sentinel_;
+    _this.sentinel_.sentinel = _this.sentinel_;
+    return _this;
+  }
+  _createClass(GraphPlugin2, [{
+    key: "afterNext",
+    value: function afterNext(ref, value) {
+      var notifications_ = this.notifications_;
+      notifications_.pop();
+    }
+  }, {
+    key: "afterSubscribe",
+    value: function afterSubscribe(ref) {
+      var notifications_ = this.notifications_;
+      notifications_.pop();
+    }
+  }, {
+    key: "afterUnsubscribe",
+    value: function afterUnsubscribe(ref) {
+      var notifications_ = this.notifications_;
+      notifications_.pop();
+      this.flush_(ref);
+    }
+  }, {
+    key: "beforeNext",
+    value: function beforeNext(ref, value) {
+      var notifications_ = this.notifications_;
+      notifications_.push({
+        notification: "next",
+        ref
+      });
+    }
+  }, {
+    key: "beforeSubscribe",
+    value: function beforeSubscribe(ref) {
+      var notifications_ = this.notifications_, sentinel_ = this.sentinel_;
+      var graphRef = setGraphRef(ref, {
+        depth: 1,
+        flattened: false,
+        flattenings: [],
+        flatteningsFlushed: 0,
+        link: sentinel_,
+        rootSink: void 0,
+        sentinel: sentinel_,
+        sink: void 0,
+        sources: [],
+        sourcesFlushed: 0
+      });
+      var length = notifications_.length;
+      if (length > 0 && notifications_[length - 1].notification === "next") {
+        var sinkRef = notifications_[length - 1].ref;
+        var sinkGraphRef = getGraphRef(sinkRef);
+        sinkGraphRef.flattenings.push(ref);
+        graphRef.link = sinkGraphRef;
+        graphRef.flattened = true;
+        graphRef.rootSink = sinkGraphRef.rootSink || sinkRef;
+        graphRef.sink = sinkRef;
+      } else {
+        for (var n = length - 1; n > -1; --n) {
+          if (notifications_[n].notification === "subscribe") {
+            var _sinkRef = notifications_[length - 1].ref;
+            var _sinkGraphRef = getGraphRef(_sinkRef);
+            _sinkGraphRef.sources.push(ref);
+            graphRef.depth = _sinkGraphRef.depth + 1;
+            graphRef.link = _sinkGraphRef;
+            graphRef.rootSink = _sinkGraphRef.rootSink || _sinkRef;
+            graphRef.sink = _sinkRef;
+            break;
+          }
+        }
+      }
+      if (graphRef.link === graphRef.sentinel) {
+        graphRef.sentinel.sources.push(ref);
+      }
+      notifications_.push({
+        notification: "subscribe",
+        ref
+      });
+    }
+  }, {
+    key: "beforeUnsubscribe",
+    value: function beforeUnsubscribe(ref) {
+      var notifications_ = this.notifications_;
+      notifications_.push({
+        notification: "unsubscribe",
+        ref
+      });
+    }
+  }, {
+    key: "teardown",
+    value: function teardown() {
+      if (this.flushIntervalId_ !== void 0) {
+        clearInterval(this.flushIntervalId_);
+        this.flushIntervalId_ = void 0;
+      }
+    }
+  }, {
+    key: "flush_",
+    value: function flush_(ref) {
+      var _this2 = this;
+      var graphRef = getGraphRef(ref);
+      var flattenings = graphRef.flattenings, sources = graphRef.sources;
+      if (!ref.unsubscribed || !flattenings.every(function(ref2) {
+        return ref2.unsubscribed;
+      }) || !sources.every(function(ref2) {
+        return ref2.unsubscribed;
+      })) {
+        return;
+      }
+      var keptDuration_ = this.keptDuration_;
+      var link = graphRef.link;
+      var flush = function flush2() {
+        var flattenings2 = link.flattenings, sources2 = link.sources;
+        var flatteningIndex = flattenings2.indexOf(ref);
+        if (flatteningIndex !== -1) {
+          flattenings2.splice(flatteningIndex, 1);
+          ++link.flatteningsFlushed;
+        }
+        var sourceIndex = sources2.indexOf(ref);
+        if (sourceIndex !== -1) {
+          sources2.splice(sourceIndex, 1);
+          ++link.sourcesFlushed;
+        }
+      };
+      if (keptDuration_ === 0) {
+        flush();
+      } else if (keptDuration_ > 0 && keptDuration_ < Infinity) {
+        this.flushQueue_.push({
+          due: Date.now() + keptDuration_,
+          flush
+        });
+        if (this.flushIntervalId_ === void 0) {
+          this.flushIntervalId_ = setInterval(function() {
+            var now = Date.now();
+            _this2.flushQueue_ = _this2.flushQueue_.filter(function(q) {
+              if (q.due > now) {
+                return true;
+              }
+              q.flush();
+              return false;
+            });
+            if (_this2.flushQueue_.length === 0) {
+              clearInterval(_this2.flushIntervalId_);
+              _this2.flushIntervalId_ = void 0;
+            }
+          }, keptDuration_);
+        }
+      }
+    }
+  }]);
+  return GraphPlugin2;
+}(BasePlugin);
+var LetPlugin = /* @__PURE__ */ function(_BasePlugin) {
+  _inherits(LetPlugin2, _BasePlugin);
+  var _super = _createSuper(LetPlugin2);
+  function LetPlugin2(match, select) {
+    var _this;
+    var _ref = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : {}, _ref$complete = _ref.complete, complete = _ref$complete === void 0 ? true : _ref$complete;
+    _classCallCheck(this, LetPlugin2);
+    _this = _super.call(this, "let(".concat(toString(match), ")"));
+    _defineProperty(_assertThisInitialized(_this), "match_", void 0);
+    _defineProperty(_assertThisInitialized(_this), "select_", void 0);
+    _this.match_ = match;
+    _this.select_ = complete ? select : function(source) {
+      return merge(NEVER, select(source));
+    };
+    return _this;
+  }
+  _createClass(LetPlugin2, [{
+    key: "select",
+    value: function select(ref) {
+      var match_ = this.match_, select_ = this.select_;
+      if (matches(ref, match_)) {
+        return select_;
+      }
+      return void 0;
+    }
+  }]);
+  return LetPlugin2;
+}(BasePlugin);
+var LogPlugin = /* @__PURE__ */ function(_BasePlugin) {
+  _inherits(LogPlugin2, _BasePlugin);
+  var _super = _createSuper(LogPlugin2);
+  function LogPlugin2(spy2, tagMatch) {
+    var _this;
+    _classCallCheck(this, LogPlugin2);
+    _this = _super.call(this, "log(".concat(toString(tagMatch), ")"));
+    _defineProperty(_assertThisInitialized(_this), "auditor_", void 0);
+    _defineProperty(_assertThisInitialized(_this), "logger_", void 0);
+    _defineProperty(_assertThisInitialized(_this), "notificationMatch_", void 0);
+    _defineProperty(_assertThisInitialized(_this), "tagMatch_", void 0);
+    _this.auditor_ = spy2.auditor;
+    _this.tagMatch_ = tagMatch;
+    var defaultMatch = /.+/;
+    switch (arguments.length <= 2 ? 0 : arguments.length - 2) {
+      case 0:
+        _this.notificationMatch_ = defaultMatch;
+        _this.logger_ = toLogger(defaultLogger);
+        break;
+      case 1:
+        if (typeof (arguments.length <= 2 ? void 0 : arguments[2]) === "function") {
+          _this.notificationMatch_ = arguments.length <= 2 ? void 0 : arguments[2];
+          _this.logger_ = toLogger(defaultLogger);
+        } else {
+          _this.notificationMatch_ = defaultMatch;
+          _this.logger_ = toLogger(arguments.length <= 2 ? void 0 : arguments[2]);
+        }
+        break;
+      default:
+        _this.notificationMatch_ = arguments.length <= 2 ? void 0 : arguments[2];
+        _this.logger_ = toLogger(arguments.length <= 3 ? void 0 : arguments[3]);
+        break;
+    }
+    return _this;
+  }
+  _createClass(LogPlugin2, [{
+    key: "beforeComplete",
+    value: function beforeComplete(ref) {
+      this.log_(ref, "complete");
+    }
+  }, {
+    key: "beforeError",
+    value: function beforeError(ref, error) {
+      this.log_(ref, "error", error);
+    }
+  }, {
+    key: "beforeNext",
+    value: function beforeNext(ref, value) {
+      this.log_(ref, "next", value);
+    }
+  }, {
+    key: "beforeSubscribe",
+    value: function beforeSubscribe(ref) {
+      this.log_(ref, "subscribe");
+    }
+  }, {
+    key: "beforeUnsubscribe",
+    value: function beforeUnsubscribe(ref) {
+      this.log_(ref, "unsubscribe");
+    }
+  }, {
+    key: "log_",
+    value: function log_(ref, notification, param) {
+      var _this2 = this;
+      var auditor_ = this.auditor_, notificationMatch_ = this.notificationMatch_, tagMatch_ = this.tagMatch_;
+      if (matches(ref, tagMatch_) && matches(ref, notificationMatch_, notification)) {
+        auditor_.audit(this, function(ignored) {
+          var logger_ = _this2.logger_;
+          var observable3 = ref.observable;
+          var tag2 = read(observable3);
+          var type = inferType(observable3);
+          var matching = typeof tagMatch_ === "string" ? "" : "; matching ".concat(toString(tagMatch_));
+          var audit = ignored === 0 ? "" : "; ignored ".concat(ignored);
+          var description = tag2 ? "Tag = ".concat(tag2, "; notification = ").concat(notification).concat(matching).concat(audit) : "Type = ".concat(type, "; notification = ").concat(notification).concat(matching).concat(audit);
+          switch (notification) {
+            case "error":
+              logger_.error("".concat(description, "; error ="), param);
+              break;
+            case "next":
+              logger_.log("".concat(description, "; value ="), param);
+              break;
+            default:
+              logger_.log(description);
+              break;
+          }
+        });
+      }
+    }
+  }]);
+  return LogPlugin2;
+}(BasePlugin);
+var Deck = /* @__PURE__ */ function() {
+  function Deck2(match) {
+    _classCallCheck(this, Deck2);
+    _defineProperty(this, "teardown", void 0);
+    _defineProperty(this, "match_", void 0);
+    _defineProperty(this, "paused_", true);
+    _defineProperty(this, "states_", /* @__PURE__ */ new Map());
+    _defineProperty(this, "stats_", void 0);
+    this.match_ = match;
+    this.stats_ = new Subject();
+  }
+  _createClass(Deck2, [{
+    key: "stats",
+    get: function get5() {
+      return this.stats_.asObservable();
+    }
+  }, {
+    key: "paused",
+    get: function get5() {
+      return this.paused_;
+    }
+  }, {
+    key: "clear",
+    value: function clear() {
+      var predicate = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : function() {
+        return true;
+      };
+      this.states_.forEach(function(state) {
+        state.notifications_ = state.notifications_.filter(function(notification) {
+          return !predicate(notification);
+        });
+      });
+      this.broadcast_();
+    }
+  }, {
+    key: "log",
+    value: function log() {
+      var partialLogger = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : defaultLogger;
+      var logger = toLogger(partialLogger);
+      logger.group("Deck matching ".concat(toString(this.match_)));
+      logger.log("Paused =", this.paused_);
+      this.states_.forEach(function(state) {
+        logger.group("Observable; tag = ".concat(state.tag_));
+        logger.log("Notifications =", state.notifications_);
+        logger.groupEnd();
+      });
+      logger.groupEnd();
+    }
+  }, {
+    key: "pause",
+    value: function pause() {
+      this.paused_ = true;
+      this.broadcast_();
+    }
+  }, {
+    key: "resume",
+    value: function resume() {
+      this.states_.forEach(function(state) {
+        while (state.notifications_.length > 0) {
+          state.subject_.next(state.notifications_.shift());
+        }
+      });
+      this.paused_ = false;
+      this.broadcast_();
+    }
+  }, {
+    key: "select",
+    value: function select(ref) {
+      var _this = this;
+      var observable3 = ref.observable;
+      return function(source) {
+        var state = _this.states_.get(observable3);
+        if (state) {
+          state.subscription_.unsubscribe();
+        } else {
+          state = {
+            notifications_: [],
+            subject_: new Subject(),
+            subscription_: void 0,
+            tag_: read(observable3)
+          };
+          _this.states_.set(observable3, state);
+        }
+        state.subscription_ = source.pipe(materialize(), hide()).subscribe({
+          next: function next(notification) {
+            if (_this.paused_) {
+              state.notifications_.push(notification);
+            } else {
+              state.subject_.next(notification);
+            }
+            _this.broadcast_();
+          }
+        });
+        _this.broadcast_();
+        return state.subject_.asObservable().pipe(dematerialize());
+      };
+    }
+  }, {
+    key: "skip",
+    value: function skip() {
+      this.states_.forEach(function(state) {
+        if (state.notifications_.length > 0) {
+          state.notifications_.shift();
+        }
+      });
+      this.broadcast_();
+    }
+  }, {
+    key: "step",
+    value: function step() {
+      this.states_.forEach(function(state) {
+        if (state.notifications_.length > 0) {
+          state.subject_.next(state.notifications_.shift());
+        }
+      });
+      this.broadcast_();
+    }
+  }, {
+    key: "unsubscribe",
+    value: function unsubscribe() {
+      this.states_.forEach(function(state) {
+        if (state.subscription_) {
+          state.subscription_.unsubscribe();
+          state.subscription_ = void 0;
+        }
+      });
+      this.broadcast_();
+    }
+  }, {
+    key: "broadcast_",
+    value: function broadcast_() {
+      var paused_ = this.paused_, states_ = this.states_, stats_ = this.stats_;
+      var notifications = 0;
+      states_.forEach(function(state) {
+        return notifications += state.notifications_.length;
+      });
+      stats_.next({
+        notifications,
+        paused: paused_
+      });
+    }
+  }]);
+  return Deck2;
+}();
+var PausePlugin = /* @__PURE__ */ function(_BasePlugin) {
+  _inherits(PausePlugin2, _BasePlugin);
+  var _super = _createSuper(PausePlugin2);
+  function PausePlugin2(match) {
+    var _this2;
+    _classCallCheck(this, PausePlugin2);
+    _this2 = _super.call(this, "pause(".concat(toString(match), ")"));
+    _defineProperty(_assertThisInitialized(_this2), "match_", void 0);
+    _defineProperty(_assertThisInitialized(_this2), "deck_", void 0);
+    _this2.deck_ = new Deck(match);
+    _this2.match_ = match;
+    return _this2;
+  }
+  _createClass(PausePlugin2, [{
+    key: "deck",
+    get: function get5() {
+      var deck_ = this.deck_;
+      return deck_;
+    }
+  }, {
+    key: "match",
+    get: function get5() {
+      var match_ = this.match_;
+      return match_;
+    }
+  }, {
+    key: "select",
+    value: function select(ref) {
+      var deck_ = this.deck_, match_ = this.match_;
+      if (matches(ref, match_)) {
+        return deck_.select(ref);
+      }
+      return void 0;
+    }
+  }, {
+    key: "teardown",
+    value: function teardown() {
+      var deck_ = this.deck_;
+      if (deck_) {
+        deck_.resume();
+        deck_.unsubscribe();
+      }
+    }
+  }]);
+  return PausePlugin2;
+}(BasePlugin);
+var snapshotRefSymbol = Symbol("snapshotRef");
+function getSnapshotRef(ref) {
+  return ref[snapshotRefSymbol];
+}
+function mapStackTraces(snapshots) {
+  var observables = [of(null)];
+  snapshots.forEach(function(snapshot) {
+    if (snapshot.subscriptions) {
+      snapshot.subscriptions.forEach(mapSubscriptionStackTraces);
+    } else {
+      mapSubscriptionStackTraces(snapshot);
+    }
+  });
+  return forkJoin(observables).pipe(mapTo(void 0), hide());
+  function mapSubscriptionStackTraces(subscriptionSnapshot) {
+    observables.push(subscriptionSnapshot.mappedStackTrace);
+    if (subscriptionSnapshot.rootSink) {
+      observables.push(subscriptionSnapshot.rootSink.mappedStackTrace);
+    }
+  }
+}
+function setSnapshotRef(ref, value) {
+  ref[snapshotRefSymbol] = value;
+  return value;
+}
+var SnapshotPlugin = /* @__PURE__ */ function(_BasePlugin) {
+  _inherits(SnapshotPlugin2, _BasePlugin);
+  var _super = _createSuper(SnapshotPlugin2);
+  function SnapshotPlugin2(spy2) {
+    var _this;
+    var _ref = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : {}, _ref$keptValues = _ref.keptValues, keptValues = _ref$keptValues === void 0 ? 4 : _ref$keptValues;
+    _classCallCheck(this, SnapshotPlugin2);
+    _this = _super.call(this, "snapshot");
+    _defineProperty(_assertThisInitialized(_this), "keptValues_", void 0);
+    _defineProperty(_assertThisInitialized(_this), "sentinel_", void 0);
+    _defineProperty(_assertThisInitialized(_this), "spy_", void 0);
+    _this.keptValues_ = keptValues;
+    _this.sentinel_ = void 0;
+    _this.spy_ = spy2;
+    return _this;
+  }
+  _createClass(SnapshotPlugin2, [{
+    key: "afterUnsubscribe",
+    value: function afterUnsubscribe(ref) {
+      var snapshotRef = getSnapshotRef(ref);
+      snapshotRef.tick = this.spy_.tick;
+      snapshotRef.unsubscribed = true;
+    }
+  }, {
+    key: "beforeComplete",
+    value: function beforeComplete(ref) {
+      var snapshotRef = getSnapshotRef(ref);
+      snapshotRef.tick = this.spy_.tick;
+      snapshotRef.complete = true;
+    }
+  }, {
+    key: "beforeError",
+    value: function beforeError(ref, error) {
+      var snapshotRef = getSnapshotRef(ref);
+      snapshotRef.tick = this.spy_.tick;
+      snapshotRef.error = error;
+    }
+  }, {
+    key: "beforeNext",
+    value: function beforeNext(ref, value) {
+      var tick = this.spy_.tick;
+      var snapshotRef = getSnapshotRef(ref);
+      snapshotRef.tick = tick;
+      snapshotRef.values.push({
+        tick,
+        timestamp: Date.now(),
+        value
+      });
+      var keptValues_ = this.keptValues_;
+      var count = snapshotRef.values.length - keptValues_;
+      if (count > 0) {
+        snapshotRef.values.splice(0, count);
+        snapshotRef.valuesFlushed += count;
+      }
+    }
+  }, {
+    key: "beforeSubscribe",
+    value: function beforeSubscribe(ref) {
+      setSnapshotRef(ref, {
+        complete: false,
+        error: void 0,
+        tick: this.spy_.tick,
+        timestamp: Date.now(),
+        unsubscribed: false,
+        values: [],
+        valuesFlushed: 0
+      });
+      var graphRef = getGraphRef(ref);
+      if (graphRef) {
+        this.sentinel_ = graphRef.sentinel;
+      } else {
+        this.spy_.warnOnce(console, "Graphing is not enabled; add the GraphPlugin before the SnapshotPlugin.");
+      }
+    }
+  }, {
+    key: "snapshotAll",
+    value: function snapshotAll() {
+      var _ref2 = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : {}, since = _ref2.since;
+      var observables = /* @__PURE__ */ new Map();
+      var subscribers = /* @__PURE__ */ new Map();
+      var subscriptions = /* @__PURE__ */ new Map();
+      var subscriptionRefs = this.getSubscriptionRefs_();
+      subscriptionRefs.forEach(function(unused, ref) {
+        var _subscriberSnapshot$v;
+        var observable3 = ref.observable, subscriber = ref.subscriber, subscription = ref.subscription;
+        var graphRef = getGraphRef(ref);
+        var flatteningsFlushed = graphRef.flatteningsFlushed, sourcesFlushed = graphRef.sourcesFlushed;
+        var snapshotRef = getSnapshotRef(ref);
+        var complete = snapshotRef.complete, error = snapshotRef.error, tick = snapshotRef.tick, timestamp = snapshotRef.timestamp, unsubscribed = snapshotRef.unsubscribed, values = snapshotRef.values, valuesFlushed = snapshotRef.valuesFlushed;
+        var subscriptionSnapshot = {
+          complete,
+          error,
+          flattenings: /* @__PURE__ */ new Map(),
+          flatteningsFlushed,
+          id: identify(ref),
+          mappedStackTrace: getMappedStackTrace(ref),
+          observable: observable3,
+          rootSink: void 0,
+          sink: void 0,
+          sources: /* @__PURE__ */ new Map(),
+          sourcesFlushed,
+          stackTrace: getStackTrace(ref),
+          subscriber,
+          subscription,
+          tick,
+          timestamp,
+          unsubscribed
+        };
+        subscriptions.set(subscription, subscriptionSnapshot);
+        var subscriberSnapshot = subscribers.get(subscriber);
+        if (!subscriberSnapshot) {
+          subscriberSnapshot = {
+            id: identify(subscriber),
+            subscriber,
+            subscriptions: /* @__PURE__ */ new Map(),
+            tick,
+            values: [],
+            valuesFlushed: 0
+          };
+          subscribers.set(subscriber, subscriberSnapshot);
+        }
+        subscriberSnapshot.subscriptions.set(subscription, subscriptionSnapshot);
+        subscriberSnapshot.tick = Math.max(subscriberSnapshot.tick, tick);
+        (_subscriberSnapshot$v = subscriberSnapshot.values).push.apply(_subscriberSnapshot$v, _toConsumableArray(values));
+        subscriberSnapshot.valuesFlushed += valuesFlushed;
+        var observableSnapshot = observables.get(observable3);
+        if (!observableSnapshot) {
+          observableSnapshot = {
+            id: identify(observable3),
+            observable: observable3,
+            path: inferPath(observable3),
+            subscriptions: /* @__PURE__ */ new Map(),
+            tag: read(observable3),
+            tick,
+            type: inferType(observable3)
+          };
+          observables.set(observable3, observableSnapshot);
+        }
+        observableSnapshot.subscriptions.set(subscription, subscriptionSnapshot);
+        observableSnapshot.tick = Math.max(observableSnapshot.tick, tick);
+      });
+      subscriptionRefs.forEach(function(unused, ref) {
+        var graphRef = getGraphRef(ref);
+        var subscriptionSnapshot = subscriptions.get(ref.subscription);
+        if (graphRef.sink) {
+          subscriptionSnapshot.sink = subscriptions.get(graphRef.sink.subscription);
+        }
+        if (graphRef.rootSink) {
+          subscriptionSnapshot.rootSink = subscriptions.get(graphRef.rootSink.subscription);
+        }
+        graphRef.flattenings.forEach(function(m) {
+          return subscriptionSnapshot.flattenings.set(m.subscription, subscriptions.get(m.subscription));
+        });
+        graphRef.sources.forEach(function(s) {
+          return subscriptionSnapshot.sources.set(s.subscription, subscriptions.get(s.subscription));
+        });
+      });
+      subscribers.forEach(function(subscriberSnapshot) {
+        subscriberSnapshot.values.sort(function(a, b) {
+          return a.tick - b.tick;
+        });
+      });
+      if (since !== void 0) {
+        observables.forEach(function(value, key) {
+          if (value.tick <= since.tick) {
+            observables["delete"](key);
+          }
+        });
+        subscribers.forEach(function(value, key) {
+          if (value.tick <= since.tick) {
+            subscribers["delete"](key);
+          }
+        });
+        subscriptions.forEach(function(value, key) {
+          if (value.tick <= since.tick) {
+            subscriptions["delete"](key);
+          }
+        });
+      }
+      return {
+        mapStackTraces,
+        observables,
+        subscribers,
+        subscriptions,
+        tick: this.spy_.tick
+      };
+    }
+  }, {
+    key: "snapshotObservable",
+    value: function snapshotObservable(ref) {
+      var snapshot = this.snapshotAll();
+      return snapshot.observables.get(ref.observable);
+    }
+  }, {
+    key: "snapshotSubscriber",
+    value: function snapshotSubscriber(ref) {
+      var snapshot = this.snapshotAll();
+      return snapshot.subscribers.get(ref.subscriber);
+    }
+  }, {
+    key: "addSubscriptionRefs_",
+    value: function addSubscriptionRefs_(ref, map2) {
+      var _this2 = this;
+      map2.set(ref, true);
+      var graphRef = getGraphRef(ref);
+      graphRef.flattenings.forEach(function(m) {
+        return _this2.addSubscriptionRefs_(m, map2);
+      });
+      graphRef.sources.forEach(function(s) {
+        return _this2.addSubscriptionRefs_(s, map2);
+      });
+    }
+  }, {
+    key: "getSubscriptionRefs_",
+    value: function getSubscriptionRefs_() {
+      var _this3 = this;
+      var sentinel_ = this.sentinel_;
+      var map2 = /* @__PURE__ */ new Map();
+      if (sentinel_) {
+        sentinel_.sources.forEach(function(ref) {
+          return _this3.addSubscriptionRefs_(ref, map2);
+        });
+      }
+      return map2;
+    }
+  }]);
+  return SnapshotPlugin2;
+}(BasePlugin);
+var StatsPlugin = /* @__PURE__ */ function(_BasePlugin) {
+  _inherits(StatsPlugin2, _BasePlugin);
+  var _super = _createSuper(StatsPlugin2);
+  function StatsPlugin2(spy2) {
+    var _this;
+    _classCallCheck(this, StatsPlugin2);
+    _this = _super.call(this, "stats");
+    _defineProperty(_assertThisInitialized(_this), "spy_", void 0);
+    _defineProperty(_assertThisInitialized(_this), "stats_", void 0);
+    _defineProperty(_assertThisInitialized(_this), "time_", void 0);
+    _this.spy_ = spy2;
+    _this.stats_ = {
+      completes: 0,
+      errors: 0,
+      flattenedSubscribes: 0,
+      leafSubscribes: 0,
+      maxDepth: 0,
+      nexts: 0,
+      rootSubscribes: 0,
+      subscribes: 0,
+      tick: 0,
+      timespan: 0,
+      totalDepth: 0,
+      unsubscribes: 0
+    };
+    _this.time_ = 0;
+    return _this;
+  }
+  _createClass(StatsPlugin2, [{
+    key: "afterSubscribe",
+    value: function afterSubscribe(ref) {
+      var stats_ = this.stats_;
+      var graphRef = getGraphRef(ref);
+      if (graphRef) {
+        var depth = graphRef.depth, flattened = graphRef.flattened, flattenings = graphRef.flattenings, flatteningsFlushed = graphRef.flatteningsFlushed, rootSink = graphRef.rootSink, sources = graphRef.sources, sourcesFlushed = graphRef.sourcesFlushed;
+        if (!rootSink) {
+          stats_.rootSubscribes += 1;
+        }
+        if (flattened) {
+          stats_.flattenedSubscribes += 1;
+        }
+        if (flattenings.length + flatteningsFlushed + sources.length + sourcesFlushed === 0) {
+          if (stats_.maxDepth < depth) {
+            stats_.maxDepth = depth;
+          }
+          stats_.leafSubscribes += 1;
+          stats_.totalDepth += depth;
+        }
+      }
+    }
+  }, {
+    key: "beforeComplete",
+    value: function beforeComplete(ref) {
+      var stats_ = this.stats_;
+      ++stats_.completes;
+      this.all_();
+    }
+  }, {
+    key: "beforeError",
+    value: function beforeError(ref, error) {
+      var stats_ = this.stats_;
+      ++stats_.errors;
+      this.all_();
+    }
+  }, {
+    key: "beforeNext",
+    value: function beforeNext(ref, value) {
+      var stats_ = this.stats_;
+      ++stats_.nexts;
+      this.all_();
+    }
+  }, {
+    key: "beforeSubscribe",
+    value: function beforeSubscribe(ref) {
+      var stats_ = this.stats_;
+      ++stats_.subscribes;
+      this.all_();
+    }
+  }, {
+    key: "beforeUnsubscribe",
+    value: function beforeUnsubscribe(ref) {
+      var stats_ = this.stats_;
+      ++stats_.unsubscribes;
+      this.all_();
+    }
+  }, {
+    key: "stats",
+    get: function get5() {
+      var stats_ = this.stats_;
+      return _objectSpread2({}, stats_);
+    }
+  }, {
+    key: "all_",
+    value: function all_() {
+      var spy_ = this.spy_, stats_ = this.stats_, time_ = this.time_;
+      if (time_ === 0) {
+        this.time_ = Date.now();
+      } else {
+        stats_.timespan = Date.now() - time_;
+      }
+      stats_.tick = spy_.tick;
+    }
+  }]);
+  return StatsPlugin2;
+}(BasePlugin);
+var Auditor = /* @__PURE__ */ function() {
+  function Auditor2(duration) {
+    _classCallCheck(this, Auditor2);
+    this.duration = duration;
+    _defineProperty(this, "queue_", []);
+    _defineProperty(this, "timeoutId_", void 0);
+  }
+  _createClass(Auditor2, [{
+    key: "audit",
+    value: function audit(source, task) {
+      var duration = this.duration, queue_ = this.queue_;
+      if (duration <= 0) {
+        task(0);
+      } else {
+        var queued = {
+          ignored: 0,
+          source,
+          task,
+          timestamp: Date.now()
+        };
+        var index = queue_.findIndex(function(q) {
+          return q.source === source;
+        });
+        if (index !== -1) {
+          var _queue_$index = queue_[index], _ignored = _queue_$index.ignored, timestamp = _queue_$index.timestamp;
+          queued.ignored += _ignored + 1;
+          queued.timestamp = timestamp;
+          queue_.splice(index, 1);
+        }
+        queue_.push(queued);
+        this.wait_();
+      }
+    }
+  }, {
+    key: "wait_",
+    value: function wait_() {
+      var _this = this;
+      var duration = this.duration, queue_ = this.queue_;
+      if (this.timeoutId_ === void 0 && queue_.length > 0) {
+        var queued = queue_[0];
+        this.timeoutId_ = setTimeout(function() {
+          var before = Date.now() - duration;
+          while (queue_.length > 0 && queue_[0].timestamp <= before) {
+            var dequeued = queue_.shift();
+            dequeued.task(dequeued.ignored);
+          }
+          _this.timeoutId_ = void 0;
+          _this.wait_();
+        }, Math.max(0, queued.timestamp + duration - Date.now()));
+      }
+    }
+  }]);
+  return Auditor2;
+}();
+var Detector = /* @__PURE__ */ function() {
+  function Detector2(spy2) {
+    _classCallCheck(this, Detector2);
+    _defineProperty(this, "detectorRecords_", void 0);
+    _defineProperty(this, "snapshotPlugin_", void 0);
+    _defineProperty(this, "spy_", void 0);
+    this.detectorRecords_ = /* @__PURE__ */ new Map();
+    this.snapshotPlugin_ = spy2.find(SnapshotPlugin);
+    this.spy_ = spy2;
+  }
+  _createClass(Detector2, [{
+    key: "detect",
+    value: function detect2(id) {
+      var detectorRecords_ = this.detectorRecords_, snapshotPlugin_ = this.snapshotPlugin_, spy_ = this.spy_;
+      if (!snapshotPlugin_) {
+        spy_.warnOnce(console, "Snapshotting is not enabled.");
+        return void 0;
+      }
+      var detectorRecord = detectorRecords_.get(id);
+      var snapshotRecord = this.record_(snapshotPlugin_.snapshotAll());
+      if (detectorRecord) {
+        detectorRecord.snapshotRecords.push(snapshotRecord);
+      } else {
+        detectorRecord = {
+          snapshotRecords: [snapshotRecord]
+        };
+        detectorRecords_.set(id, detectorRecord);
+      }
+      if (detectorRecord.snapshotRecords.length > 2) {
+        detectorRecord.snapshotRecords.shift();
+      }
+      if (detectorRecord.snapshotRecords.length < 2) {
+        return void 0;
+      }
+      var _detectorRecord$snaps = _slicedToArray(detectorRecord.snapshotRecords, 2), previous = _detectorRecord$snaps[0], current = _detectorRecord$snaps[1];
+      return this.compare_(id, previous, current);
+    }
+  }, {
+    key: "compare_",
+    value: function compare_(id, previous, current) {
+      var subscriptions = [];
+      var unsubscriptions = [];
+      var flatteningSubscriptions = [];
+      var flatteningUnsubscriptions = [];
+      var previousSubscriptions = previous.rootSubscriptions;
+      var currentSubscriptions = current.rootSubscriptions;
+      previousSubscriptions.forEach(function(previous2, key) {
+        if (!currentSubscriptions.has(key)) {
+          unsubscriptions.push(previous2);
+        }
+      });
+      currentSubscriptions.forEach(function(current2, key) {
+        var previous2 = previousSubscriptions.get(key);
+        if (previous2) {
+          var previousFlattenings = previous2.flattenings;
+          var currentFlattenings = current2.flattenings;
+          previousFlattenings.forEach(function(flattening, key2) {
+            if (!currentFlattenings.has(key2)) {
+              flatteningUnsubscriptions.push(flattening);
+            }
+          });
+          currentFlattenings.forEach(function(flattening, key2) {
+            if (!previousFlattenings.has(key2)) {
+              flatteningSubscriptions.push(flattening);
+            }
+          });
+        } else {
+          subscriptions.push(current2);
+        }
+      });
+      if (flatteningSubscriptions.length === 0 && flatteningUnsubscriptions.length === 0 && subscriptions.length === 0 && unsubscriptions.length === 0) {
+        return void 0;
+      }
+      return {
+        flatteningSubscriptions,
+        flatteningUnsubscriptions,
+        subscriptions: subscriptions.map(function(s) {
+          return s.subscriptionSnapshot;
+        }),
+        unsubscriptions: unsubscriptions.map(function(s) {
+          return s.subscriptionSnapshot;
+        })
+      };
+    }
+  }, {
+    key: "findFlatteningSubscriptions_",
+    value: function findFlatteningSubscriptions_(snapshot, subscriptionRecord) {
+      var flattenings = subscriptionRecord.flattenings, subscriptionSnapshot = subscriptionRecord.subscriptionSnapshot;
+      snapshot.subscriptions.forEach(function(s) {
+        if (s.rootSink === subscriptionSnapshot) {
+          s.flattenings.forEach(function(f) {
+            var subscription = f.subscription;
+            if (!subscription.closed) {
+              flattenings.set(subscription, f);
+            }
+          });
+        }
+      });
+    }
+  }, {
+    key: "findRootSubscriptions_",
+    value: function findRootSubscriptions_(snapshot, rootSubscriptions) {
+      var _this = this;
+      snapshot.observables.forEach(function(observableSnapshot) {
+        observableSnapshot.subscriptions.forEach(function(subscriptionSnapshot) {
+          var complete = subscriptionSnapshot.complete, error = subscriptionSnapshot.error, sink = subscriptionSnapshot.sink, subscription = subscriptionSnapshot.subscription;
+          if (!complete && !error && !sink && !subscription.closed) {
+            var subscriptionRecord = {
+              flattenings: /* @__PURE__ */ new Map(),
+              subscriptionSnapshot
+            };
+            _this.findFlatteningSubscriptions_(snapshot, subscriptionRecord);
+            rootSubscriptions.set(subscription, subscriptionRecord);
+          }
+        });
+      });
+    }
+  }, {
+    key: "record_",
+    value: function record_(snapshot) {
+      var rootSubscriptions = /* @__PURE__ */ new Map();
+      this.findRootSubscriptions_(snapshot, rootSubscriptions);
+      return {
+        rootSubscriptions,
+        snapshot
+      };
+    }
+  }]);
+  return Detector2;
+}();
+function hidden(observable3) {
+  var operator = observable3["operator"];
+  return Boolean(operator && operator["hide"]);
+}
+function wrap(core) {
+  var deprecation = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : function() {
+  };
+  return {
+    deck: function deck(call) {
+      deprecation();
+      var pausePlugins = core.findAll(PausePlugin);
+      if (call === void 0) {
+        var logger = toLogger(defaultLogger);
+        logger.group("".concat(pausePlugins.length, " Deck(s)"));
+        pausePlugins.forEach(function(pausePlugin2, index) {
+          return logger.log("".concat(index + 1, " pause(").concat(pausePlugin2.name, ")"));
+        });
+        logger.groupEnd();
+      } else {
+        var pausePlugin = pausePlugins[call - 1];
+        return pausePlugin ? pausePlugin.deck : void 0;
+      }
+    },
+    debug: function debug() {
+      deprecation();
+      for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
+      }
+      core.debug.apply(core, args);
+    },
+    detect: function detect$1() {
+      var id = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : "";
+      deprecation();
+      detect(id);
+    },
+    flush: function flush() {
+      deprecation();
+      core.flush();
+    },
+    inferPath,
+    inferType,
+    "let": function _let() {
+      deprecation();
+      for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+        args[_key2] = arguments[_key2];
+      }
+      core["let"].apply(core, args);
+    },
+    log: function log() {
+      deprecation();
+      for (var _len3 = arguments.length, args = new Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+        args[_key3] = arguments[_key3];
+      }
+      core.log.apply(core, args);
+    },
+    maxLogged: function maxLogged() {
+      deprecation();
+      for (var _len4 = arguments.length, args = new Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
+        args[_key4] = arguments[_key4];
+      }
+      core.maxLogged.apply(core, args);
+    },
+    pause: function pause() {
+      deprecation();
+      for (var _len5 = arguments.length, args = new Array(_len5), _key5 = 0; _key5 < _len5; _key5++) {
+        args[_key5] = arguments[_key5];
+      }
+      return core.pause.apply(core, args);
+    },
+    query: function query() {
+      deprecation();
+      for (var _len6 = arguments.length, args = new Array(_len6), _key6 = 0; _key6 < _len6; _key6++) {
+        args[_key6] = arguments[_key6];
+      }
+      core.query.apply(core, args);
+    },
+    show: function show() {
+      deprecation();
+      for (var _len7 = arguments.length, args = new Array(_len7), _key7 = 0; _key7 < _len7; _key7++) {
+        args[_key7] = arguments[_key7];
+      }
+      core.show.apply(core, args);
+    },
+    stats: function stats() {
+      deprecation();
+      core.stats();
+    },
+    undo: function undo() {
+      for (var _len8 = arguments.length, args = new Array(_len8), _key8 = 0; _key8 < _len8; _key8++) {
+        args[_key8] = arguments[_key8];
+      }
+      if (args.length === 0) {
+        var logger = toLogger(defaultLogger);
+        logger.group("".concat(core.undos.length, " undo(s)"));
+        core.undos.forEach(function(undo2, index) {
+          return logger.log("".concat(index + 1, " ").concat(undo2.name));
+        });
+        logger.groupEnd();
+      } else {
+        args.map(function(at) {
+          return core.undos[at - 1];
+        }).filter(Boolean).forEach(function(undo2) {
+          return core.unplug(undo2);
+        });
+      }
+    }
+  };
+}
+var observableSubscribe = Observable.prototype.subscribe;
+var previousWindow = {};
+var SpyCore = /* @__PURE__ */ function() {
+  function SpyCore2() {
+    var _this = this;
+    var options = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : {};
+    _classCallCheck(this, SpyCore2);
+    _defineProperty(this, "auditor_", void 0);
+    _defineProperty(this, "defaultLogger_", void 0);
+    _defineProperty(this, "maxLogged_", 20);
+    _defineProperty(this, "plugins_", void 0);
+    _defineProperty(this, "pluginsSubject_", void 0);
+    _defineProperty(this, "teardown_", void 0);
+    _defineProperty(this, "tick_", void 0);
+    _defineProperty(this, "undos_", void 0);
+    _defineProperty(this, "warned_", void 0);
+    if (SpyCore2.spy_) {
+      throw new Error("Already spying on Observable.prototype.subscribe.");
+    }
+    if (options.warning) {
+      console.warn("Spying on Observable.prototype.subscribe.");
+    }
+    SpyCore2.spy_ = this;
+    Observable.prototype.subscribe = SpyCore2.coreSubscribe_;
+    this.auditor_ = new Auditor(options.audit || 0);
+    this.defaultLogger_ = options.defaultLogger || defaultLogger;
+    if (options.defaultPlugins === false) {
+      this.plugins_ = [];
+    } else {
+      this.plugins_ = [new StackTracePlugin(options), new GraphPlugin(options), new SnapshotPlugin(this, options), new CyclePlugin(this, this.defaultLogger_), new StatsPlugin(this)];
+    }
+    this.pluginsSubject_ = new BehaviorSubject(this.plugins_);
+    this.tick_ = 0;
+    this.undos_ = [];
+    this.warned_ = {};
+    var detector = new Detector(this);
+    hook(function(id) {
+      return _this.detect_(id, detector);
+    });
+    if (typeof window !== "undefined") {
+      [options.global || "spy", "rxSpy"].forEach(function(key) {
+        if (window.hasOwnProperty(key)) {
+          _this.defaultLogger_.log("Overwriting window.".concat(key));
+          previousWindow[key] = window[key];
+        }
+        window[key] = wrap(_this, key === "rxSpy" ? function() {
+          return _this.warnOnce(_this.defaultLogger_, "window.".concat(key, " is deprecated and has been renamed; use window.spy instead"));
+        } : void 0);
+      });
+    }
+    this.teardown_ = function() {
+      if (typeof window !== "undefined") {
+        [options.global || "spy", "rxSpy"].forEach(function(key) {
+          if (previousWindow.hasOwnProperty(key)) {
+            _this.defaultLogger_.log("Restoring window.".concat(key));
+            window[key] = previousWindow[key];
+            delete previousWindow[key];
+          } else {
+            delete window[key];
+          }
+        });
+      }
+      hook(void 0);
+      _this.plugins_.forEach(function(plugin) {
+        return plugin.teardown();
+      });
+      _this.plugins_ = [];
+      _this.pluginsSubject_.next(_this.plugins_);
+      _this.undos_ = [];
+      SpyCore2.spy_ = void 0;
+      Observable.prototype.subscribe = observableSubscribe;
+    };
+  }
+  _createClass(SpyCore2, [{
+    key: "auditor",
+    get: function get5() {
+      return this.auditor_;
+    }
+  }, {
+    key: "tick",
+    get: function get5() {
+      return this.tick_;
+    }
+  }, {
+    key: "undos",
+    get: function get5() {
+      return _toConsumableArray(this.undos_);
+    }
+  }, {
+    key: "version",
+    get: function get5() {
+      return "8.0.2";
+    }
+  }, {
+    key: "debug",
+    value: function debug(match) {
+      for (var _len = arguments.length, notifications = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+        notifications[_key - 1] = arguments[_key];
+      }
+      if (notifications.length === 0) {
+        notifications = ["complete", "error", "next", "subscribe", "unsubscribe"];
+      }
+      return this.plug(new DebugPlugin(match, notifications));
+    }
+  }, {
+    key: "find",
+    value: function find(ctor) {
+      var found = this.plugins_.find(function(plugin) {
+        return plugin instanceof ctor;
+      });
+      return found ? found : void 0;
+    }
+  }, {
+    key: "findAll",
+    value: function findAll(ctor) {
+      return ctor ? this.plugins_.filter(function(plugin) {
+        return plugin instanceof ctor;
+      }) : this.plugins_;
+    }
+  }, {
+    key: "flush",
+    value: function flush() {
+      this.plugins_.forEach(function(plugin) {
+        return plugin.flush();
+      });
+    }
+  }, {
+    key: "let",
+    value: function _let(match, select, options) {
+      return this.plug(new LetPlugin(match, select, options));
+    }
+  }, {
+    key: "log",
+    value: function log() {
+      var tagMatch = /.+/;
+      var notificationMatch = /.+/;
+      var partialLogger = this.defaultLogger_;
+      for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+        args[_key2] = arguments[_key2];
+      }
+      if (args.length === 1) {
+        var arg = args[0];
+        if (typeof arg.log === "function") {
+          partialLogger = arg;
+        } else {
+          tagMatch = arg;
+        }
+      } else if (args.length === 2) {
+        var _arg;
+        tagMatch = args[0];
+        _arg = args[1];
+        if (typeof _arg.log === "function") {
+          partialLogger = _arg;
+        } else {
+          notificationMatch = _arg;
+        }
+      } else if (args.length === 3) {
+        tagMatch = args[0];
+        notificationMatch = args[1];
+        partialLogger = args[2];
+      }
+      return this.plug(new LogPlugin(this, tagMatch, notificationMatch, partialLogger));
+    }
+  }, {
+    key: "maxLogged",
+    value: function maxLogged(value) {
+      this.maxLogged_ = Math.max(value, 1);
+    }
+  }, {
+    key: "pause",
+    value: function pause(match) {
+      var pausePlugin = new PausePlugin(match);
+      var teardown = this.plug(pausePlugin);
+      var deck = pausePlugin.deck;
+      deck.teardown = teardown;
+      return deck;
+    }
+  }, {
+    key: "plug",
+    value: function plug() {
+      var _this$plugins_, _this$undos_, _this2 = this;
+      for (var _len3 = arguments.length, plugins = new Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+        plugins[_key3] = arguments[_key3];
+      }
+      (_this$plugins_ = this.plugins_).push.apply(_this$plugins_, plugins);
+      this.pluginsSubject_.next(this.plugins_);
+      (_this$undos_ = this.undos_).push.apply(_this$undos_, plugins);
+      return function() {
+        return _this2.unplug.apply(_this2, plugins);
+      };
+    }
+  }, {
+    key: "query",
+    value: function query(predicate, partialLogger) {
+      var _this3 = this;
+      var snapshotPlugin = this.find(SnapshotPlugin);
+      if (!snapshotPlugin) {
+        this.warnOnce(console, "Snapshotting is not enabled.");
+        return;
+      }
+      var snapshot = snapshotPlugin.snapshotAll();
+      var observableSnapshots = Array.from(snapshot.observables.values());
+      var logger = toLogger(partialLogger || this.defaultLogger_);
+      snapshot.mapStackTraces(observableSnapshots).subscribe(function() {
+        var found = [];
+        observableSnapshots.forEach(function(observableSnapshot) {
+          var find;
+          var subscriptions = observableSnapshot.subscriptions;
+          subscriptions.forEach(function(subscriptionSnapshot) {
+            var subscriberSnapshot = snapshot.subscribers.get(subscriptionSnapshot.subscriber);
+            if (subscriberSnapshot) {
+              if (predicate({
+                complete: subscriptionSnapshot.complete,
+                error: subscriptionSnapshot.error,
+                incomplete: !subscriptionSnapshot.complete && !subscriptionSnapshot.error,
+                path: observableSnapshot.path,
+                root: subscriptionSnapshot.sink === subscriptionSnapshot.rootSink,
+                tag: observableSnapshot.tag,
+                type: observableSnapshot.type,
+                unsubscribed: subscriptionSnapshot.unsubscribed
+              })) {
+                if (!find) {
+                  find = {
+                    observable: observableSnapshot,
+                    subs: []
+                  };
+                }
+                find.subs.push({
+                  subscriber: subscriberSnapshot,
+                  subscription: subscriptionSnapshot
+                });
+              }
+            }
+          });
+          if (find) {
+            found.push(find);
+          }
+        });
+        var maxLogged_ = _this3.maxLogged_;
+        var notLogged = found.length > maxLogged_ ? found.length - maxLogged_ : 0;
+        if (notLogged) {
+          found.splice(maxLogged_, notLogged);
+        }
+        logger.group("".concat(found.length + notLogged, " snapshot(s) found"));
+        var observableGroupMethod = found.length > 3 ? "groupCollapsed" : "group";
+        found.forEach(function(find) {
+          var observableSnapshot = find.observable;
+          logger[observableGroupMethod].call(logger, observableSnapshot.tag ? "Tag = ".concat(observableSnapshot.tag) : "Type = ".concat(observableSnapshot.type));
+          logger.log("Path =", observableSnapshot.path);
+          var subs = find.subs;
+          var subscriberGroupMethod = find.subs.length > 3 ? "groupCollapsed" : "group";
+          logger.group("".concat(subs.length, " subscriber(s)"));
+          subs.forEach(function(sub) {
+            var subscriptionSnapshot = sub.subscription;
+            var subscriberSnapshot = sub.subscriber;
+            var values = subscriberSnapshot.values, valuesFlushed = subscriberSnapshot.valuesFlushed;
+            logger[subscriberGroupMethod].call(logger, "Subscriber");
+            logger.log("Value count =", values.length + valuesFlushed);
+            if (values.length > 0) {
+              logger.log("Last value =", values[values.length - 1].value);
+            }
+            logSubscription(logger, subscriptionSnapshot);
+            var otherSubscriptions = Array.from(subscriberSnapshot.subscriptions.values()).filter(function(otherSubscriptionSnapshot) {
+              return otherSubscriptionSnapshot !== subscriptionSnapshot;
+            });
+            otherSubscriptions.forEach(function(otherSubscriptionSnapshot) {
+              logger.groupCollapsed("Other subscription");
+              logSubscription(logger, otherSubscriptionSnapshot);
+              logger.groupEnd();
+            });
+            logger.groupEnd();
+          });
+          logger.groupEnd();
+          logger.groupEnd();
+        });
+        if (notLogged) {
+          logger.log("... another ".concat(notLogged, " snapshot(s) not logged."));
+        }
+        logger.groupEnd();
+      });
+    }
+  }, {
+    key: "show",
+    value: function show(match, partialLogger) {
+      var anyTagged = /.+/;
+      if (!match) {
+        match = anyTagged;
+      } else if (typeof match.log === "function") {
+        partialLogger = match;
+        match = anyTagged;
+      }
+      var snapshotPlugin = this.find(SnapshotPlugin);
+      if (!snapshotPlugin) {
+        this.warnOnce(console, "Snapshotting is not enabled.");
+        return;
+      }
+      var snapshot = snapshotPlugin.snapshotAll();
+      var matched = Array.from(snapshot.observables.values()).filter(function(observableSnapshot) {
+        return matches(observableSnapshot.observable, match);
+      });
+      var logger = toLogger(partialLogger || this.defaultLogger_);
+      var maxLogged_ = this.maxLogged_;
+      var notLogged = matched.length > maxLogged_ ? matched.length - maxLogged_ : 0;
+      if (notLogged) {
+        matched.splice(maxLogged_, notLogged);
+      }
+      snapshot.mapStackTraces(matched).subscribe(function() {
+        logger.group("".concat(matched.length + notLogged, " snapshot(s) matching ").concat(toString(match)));
+        var observableGroupMethod = matched.length > 3 ? "groupCollapsed" : "group";
+        matched.forEach(function(observableSnapshot) {
+          logger[observableGroupMethod].call(logger, observableSnapshot.tag ? "Tag = ".concat(observableSnapshot.tag) : "Type = ".concat(observableSnapshot.type));
+          logger.log("Path =", observableSnapshot.path);
+          var subscriptions = observableSnapshot.subscriptions;
+          var subscriberGroupMethod = subscriptions.size > 3 ? "groupCollapsed" : "group";
+          logger.group("".concat(subscriptions.size, " subscriber(s)"));
+          subscriptions.forEach(function(subscriptionSnapshot) {
+            var subscriberSnapshot = snapshot.subscribers.get(subscriptionSnapshot.subscriber);
+            if (subscriberSnapshot) {
+              var values = subscriberSnapshot.values, valuesFlushed = subscriberSnapshot.valuesFlushed;
+              logger[subscriberGroupMethod].call(logger, "Subscriber");
+              logger.log("Value count =", values.length + valuesFlushed);
+              if (values.length > 0) {
+                logger.log("Last value =", values[values.length - 1].value);
+              }
+              logSubscription(logger, subscriptionSnapshot);
+              var otherSubscriptions = Array.from(subscriberSnapshot.subscriptions.values()).filter(function(otherSubscriptionSnapshot) {
+                return otherSubscriptionSnapshot !== subscriptionSnapshot;
+              });
+              otherSubscriptions.forEach(function(otherSubscriptionSnapshot) {
+                logger.groupCollapsed("Other subscription");
+                logSubscription(logger, otherSubscriptionSnapshot);
+                logger.groupEnd();
+              });
+              logger.groupEnd();
+            } else {
+              logger.warn("Cannot find subscriber snapshot");
+            }
+          });
+          logger.groupEnd();
+          logger.groupEnd();
+        });
+        if (notLogged) {
+          logger.log("... another ".concat(notLogged, " snapshot(s) not logged."));
+        }
+        logger.groupEnd();
+      });
+    }
+  }, {
+    key: "stats",
+    value: function stats(partialLogger) {
+      var statsPlugin = this.find(StatsPlugin);
+      if (!statsPlugin) {
+        this.warnOnce(console, "Stats are not enabled.");
+        return;
+      }
+      var stats2 = statsPlugin.stats;
+      var leafSubscribes = stats2.leafSubscribes, maxDepth = stats2.maxDepth, flattenedSubscribes = stats2.flattenedSubscribes, rootSubscribes = stats2.rootSubscribes, totalDepth = stats2.totalDepth;
+      var logger = toLogger(partialLogger || this.defaultLogger_);
+      logger.group("Stats");
+      logger.log("Subscribes =", stats2.subscribes);
+      if (rootSubscribes > 0) {
+        logger.log("Root subscribes =", rootSubscribes);
+      }
+      if (leafSubscribes > 0) {
+        logger.log("Leaf subscribes =", leafSubscribes);
+      }
+      if (flattenedSubscribes > 0) {
+        logger.log("Flattened subscribes =", flattenedSubscribes);
+      }
+      logger.log("Unsubscribes =", stats2.unsubscribes);
+      logger.log("Nexts =", stats2.nexts);
+      logger.log("Errors =", stats2.errors);
+      logger.log("Completes =", stats2.completes);
+      if (maxDepth > 0) {
+        logger.log("Max. depth =", maxDepth);
+        logger.log("Avg. depth =", (totalDepth / leafSubscribes).toFixed(1));
+      }
+      logger.log("Tick =", stats2.tick);
+      logger.log("Timespan =", stats2.timespan);
+      logger.groupEnd();
+    }
+  }, {
+    key: "teardown",
+    value: function teardown() {
+      if (this.teardown_) {
+        this.teardown_();
+        this.teardown_ = void 0;
+      }
+    }
+  }, {
+    key: "unplug",
+    value: function unplug() {
+      var _this4 = this;
+      for (var _len4 = arguments.length, plugins = new Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
+        plugins[_key4] = arguments[_key4];
+      }
+      plugins.forEach(function(plugin) {
+        plugin.teardown();
+        _this4.plugins_ = _this4.plugins_.filter(function(p) {
+          return p !== plugin;
+        });
+        _this4.pluginsSubject_.next(_this4.plugins_);
+        _this4.undos_ = _this4.undos_.filter(function(u) {
+          return u !== plugin;
+        });
+      });
+    }
+    /** @deprecated Use warnOnce */
+  }, {
+    key: "warn",
+    value: function warn(logger, message) {
+      for (var _len5 = arguments.length, args = new Array(_len5 > 2 ? _len5 - 2 : 0), _key5 = 2; _key5 < _len5; _key5++) {
+        args[_key5 - 2] = arguments[_key5];
+      }
+      this.warnOnce.apply(this, [logger, message].concat(args));
+    }
+  }, {
+    key: "warnOnce",
+    value: function warnOnce(logger, message) {
+      if (!this.warned_[message]) {
+        var _toLogger;
+        for (var _len6 = arguments.length, args = new Array(_len6 > 2 ? _len6 - 2 : 0), _key6 = 2; _key6 < _len6; _key6++) {
+          args[_key6 - 2] = arguments[_key6];
+        }
+        (_toLogger = toLogger(logger)).warn.apply(_toLogger, [message].concat(args));
+        this.warned_[message] = true;
+      }
+    }
+    /*tslint:disable-next-line:member-ordering*/
+  }, {
+    key: "detect_",
+    value: function detect_(id, detector) {
+      var auditor_ = this.auditor_, defaultLogger_ = this.defaultLogger_;
+      auditor_.audit(id, function(ignored) {
+        var detected = detector.detect(id);
+        var logger = toLogger(defaultLogger_);
+        if (detected) {
+          var audit = ignored === 0 ? "" : "; ignored ".concat(ignored);
+          logger.group("Subscription changes detected; id = '".concat(id, "'").concat(audit));
+          detected.subscriptions.forEach(function(s) {
+            logSubscription2(logger, "Subscription", s);
+          });
+          detected.unsubscriptions.forEach(function(s) {
+            logSubscription2(logger, "Unsubscription", s);
+          });
+          detected.flatteningSubscriptions.forEach(function(s) {
+            logSubscription2(logger, "Flattening subscription", s);
+          });
+          detected.flatteningUnsubscriptions.forEach(function(s) {
+            logSubscription2(logger, "Flattening unsubscription", s);
+          });
+          logger.groupEnd();
+        }
+        function logSubscription2(logger2, name, subscription) {
+          logger2.group(name);
+          logger2.log("Root subscribe", subscription.rootSink ? subscription.rootSink.stackTrace : subscription.stackTrace);
+          logger2.log("Subscribe", subscription.stackTrace);
+          logger2.groupEnd();
+        }
+      });
+    }
+  }], [{
+    key: "coreSubscribe_",
+    value: function coreSubscribe_() {
+      var observable3 = this;
+      var spy_ = SpyCore2.spy_;
+      for (var _len7 = arguments.length, args = new Array(_len7), _key7 = 0; _key7 < _len7; _key7++) {
+        args[_key7] = arguments[_key7];
+      }
+      if (!spy_) {
+        return observableSubscribe.apply(observable3, args);
+      }
+      if (hidden(observable3)) {
+        SpyCore2.spy_ = void 0;
+        try {
+          return observableSubscribe.apply(observable3, args);
+        } finally {
+          SpyCore2.spy_ = spy_;
+        }
+      }
+      var notify_ = function notify_2(before, block, after) {
+        ++spy_.tick_;
+        spy_.plugins_.forEach(before);
+        block();
+        spy_.plugins_.forEach(after);
+      };
+      var subscriber = toSubscriber.apply(void 0, args);
+      var ref = {
+        observable: observable3,
+        subscriber,
+        subscription: new Subscription(),
+        timestamp: Date.now(),
+        unsubscribed: false
+      };
+      identify(observable3);
+      identify(subscriber);
+      identify(ref);
+      var subscriberUnsubscribe = subscriber.unsubscribe;
+      subscriber.unsubscribe = function() {
+        if (!subscriber.closed) {
+          notify_(function(plugin) {
+            return plugin.beforeUnsubscribe(ref);
+          }, function() {
+            ref.subscription.unsubscribe();
+            ref.unsubscribed = true;
+            subscriberUnsubscribe.call(subscriber);
+          }, function(plugin) {
+            return plugin.afterUnsubscribe(ref);
+          });
+        } else {
+          subscriberUnsubscribe.call(subscriber);
+        }
+      };
+      var postSelectObserver = {
+        complete: function complete() {
+          notify_(function(plugin) {
+            return plugin.beforeComplete(ref);
+          }, function() {
+            return subscriber.complete();
+          }, function(plugin) {
+            return plugin.afterComplete(ref);
+          });
+        },
+        error: function error(_error) {
+          notify_(function(plugin) {
+            return plugin.beforeError(ref, _error);
+          }, function() {
+            return subscriber.error(_error);
+          }, function(plugin) {
+            return plugin.afterError(ref, _error);
+          });
+        },
+        next: function next(value) {
+          notify_(function(plugin) {
+            return plugin.beforeNext(ref, value);
+          }, function() {
+            return subscriber.next(value);
+          }, function(plugin) {
+            return plugin.afterNext(ref, value);
+          });
+        }
+      };
+      var preSelectObserver = {
+        complete: function complete() {
+          this.completed = true;
+          if (this.preSelectSubject) {
+            this.preSelectSubject.complete();
+          } else {
+            this.postSelectObserver.complete();
+          }
+        },
+        completed: false,
+        error: function error(_error2) {
+          this.errored = true;
+          if (this.preSelectSubject) {
+            this.preSelectSubject.error(_error2);
+          } else {
+            this.postSelectObserver.error(_error2);
+          }
+        },
+        errored: false,
+        "let": function _let(plugins) {
+          var selectors = plugins.map(function(plugin) {
+            return plugin.select(ref);
+          }).filter(Boolean);
+          if (selectors.length > 0) {
+            if (!this.preSelectSubject) {
+              this.preSelectSubject = new Subject();
+            }
+            if (this.postSelectSubscription) {
+              this.postSelectSubscription.unsubscribe();
+            }
+            var _source = this.preSelectSubject.asObservable();
+            selectors.forEach(function(selector) {
+              return _source = selector(_source);
+            });
+            this.postSelectSubscription = _source.pipe(hide()).subscribe(postSelectObserver);
+          } else if (this.postSelectSubscription) {
+            this.postSelectSubscription.unsubscribe();
+            this.postSelectSubscription = void 0;
+            this.preSelectSubject = void 0;
+          }
+        },
+        next: function next(value) {
+          if (this.preSelectSubject) {
+            this.preSelectSubject.next(value);
+          } else {
+            this.postSelectObserver.next(value);
+          }
+        },
+        postSelectObserver,
+        postSelectSubscription: void 0,
+        preSelectSubject: void 0,
+        unsubscribe: function unsubscribe() {
+          if (!this.unsubscribed) {
+            this.unsubscribed = true;
+            if (!this.completed && !this.errored) {
+              if (this.postSelectSubscription) {
+                this.postSelectSubscription.unsubscribe();
+                this.postSelectSubscription = void 0;
+              }
+            }
+          }
+        },
+        unsubscribed: false
+      };
+      subscriber.add(spy_.pluginsSubject_.pipe(hide()).subscribe({
+        next: function next(plugins) {
+          return preSelectObserver["let"](plugins);
+        }
+      }));
+      notify_(function(plugin) {
+        return plugin.beforeSubscribe(ref);
+      }, function() {
+        subscriber.add(observableSubscribe.call(observable3, preSelectObserver));
+        subscriber.add(function() {
+          return preSelectObserver.unsubscribe();
+        });
+      }, function(plugin) {
+        return plugin.afterSubscribe(ref);
+      });
+      return subscriber;
+    }
+  }]);
+  return SpyCore2;
+}();
+_defineProperty(SpyCore, "spy_", void 0);
+function logStackTrace(logger, subscriptionSnapshot) {
+  var mappedStackTrace = subscriptionSnapshot.mappedStackTrace, rootSink = subscriptionSnapshot.rootSink;
+  var mapped = rootSink ? rootSink.mappedStackTrace : mappedStackTrace;
+  mapped.subscribe(function(stackTrace) {
+    return logger.log("Root subscribe", stackTrace);
+  });
+}
+function logSubscription(logger, subscriptionSnapshot) {
+  var complete = subscriptionSnapshot.complete, error = subscriptionSnapshot.error, unsubscribed = subscriptionSnapshot.unsubscribed;
+  logger.log("State =", complete ? "complete" : error ? "error" : "incomplete");
+  if (error) {
+    logger.error("Error =", error);
+  }
+  if (unsubscribed) {
+    logger.log("Unsubscribed =", true);
+  }
+  logStackTrace(logger, subscriptionSnapshot);
+}
+function create() {
+  var options = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : {};
+  return new SpyCore(options);
+}
+
+// node_modules/rxjs-spy/esm/operators/index.js
+function _classCallCheck2(instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+}
+function _defineProperties2(target, props) {
+  for (var i = 0; i < props.length; i++) {
+    var descriptor = props[i];
+    descriptor.enumerable = descriptor.enumerable || false;
+    descriptor.configurable = true;
+    if ("value" in descriptor)
+      descriptor.writable = true;
+    Object.defineProperty(target, descriptor.key, descriptor);
+  }
+}
+function _createClass2(Constructor, protoProps, staticProps) {
+  if (protoProps)
+    _defineProperties2(Constructor.prototype, protoProps);
+  if (staticProps)
+    _defineProperties2(Constructor, staticProps);
+  return Constructor;
+}
+function _defineProperty2(obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+  return obj;
+}
+function tag(tag2) {
+  return function tagOperation(source) {
+    return source.lift(new TagOperator(tag2));
+  };
+}
+var TagOperator = /* @__PURE__ */ function() {
+  function TagOperator2(tag2) {
+    _classCallCheck2(this, TagOperator2);
+    _defineProperty2(this, "tag", void 0);
+    this.tag = tag2;
+  }
+  _createClass2(TagOperator2, [{
+    key: "call",
+    value: function call(subscriber, source) {
+      return source.subscribe(subscriber);
+    }
+  }]);
+  return TagOperator2;
+}();
 
 // progvm.ts
 var BaseSpeed = 5e-3;
@@ -10268,50 +14489,57 @@ function Progress({ item }, { bindEffect, events }) {
 }
 
 // main.tsx
+var spy = create();
+spy.log(/./);
 var w = window;
 w.jQuery = w.$ = import_jquery.default;
 await Promise.resolve().then(() => __toESM(require_jquery_knob_min(), 1));
 function Main(_props, { bindEffect, events }) {
   const { addItem, pauseAll, unpauseAll } = events;
   const bfDomAttach = events.attach;
-  const dial = bfDomAttach.pipe(
+  const vm = bfDomAttach.pipe(
     switchMap((element) => {
-      console.log("dial attach");
       return new Observable((subscriber) => {
         element.dataset.min = "0";
         element.dataset.max = "360";
         element.dataset.readOnly = "true";
         element.dataset.displayInput = "false";
-        const dial2 = (0, import_jquery.default)(element);
-        dial2.knob();
-        subscriber.next(dial2);
-      });
-    })
-  );
-  const vm = dial.pipe(
-    switchMap((dial2) => {
-      return new Observable((subscriber) => {
-        const vm2 = new CompRadProgVm(dial2, interval(500));
+        const dial = (0, import_jquery.default)(element);
+        dial.knob();
+        const vm2 = new CompRadProgVm(dial, interval(500));
         subscriber.next(vm2);
         return () => vm2.unsubscribe();
       });
     }),
+    tag("vm"),
     shareReplay(1)
   );
   const targetRoundPercent = vm.pipe(
     switchMap((vm2) => vm2.targetRoundPercent),
+    tag("target-percent"),
     shareReplay(1)
   );
   const progressStyle = targetRoundPercent.pipe(
-    map((targetRoundPercent2) => `min-width: 2em; width: ${targetRoundPercent2}`)
+    map((targetRoundPercent2) => `min-width: 2em; width: ${targetRoundPercent2}`),
+    tag("progress-style")
   );
-  bindEffect(addItem.pipe(withLatestFrom(vm)), ([, vm2]) => vm2.addItem());
-  bindEffect(pauseAll.pipe(withLatestFrom(vm)), ([, vm2]) => vm2.unpauseAll());
-  bindEffect(unpauseAll.pipe(withLatestFrom(vm)), ([, vm2]) => vm2.unpauseAll());
+  bindEffect(
+    addItem.pipe(withLatestFrom(vm), tag("add-item")),
+    ([, vm2]) => vm2.addItem()
+  );
+  bindEffect(
+    pauseAll.pipe(withLatestFrom(vm), tag("pause-all")),
+    ([, vm2]) => vm2.unpauseAll()
+  );
+  bindEffect(
+    unpauseAll.pipe(withLatestFrom(vm), tag("unpause-all")),
+    ([, vm2]) => vm2.unpauseAll()
+  );
   const children = vm.pipe(
     switchMap((vm2) => vm2.progressAdded),
     filter((progVm) => progVm !== null),
-    map((progVm) => () => /* @__PURE__ */ jsx(Progress, { item: progVm }))
+    map((progVm) => () => /* @__PURE__ */ jsx(Progress, { item: progVm })),
+    tag("children")
   );
   return /* @__PURE__ */ jsx("div", { className: "row" }, /* @__PURE__ */ jsx("div", { className: "col-md-6" }, /* @__PURE__ */ jsx(
     "input",
@@ -10320,7 +14548,7 @@ function Main(_props, { bindEffect, events }) {
       id: "dial",
       className: "dial",
       value: "0",
-      bind: { bfDomAttach }
+      events: { bfDomAttach }
     }
   ), /* @__PURE__ */ jsx("label", { htmlFor: "dial", className: "hidden" }, "Total Progress")), /* @__PURE__ */ jsx("div", { className: "col-md-6" }, /* @__PURE__ */ jsx("div", { className: "progress" }, /* @__PURE__ */ jsx(
     "div",
@@ -10360,7 +14588,11 @@ function Main(_props, { bindEffect, events }) {
   )), /* @__PURE__ */ jsx("div", { className: "list-group", childrenBind: children, childrenPrepend: true })));
 }
 var container = document.getElementById("container");
-run(container, Main);
+run(container, Main, {
+  isStaticComponent: true,
+  isStaticTree: true,
+  preserveOnComplete: true
+});
 /*! Bundled license information:
 
 jquery/dist/jquery.js:
@@ -10376,5 +14608,29 @@ jquery/dist/jquery.js:
    * https://jquery.org/license
    *
    * Date: 2021-03-02T17:08Z
+   *)
+
+rxjs-spy/esm/index.js:
+  (**
+   * @license Use of this source code is governed by an MIT-style license that
+   * can be found in the LICENSE file at https://github.com/cartant/rxjs-spy
+   *)
+
+rxjs-spy/esm/index.js:
+  (**
+   * @license Use of this source code is governed by an MIT-style license that
+   * can be found in the LICENSE file at https://github.com/cartant/rxjs-spy
+   *)
+
+rxjs-spy/esm/operators/index.js:
+  (**
+   * @license Use of this source code is governed by an MIT-style license that
+   * can be found in the LICENSE file at https://github.com/cartant/rxjs-spy
+   *)
+
+rxjs-spy/esm/operators/index.js:
+  (**
+   * @license Use of this source code is governed by an MIT-style license that
+   * can be found in the LICENSE file at https://github.com/cartant/rxjs-spy
    *)
 */
