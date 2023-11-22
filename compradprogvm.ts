@@ -4,15 +4,16 @@ import {
   combineLatest,
   combineLatestAll,
   concat,
-  concatMap,
   filter,
   interval,
   map,
   of,
   scan,
   shareReplay,
+  switchMap,
   withLatestFrom,
 } from 'rxjs'
+import { tag } from 'rxjs-spy/operators'
 import { ProgVm } from './progvm'
 import { butterfly } from 'butterfloat'
 
@@ -74,15 +75,22 @@ export class CompRadProgVm {
   constructor(dial?: JQuery<HTMLElement>, ticks?: Observable<unknown>) {
     ;[this.#progressAdded, this.#addProgress] = butterfly<ProgVm | null>(null)
 
-    this.#targetPercent = this.progressAdded.pipe(
-      filter((progress) => progress !== null),
-      map((progress) => progress!.percent),
-      combineLatestAll(),
-      map(
-        (progresses) => progresses.reduce((a, b) => a + b) / progresses.length,
+    this.#targetPercent = concat(
+      of(0),
+      this.progressAdded.pipe(
+        switchMap(() => {
+          return combineLatest(
+            this.#inprogress.map((progress) => progress.percent),
+          )
+        }),
+        tag('target-percent-progresses'),
+        map((progresses) =>
+          progresses.length
+            ? progresses.reduce((a, b) => a + b, 0) / progresses.length
+            : 0,
+        ),
       ),
-      shareReplay(1),
-    )
+    ).pipe(tag('target-percent-raw'), shareReplay(1))
 
     this.#targetRoundPercent = this.targetPercent.pipe(
       map((target) => target.toLocaleString(undefined, { style: 'percent' })),
@@ -95,7 +103,7 @@ export class CompRadProgVm {
     const current = concat(
       of([0, 0]),
       (ticks ?? interval(500)).pipe(
-        concatMap(() =>
+        switchMap(() =>
           Promise.all(this.#inprogress.map((item) => item.tick())),
         ),
         withLatestFrom(this.targetVal),
@@ -104,9 +112,8 @@ export class CompRadProgVm {
             this.#onTick(currentVal, currentOffset, targetVal),
           [0, 0],
         ),
-        shareReplay(1),
       ),
-    )
+    ).pipe(tag('vm-current'), shareReplay(1))
 
     this.#currentVal = current.pipe(map(([currentVal]) => currentVal))
     this.#currentOffset = current.pipe(
@@ -140,8 +147,8 @@ export class CompRadProgVm {
 
   addItem() {
     const progress = new ProgVm()
+    this.#inprogress.unshift(progress)
     this.#addProgress(progress)
-    this.#inprogress.unshift(new ProgVm())
   }
 
   #onTick(
@@ -158,7 +165,7 @@ export class CompRadProgVm {
       const diff = Math.min(targetVal - currentVal, this.maxGrowthPerTick)
       currentVal += diff
       if (this.growthSpinRate) {
-        currentOffset += this.growthSpinRate
+        currentOffset = (currentOffset + this.growthSpinRate) % 360
       }
       this.#spinTickCount = 0
     } else if (targetVal < currentVal && currentVal > this.minBar) {

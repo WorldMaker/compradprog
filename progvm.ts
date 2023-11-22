@@ -1,11 +1,6 @@
 import { StateSetter, butterfly } from 'butterfloat'
-import {
-  combineLatest,
-  firstValueFrom,
-  Observable,
-  map,
-  shareReplay,
-} from 'rxjs'
+import { firstValueFrom, Observable, map, shareReplay } from 'rxjs'
+import { tag } from 'rxjs-spy/operators'
 
 export const BaseSpeed = 0.005
 export const SpeedMultiplier = 2
@@ -48,6 +43,8 @@ export class ProgVm {
 
     this.#roundPercent = this.percent.pipe(
       map((percent) => percent.toLocaleString(undefined, { style: 'percent' })),
+      tag('progvm-round-percent'),
+      shareReplay(1),
     )
   }
 
@@ -66,7 +63,7 @@ export class ProgVm {
   async tick() {
     const paused = await firstValueFrom(this.paused)
     const perTick = paused ? 0 : await firstValueFrom(this.perTick)
-    this.#setPercent((percent) => percent + perTick)
+    this.#setPercent((percent) => Math.min(percent + perTick, 1))
   }
   finish() {
     this.#setPercent(1)

@@ -1351,11 +1351,11 @@ var require_jquery = __commonJS({
             }
             return results;
           }
-          function condense(unmatched, map2, filter2, context2, xml) {
+          function condense(unmatched, map2, filter3, context2, xml) {
             var elem, newUnmatched = [], i2 = 0, len = unmatched.length, mapped = map2 != null;
             for (; i2 < len; i2++) {
               if (elem = unmatched[i2]) {
-                if (!filter2 || filter2(elem, context2, xml)) {
+                if (!filter3 || filter3(elem, context2, xml)) {
                   newUnmatched.push(elem);
                   if (mapped) {
                     map2.push(i2);
@@ -7565,13 +7565,6 @@ function identity(x) {
 }
 
 // node_modules/rxjs/dist/esm5/internal/util/pipe.js
-function pipe() {
-  var fns = [];
-  for (var _i = 0; _i < arguments.length; _i++) {
-    fns[_i] = arguments[_i];
-  }
-  return pipeFromArray(fns);
-}
 function pipeFromArray(fns) {
   if (fns.length === 0) {
     return identity;
@@ -9334,38 +9327,6 @@ function scanInternals(accumulator, seed, hasSeed, emitOnNext, emitBeforeComplet
   };
 }
 
-// node_modules/rxjs/dist/esm5/internal/operators/reduce.js
-function reduce(accumulator, seed) {
-  return operate(scanInternals(accumulator, seed, arguments.length >= 2, false, true));
-}
-
-// node_modules/rxjs/dist/esm5/internal/operators/toArray.js
-var arrReducer = function(arr, value) {
-  return arr.push(value), arr;
-};
-function toArray() {
-  return operate(function(source, subscriber) {
-    reduce(arrReducer, [])(source).subscribe(subscriber);
-  });
-}
-
-// node_modules/rxjs/dist/esm5/internal/operators/joinAllInternals.js
-function joinAllInternals(joinFn, project) {
-  return pipe(toArray(), mergeMap(function(sources) {
-    return joinFn(sources);
-  }), project ? mapOneOrManyArgs(project) : identity);
-}
-
-// node_modules/rxjs/dist/esm5/internal/operators/combineLatestAll.js
-function combineLatestAll(project) {
-  return joinAllInternals(combineLatest, project);
-}
-
-// node_modules/rxjs/dist/esm5/internal/operators/concatMap.js
-function concatMap(project, resultSelector) {
-  return isFunction(resultSelector) ? mergeMap(project, resultSelector, 1) : mergeMap(project, 1);
-}
-
 // node_modules/rxjs/dist/esm5/internal/operators/take.js
 function take(count) {
   return count <= 0 ? function() {
@@ -9775,7 +9736,10 @@ function bindObjectKey(item, key, observable3, error, complete) {
       item[key] = value;
     },
     error,
-    complete
+    complete: () => {
+      console.debug(`${key.toString()} binding completed`, item);
+      complete();
+    }
   });
 }
 function bindObjectChanges(item, observable3, error, complete) {
@@ -9784,7 +9748,10 @@ function bindObjectChanges(item, observable3, error, complete) {
       Object.assign(item, changes);
     },
     error,
-    complete
+    complete: () => {
+      console.debug(`Change binding completed`, item);
+      complete();
+    }
   });
 }
 function bufferEntries(observable3, suspense) {
@@ -9819,8 +9786,10 @@ function bindElement(element, description, context2, document2 = globalThis.docu
       subscription.add(bindObjectKey(element, key, observable3, error, complete));
     }
   }
-  const scheduled2 = schedulables.map(([key, observable3]) => makeEntries(key, observable3));
-  subscription.add(bindObjectChanges(element, bufferEntries(merge(...scheduled2), suspense), error, complete));
+  if (schedulables.length) {
+    const scheduled2 = schedulables.map(([key, observable3]) => makeEntries(key, observable3));
+    subscription.add(bindObjectChanges(element, bufferEntries(merge(...scheduled2), suspense), error, complete));
+  }
   for (const [key, event] of Object.entries(description.events)) {
     subscription.add(eventBinder.applyEvent(event, element, key));
   }
@@ -9841,7 +9810,10 @@ function bindElement(element, description, context2, document2 = globalThis.docu
         }, context2, placeholder));
       },
       error,
-      complete
+      complete: () => {
+        console.debug(`Children binding completed`, element);
+        complete();
+      }
     }));
   }
   return subscription;
@@ -10091,9 +10063,9 @@ function run(container2, component, context2, placeholder, document2 = globalThi
   return observable3.subscribe({
     next(node) {
       if (previousNode) {
-        container2.replaceChild(node, previousNode);
+        previousNode.replaceWith(node);
       } else if (placeholder) {
-        container2.replaceChild(node, placeholder);
+        placeholder.replaceWith(node);
       } else {
         container2.appendChild(node);
       }
@@ -14254,7 +14226,9 @@ var ProgVm = class {
     [this.#paused, this.#setPaused] = butterfly(false);
     [this.#perTick, this.#setPerTick] = butterfly(BaseSpeed);
     this.#roundPercent = this.percent.pipe(
-      map((percent) => percent.toLocaleString(void 0, { style: "percent" }))
+      map((percent) => percent.toLocaleString(void 0, { style: "percent" })),
+      tag("progvm-round-percent"),
+      shareReplay(1)
     );
   }
   pause() {
@@ -14272,7 +14246,7 @@ var ProgVm = class {
   async tick() {
     const paused = await firstValueFrom(this.paused);
     const perTick = paused ? 0 : await firstValueFrom(this.perTick);
-    this.#setPercent((percent) => percent + perTick);
+    this.#setPercent((percent) => Math.min(percent + perTick, 1));
   }
   finish() {
     this.#setPercent(1);
@@ -14328,15 +14302,20 @@ var CompRadProgVm = class {
   constructor(dial, ticks) {
     ;
     [this.#progressAdded, this.#addProgress] = butterfly(null);
-    this.#targetPercent = this.progressAdded.pipe(
-      filter((progress) => progress !== null),
-      map((progress) => progress.percent),
-      combineLatestAll(),
-      map(
-        (progresses) => progresses.reduce((a, b) => a + b) / progresses.length
-      ),
-      shareReplay(1)
-    );
+    this.#targetPercent = concat(
+      of(0),
+      this.progressAdded.pipe(
+        switchMap(() => {
+          return combineLatest(
+            this.#inprogress.map((progress) => progress.percent)
+          );
+        }),
+        tag("target-percent-progresses"),
+        map(
+          (progresses) => progresses.length ? progresses.reduce((a, b) => a + b, 0) / progresses.length : 0
+        )
+      )
+    ).pipe(tag("target-percent-raw"), shareReplay(1));
     this.#targetRoundPercent = this.targetPercent.pipe(
       map((target) => target.toLocaleString(void 0, { style: "percent" }))
     );
@@ -14346,17 +14325,16 @@ var CompRadProgVm = class {
     const current = concat(
       of([0, 0]),
       (ticks ?? interval(500)).pipe(
-        concatMap(
+        switchMap(
           () => Promise.all(this.#inprogress.map((item) => item.tick()))
         ),
         withLatestFrom(this.targetVal),
         scan(
           ([currentVal, currentOffset], [, targetVal]) => this.#onTick(currentVal, currentOffset, targetVal),
           [0, 0]
-        ),
-        shareReplay(1)
+        )
       )
-    );
+    ).pipe(tag("vm-current"), shareReplay(1));
     this.#currentVal = current.pipe(map(([currentVal]) => currentVal));
     this.#currentOffset = current.pipe(
       map(([, currentOffset]) => currentOffset)
@@ -14384,8 +14362,8 @@ var CompRadProgVm = class {
   }
   addItem() {
     const progress = new ProgVm();
+    this.#inprogress.unshift(progress);
     this.#addProgress(progress);
-    this.#inprogress.unshift(new ProgVm());
   }
   #onTick(currentVal, currentOffset, targetVal) {
     if (currentVal < this.minBar) {
@@ -14395,7 +14373,7 @@ var CompRadProgVm = class {
       const diff = Math.min(targetVal - currentVal, this.maxGrowthPerTick);
       currentVal += diff;
       if (this.growthSpinRate) {
-        currentOffset += this.growthSpinRate;
+        currentOffset = (currentOffset + this.growthSpinRate) % 360;
       }
       this.#spinTickCount = 0;
     } else if (targetVal < currentVal && currentVal > this.minBar) {
@@ -14421,7 +14399,7 @@ var CompRadProgVm = class {
 };
 
 // progress.tsx
-function Progress({ item }, { bindEffect, events }) {
+function Progress({ item }, { bindImmediateEffect, events }) {
   const { finish, pause, slowDown, speedUp, unpause } = events;
   const progressStyle = item.roundPercent.pipe(
     map((percent) => `min-width: 2em; width: ${percent}`)
@@ -14432,11 +14410,11 @@ function Progress({ item }, { bindEffect, events }) {
   const unpauseVisible = item.paused.pipe(
     map((paused) => paused ? `visibility: visible` : `visibility: hidden`)
   );
-  bindEffect(finish, item.finish);
-  bindEffect(pause, item.pause);
-  bindEffect(slowDown, item.slowDown);
-  bindEffect(speedUp, item.speedUp);
-  bindEffect(unpause, item.unpause);
+  bindImmediateEffect(finish, () => item.finish());
+  bindImmediateEffect(pause, () => item.pause());
+  bindImmediateEffect(slowDown, () => item.slowDown());
+  bindImmediateEffect(speedUp, () => item.speedUp());
+  bindImmediateEffect(unpause, () => item.unpause());
   return /* @__PURE__ */ jsx("div", { className: "list-group-item" }, /* @__PURE__ */ jsx("div", { className: "progress" }, /* @__PURE__ */ jsx(
     "div",
     {
@@ -14474,7 +14452,7 @@ function Progress({ item }, { bindEffect, events }) {
       className: "btn btn-default",
       events: { click: slowDown }
     },
-    /* @__PURE__ */ jsx("span", { class: "glyphicon glyphicon-backward" })
+    /* @__PURE__ */ jsx("span", { className: "glyphicon glyphicon-backward" })
   ), /* @__PURE__ */ jsx(
     "button",
     {
@@ -14483,7 +14461,7 @@ function Progress({ item }, { bindEffect, events }) {
       className: "btn btn-default",
       events: { click: speedUp }
     },
-    /* @__PURE__ */ jsx("span", { class: "glyphicon glyphicon-forward" })
+    /* @__PURE__ */ jsx("span", { className: "glyphicon glyphicon-forward" })
   ), /* @__PURE__ */ jsx(
     "button",
     {
@@ -14492,28 +14470,28 @@ function Progress({ item }, { bindEffect, events }) {
       className: "btn btn-default",
       events: { click: finish }
     },
-    /* @__PURE__ */ jsx("span", { class: "glyphicon glyphicon-fast-forward" })
+    /* @__PURE__ */ jsx("span", { className: "glyphicon glyphicon-fast-forward" })
   )));
 }
 
 // main.tsx
 var spy = create();
-spy.log(/./);
 var w = window;
 w.jQuery = w.$ = import_jquery.default;
 await Promise.resolve().then(() => __toESM(require_jquery_knob_min(), 1));
-function Main(_props, { bindEffect, events }) {
+function Main(_props, { bindImmediateEffect, events }) {
   const { addItem, pauseAll, unpauseAll } = events;
   const bfDomAttach = events.attach;
   const vm = bfDomAttach.pipe(
     switchMap((element) => {
       return new Observable((subscriber) => {
-        element.dataset.min = "0";
-        element.dataset.max = "360";
-        element.dataset.readOnly = "true";
-        element.dataset.displayInput = "false";
         const dial = (0, import_jquery.default)(element);
-        dial.knob();
+        dial.knob({
+          min: 0,
+          max: 360,
+          readOnly: true,
+          displayInput: false
+        });
         const vm2 = new CompRadProgVm(dial, interval(500));
         subscriber.next(vm2);
         return () => vm2.unsubscribe();
@@ -14531,15 +14509,15 @@ function Main(_props, { bindEffect, events }) {
     map((targetRoundPercent2) => `min-width: 2em; width: ${targetRoundPercent2}`),
     tag("progress-style")
   );
-  bindEffect(
+  bindImmediateEffect(
     addItem.pipe(withLatestFrom(vm), tag("add-item")),
     ([, vm2]) => vm2.addItem()
   );
-  bindEffect(
+  bindImmediateEffect(
     pauseAll.pipe(withLatestFrom(vm), tag("pause-all")),
     ([, vm2]) => vm2.unpauseAll()
   );
-  bindEffect(
+  bindImmediateEffect(
     unpauseAll.pipe(withLatestFrom(vm), tag("unpause-all")),
     ([, vm2]) => vm2.unpauseAll()
   );
@@ -14596,11 +14574,7 @@ function Main(_props, { bindEffect, events }) {
   )), /* @__PURE__ */ jsx("div", { className: "list-group", childrenBind: children, childrenPrepend: true })));
 }
 var container = document.getElementById("container");
-run(container, Main, {
-  isStaticComponent: true,
-  isStaticTree: true,
-  preserveOnComplete: true
-});
+run(container, Main);
 /*! Bundled license information:
 
 jquery/dist/jquery.js:

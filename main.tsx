@@ -15,7 +15,6 @@ import { CompRadProgVm } from './compradprogvm'
 import { Progress } from './progress'
 
 const spy = create()
-spy.log(/./)
 
 // Set global for jquery-knob
 const w = window as any
@@ -33,7 +32,7 @@ interface MainEvents {
 
 function Main(
   _props: {},
-  { bindEffect, events }: ComponentContext<MainEvents>,
+  { bindImmediateEffect, events }: ComponentContext<MainEvents>,
 ) {
   const { addItem, pauseAll, unpauseAll } = events
 
@@ -42,15 +41,15 @@ function Main(
   const vm = bfDomAttach.pipe(
     switchMap((element) => {
       return new Observable<CompRadProgVm>((subscriber) => {
-        element.dataset.min = '0'
-        element.dataset.max = '360'
-        element.dataset.readOnly = 'true'
-        element.dataset.displayInput = 'false'
-
         // create and bind
         const dial = $(element)
 
-        dial.knob()
+        dial.knob({
+          min: 0,
+          max: 360,
+          readOnly: true,
+          displayInput: false,
+        })
 
         const vm = new CompRadProgVm(dial, interval(500))
         subscriber.next(vm)
@@ -72,15 +71,17 @@ function Main(
     tag('progress-style'),
   )
 
-  bindEffect(addItem.pipe(withLatestFrom(vm), tag('add-item')), ([, vm]) =>
-    vm.addItem(),
+  bindImmediateEffect(
+    addItem.pipe(withLatestFrom(vm), tag('add-item')),
+    ([, vm]) => vm.addItem(),
   )
 
-  bindEffect(pauseAll.pipe(withLatestFrom(vm), tag('pause-all')), ([, vm]) =>
-    vm.unpauseAll(),
+  bindImmediateEffect(
+    pauseAll.pipe(withLatestFrom(vm), tag('pause-all')),
+    ([, vm]) => vm.unpauseAll(),
   )
 
-  bindEffect(
+  bindImmediateEffect(
     unpauseAll.pipe(withLatestFrom(vm), tag('unpause-all')),
     ([, vm]) => vm.unpauseAll(),
   )
@@ -146,8 +147,4 @@ function Main(
 }
 
 const container = document.getElementById('container')!
-run(container, Main, {
-  isStaticComponent: true,
-  isStaticTree: true,
-  preserveOnComplete: true,
-})
+run(container, Main)

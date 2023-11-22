@@ -16,7 +16,7 @@ interface ProgressEvents {
 
 export function Progress(
   { item }: ProgressProps,
-  { bindEffect, events }: ComponentContext<ProgressEvents>,
+  { bindImmediateEffect, events }: ComponentContext<ProgressEvents>,
 ) {
   const { finish, pause, slowDown, speedUp, unpause } = events
 
@@ -32,11 +32,11 @@ export function Progress(
     map((paused) => (paused ? `visibility: visible` : `visibility: hidden`)),
   )
 
-  bindEffect(finish, () => item.finish())
-  bindEffect(pause, () => item.pause())
-  bindEffect(slowDown, () => item.slowDown())
-  bindEffect(speedUp, () => item.speedUp())
-  bindEffect(unpause, () => item.unpause())
+  bindImmediateEffect(finish, () => item.finish())
+  bindImmediateEffect(pause, () => item.pause())
+  bindImmediateEffect(slowDown, () => item.slowDown())
+  bindImmediateEffect(speedUp, () => item.speedUp())
+  bindImmediateEffect(unpause, () => item.unpause())
 
   return (
     <div className="list-group-item">
