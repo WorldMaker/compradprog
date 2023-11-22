@@ -33,9 +33,10 @@ function Main(
   const { addItem, pauseAll, unpauseAll } = events
 
   const bfDomAttach = events.attach
-  const dial = bfDomAttach.pipe(
+
+  const vm = bfDomAttach.pipe(
     switchMap((element) => {
-      return new Observable<JQuery<HTMLElement>>((subscriber) => {
+      return new Observable<CompRadProgVm>((subscriber) => {
         element.dataset.min = '0'
         element.dataset.max = '360'
         element.dataset.readOnly = 'true'
@@ -46,15 +47,6 @@ function Main(
 
         dial.knob()
 
-        subscriber.next(dial)
-      })
-    }),
-  )
-
-  const vm = dial.pipe(
-    switchMap((dial) => {
-      // extra wrapper for cleanup logic
-      return new Observable<CompRadProgVm>((subscriber) => {
         const vm = new CompRadProgVm(dial, interval(500))
         subscriber.next(vm)
         return () => vm.unsubscribe()
@@ -92,7 +84,7 @@ function Main(
           id="dial"
           className="dial"
           value="0"
-          bind={{ bfDomAttach }}
+          events={{ bfDomAttach }}
         />
         <label htmlFor="dial" className="hidden">
           Total Progress
