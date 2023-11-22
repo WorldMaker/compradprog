@@ -6,7 +6,7 @@
   "type": "module",
   "dependencies": {
     "@types/node": "^20.9.3",
-    "butterfloat": "^0.2.0",
+    "butterfloat": "^0.2.1",
     "jquery": "^3.6.0",
     "jquery-knob": "^1.2.11",
     "rxjs": "^7.8.1"
