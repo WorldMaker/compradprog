@@ -74,7 +74,7 @@ export function Progress(
           className="btn btn-default"
           events={{ click: slowDown }}
         >
-          <span class="glyphicon glyphicon-backward"></span>
+          <span className="glyphicon glyphicon-backward"></span>
         </button>
         <button
           type="button"
@@ -82,7 +82,7 @@ export function Progress(
           className="btn btn-default"
           events={{ click: speedUp }}
         >
-          <span class="glyphicon glyphicon-forward"></span>
+          <span className="glyphicon glyphicon-forward"></span>
         </button>
         <button
           type="button"
@@ -90,7 +90,7 @@ export function Progress(
           className="btn btn-default"
           events={{ click: finish }}
         >
-          <span class="glyphicon glyphicon-fast-forward"></span>
+          <span className="glyphicon glyphicon-fast-forward"></span>
         </button>
       </div>
     </div>
