@@ -8050,9 +8050,9 @@ var Action = function(_super) {
   function Action2(scheduler, work) {
     return _super.call(this) || this;
   }
-  Action2.prototype.schedule = function(state, delay2) {
-    if (delay2 === void 0) {
-      delay2 = 0;
+  Action2.prototype.schedule = function(state, delay) {
+    if (delay === void 0) {
+      delay = 0;
     }
     return this;
   };
@@ -8089,10 +8089,10 @@ var AsyncAction = function(_super) {
     _this.pending = false;
     return _this;
   }
-  AsyncAction2.prototype.schedule = function(state, delay2) {
+  AsyncAction2.prototype.schedule = function(state, delay) {
     var _a;
-    if (delay2 === void 0) {
-      delay2 = 0;
+    if (delay === void 0) {
+      delay = 0;
     }
     if (this.closed) {
       return this;
@@ -8101,24 +8101,24 @@ var AsyncAction = function(_super) {
     var id = this.id;
     var scheduler = this.scheduler;
     if (id != null) {
-      this.id = this.recycleAsyncId(scheduler, id, delay2);
+      this.id = this.recycleAsyncId(scheduler, id, delay);
     }
     this.pending = true;
-    this.delay = delay2;
-    this.id = (_a = this.id) !== null && _a !== void 0 ? _a : this.requestAsyncId(scheduler, this.id, delay2);
+    this.delay = delay;
+    this.id = (_a = this.id) !== null && _a !== void 0 ? _a : this.requestAsyncId(scheduler, this.id, delay);
     return this;
   };
-  AsyncAction2.prototype.requestAsyncId = function(scheduler, _id, delay2) {
-    if (delay2 === void 0) {
-      delay2 = 0;
+  AsyncAction2.prototype.requestAsyncId = function(scheduler, _id, delay) {
+    if (delay === void 0) {
+      delay = 0;
     }
-    return intervalProvider.setInterval(scheduler.flush.bind(scheduler, this), delay2);
+    return intervalProvider.setInterval(scheduler.flush.bind(scheduler, this), delay);
   };
-  AsyncAction2.prototype.recycleAsyncId = function(_scheduler, id, delay2) {
-    if (delay2 === void 0) {
-      delay2 = 0;
+  AsyncAction2.prototype.recycleAsyncId = function(_scheduler, id, delay) {
+    if (delay === void 0) {
+      delay = 0;
     }
-    if (delay2 != null && this.delay === delay2 && this.pending === false) {
+    if (delay != null && this.delay === delay && this.pending === false) {
       return id;
     }
     if (id != null) {
@@ -8126,12 +8126,12 @@ var AsyncAction = function(_super) {
     }
     return void 0;
   };
-  AsyncAction2.prototype.execute = function(state, delay2) {
+  AsyncAction2.prototype.execute = function(state, delay) {
     if (this.closed) {
       return new Error("executing a cancelled action");
     }
     this.pending = false;
-    var error = this._execute(state, delay2);
+    var error = this._execute(state, delay);
     if (error) {
       return error;
     } else if (this.pending === false && this.id != null) {
@@ -8178,11 +8178,11 @@ var Scheduler = function() {
     this.schedulerActionCtor = schedulerActionCtor;
     this.now = now;
   }
-  Scheduler2.prototype.schedule = function(work, delay2, state) {
-    if (delay2 === void 0) {
-      delay2 = 0;
+  Scheduler2.prototype.schedule = function(work, delay, state) {
+    if (delay === void 0) {
+      delay = 0;
     }
-    return new this.schedulerActionCtor(this, work).schedule(state, delay2);
+    return new this.schedulerActionCtor(this, work).schedule(state, delay);
   };
   Scheduler2.now = dateTimestampProvider.now;
   return Scheduler2;
@@ -8237,25 +8237,25 @@ var AnimationFrameAction = function(_super) {
     _this.work = work;
     return _this;
   }
-  AnimationFrameAction2.prototype.requestAsyncId = function(scheduler, id, delay2) {
-    if (delay2 === void 0) {
-      delay2 = 0;
+  AnimationFrameAction2.prototype.requestAsyncId = function(scheduler, id, delay) {
+    if (delay === void 0) {
+      delay = 0;
     }
-    if (delay2 !== null && delay2 > 0) {
-      return _super.prototype.requestAsyncId.call(this, scheduler, id, delay2);
+    if (delay !== null && delay > 0) {
+      return _super.prototype.requestAsyncId.call(this, scheduler, id, delay);
     }
     scheduler.actions.push(this);
     return scheduler._scheduled || (scheduler._scheduled = animationFrameProvider.requestAnimationFrame(function() {
       return scheduler.flush(void 0);
     }));
   };
-  AnimationFrameAction2.prototype.recycleAsyncId = function(scheduler, id, delay2) {
+  AnimationFrameAction2.prototype.recycleAsyncId = function(scheduler, id, delay) {
     var _a;
-    if (delay2 === void 0) {
-      delay2 = 0;
+    if (delay === void 0) {
+      delay = 0;
     }
-    if (delay2 != null ? delay2 > 0 : this.delay > 0) {
-      return _super.prototype.recycleAsyncId.call(this, scheduler, id, delay2);
+    if (delay != null ? delay > 0 : this.delay > 0) {
+      return _super.prototype.recycleAsyncId.call(this, scheduler, id, delay);
     }
     var actions = scheduler.actions;
     if (id != null && ((_a = actions[actions.length - 1]) === null || _a === void 0 ? void 0 : _a.id) !== id) {
@@ -8553,9 +8553,9 @@ function process(asyncIterable, subscriber) {
 }
 
 // node_modules/rxjs/dist/esm5/internal/util/executeSchedule.js
-function executeSchedule(parentSubscription, scheduler, work, delay2, repeat) {
-  if (delay2 === void 0) {
-    delay2 = 0;
+function executeSchedule(parentSubscription, scheduler, work, delay, repeat) {
+  if (delay === void 0) {
+    delay = 0;
   }
   if (repeat === void 0) {
     repeat = false;
@@ -8563,11 +8563,11 @@ function executeSchedule(parentSubscription, scheduler, work, delay2, repeat) {
   var scheduleSubscription = scheduler.schedule(function() {
     work();
     if (repeat) {
-      parentSubscription.add(this.schedule(null, delay2));
+      parentSubscription.add(this.schedule(null, delay));
     } else {
       this.unsubscribe();
     }
-  }, delay2);
+  }, delay);
   parentSubscription.add(scheduleSubscription);
   if (!repeat) {
     return scheduleSubscription;
@@ -8575,36 +8575,36 @@ function executeSchedule(parentSubscription, scheduler, work, delay2, repeat) {
 }
 
 // node_modules/rxjs/dist/esm5/internal/operators/observeOn.js
-function observeOn(scheduler, delay2) {
-  if (delay2 === void 0) {
-    delay2 = 0;
+function observeOn(scheduler, delay) {
+  if (delay === void 0) {
+    delay = 0;
   }
   return operate(function(source, subscriber) {
     source.subscribe(createOperatorSubscriber(subscriber, function(value) {
       return executeSchedule(subscriber, scheduler, function() {
         return subscriber.next(value);
-      }, delay2);
+      }, delay);
     }, function() {
       return executeSchedule(subscriber, scheduler, function() {
         return subscriber.complete();
-      }, delay2);
+      }, delay);
     }, function(err) {
       return executeSchedule(subscriber, scheduler, function() {
         return subscriber.error(err);
-      }, delay2);
+      }, delay);
     }));
   });
 }
 
 // node_modules/rxjs/dist/esm5/internal/operators/subscribeOn.js
-function subscribeOn(scheduler, delay2) {
-  if (delay2 === void 0) {
-    delay2 = 0;
+function subscribeOn(scheduler, delay) {
+  if (delay === void 0) {
+    delay = 0;
   }
   return operate(function(source, subscriber) {
     subscriber.add(scheduler.schedule(function() {
       return source.subscribe(subscriber);
-    }, delay2));
+    }, delay));
   });
 }
 
@@ -8797,6 +8797,11 @@ function observeNotification(notification, observer) {
     throw new TypeError('Invalid notification, missing "kind"');
   }
   kind === "N" ? (_a = observer.next) === null || _a === void 0 ? void 0 : _a.call(observer, value) : kind === "E" ? (_b = observer.error) === null || _b === void 0 ? void 0 : _b.call(observer, error) : (_c = observer.complete) === null || _c === void 0 ? void 0 : _c.call(observer);
+}
+
+// node_modules/rxjs/dist/esm5/internal/util/isObservable.js
+function isObservable(obj) {
+  return !!obj && (obj instanceof Observable || isFunction(obj.lift) && isFunction(obj.subscribe));
 }
 
 // node_modules/rxjs/dist/esm5/internal/util/EmptyError.js
@@ -9327,57 +9332,10 @@ function scanInternals(accumulator, seed, hasSeed, emitOnNext, emitBeforeComplet
   };
 }
 
-// node_modules/rxjs/dist/esm5/internal/operators/take.js
-function take(count) {
-  return count <= 0 ? function() {
-    return EMPTY;
-  } : operate(function(source, subscriber) {
-    var seen = 0;
-    source.subscribe(createOperatorSubscriber(subscriber, function(value) {
-      if (++seen <= count) {
-        subscriber.next(value);
-        if (count <= seen) {
-          subscriber.complete();
-        }
-      }
-    }));
-  });
-}
-
-// node_modules/rxjs/dist/esm5/internal/operators/ignoreElements.js
-function ignoreElements() {
-  return operate(function(source, subscriber) {
-    source.subscribe(createOperatorSubscriber(subscriber, noop));
-  });
-}
-
 // node_modules/rxjs/dist/esm5/internal/operators/mapTo.js
 function mapTo(value) {
   return map(function() {
     return value;
-  });
-}
-
-// node_modules/rxjs/dist/esm5/internal/operators/delayWhen.js
-function delayWhen(delayDurationSelector, subscriptionDelay) {
-  if (subscriptionDelay) {
-    return function(source) {
-      return concat(subscriptionDelay.pipe(take(1), ignoreElements()), source.pipe(delayWhen(delayDurationSelector)));
-    };
-  }
-  return mergeMap(function(value, index) {
-    return innerFrom(delayDurationSelector(value, index)).pipe(take(1), mapTo(value));
-  });
-}
-
-// node_modules/rxjs/dist/esm5/internal/operators/delay.js
-function delay(due, scheduler) {
-  if (scheduler === void 0) {
-    scheduler = asyncScheduler;
-  }
-  var duration = timer(due, scheduler);
-  return delayWhen(function() {
-    return duration;
   });
 }
 
@@ -9674,18 +9632,18 @@ function Children({ context: context2 }) {
   };
 }
 function Fragment(attributes, ...children) {
-  const { childrenBind, childrenPrepend, ...otherAttributes } = attributes ?? {};
+  const { childrenBind, childrenBindMode, ...otherAttributes } = attributes ?? {};
   return {
     type: "fragment",
     attributes: otherAttributes,
     children,
     childrenBind,
-    childrenPrepend
+    childrenBindMode
   };
 }
 function jsx(element, attributes, ...children) {
   if (typeof element === "string") {
-    const { bind: bind2, immediateBind, childrenBind, childrenPrepend, events, ...otherAttributes } = attributes ?? {};
+    const { bind: bind2, immediateBind, childrenBind, childrenBindMode, events, ...otherAttributes } = attributes ?? {};
     return {
       type: "element",
       element,
@@ -9694,19 +9652,19 @@ function jsx(element, attributes, ...children) {
       immediateBind: immediateBind ?? {},
       children,
       childrenBind,
-      childrenPrepend,
+      childrenBindMode,
       events: events ?? {}
     };
   }
   if (typeof element === "function") {
-    const { childrenBind, childrenPrepend, ...otherAttributes } = attributes ?? {};
+    const { childrenBind, childrenBindMode, ...otherAttributes } = attributes ?? {};
     if (element === Fragment) {
       return {
         type: "fragment",
         attributes: otherAttributes,
         children,
         childrenBind,
-        childrenPrepend
+        childrenBindMode
       };
     } else if (element === Children) {
       const { context: context2 } = otherAttributes;
@@ -9721,7 +9679,7 @@ function jsx(element, attributes, ...children) {
       properties: otherAttributes,
       children,
       childrenBind,
-      childrenPrepend
+      childrenBindMode
     };
   }
   throw new Error(`Unsupported jsx in ${element}`);
@@ -9773,7 +9731,7 @@ function makeEntries(key, observable3) {
   return observable3.pipe(map((value) => [key, value]));
 }
 function bindElement(element, description, context2, document2 = globalThis.document) {
-  const { complete, componentRunner, error, eventBinder, suspense, subscription } = context2;
+  const { complete, componentRunner, componentWirer, error, eventBinder, suspense, subscription } = context2;
   const schedulables = [];
   const binds = [
     ...Object.entries(description.bind).map(([key, observable3]) => [key, observable3, false]),
@@ -9794,20 +9752,23 @@ function bindElement(element, description, context2, document2 = globalThis.docu
     subscription.add(eventBinder.applyEvent(event, element, key));
   }
   if (description.childrenBind) {
+    if (description.childrenBindMode === "replace") {
+      const placeholder = document2.createComment(`replaceable child component`);
+      element.append(placeholder);
+      const activeChild = description.childrenBind.pipe(switchMap((child) => componentWirer(child, context2, document2)));
+      const childComponent = activeChild;
+      childComponent.name = `${element.nodeName} replaceable child`;
+      subscription.add(componentRunner(element, childComponent, context2, placeholder, document2));
+    }
     subscription.add(description.childrenBind.subscribe({
       next(child) {
         const placeholder = document2.createComment(`${child.name} component`);
-        if (description.childrenPrepend) {
+        if (description.childrenBindMode === "prepend") {
           element.prepend(placeholder);
         } else {
           element.append(placeholder);
         }
-        subscription.add(componentRunner(element, {
-          type: "component",
-          component: child,
-          properties: {},
-          children: []
-        }, context2, placeholder));
+        subscription.add(componentRunner(element, child, context2, placeholder, document2));
       },
       error,
       complete: () => {
@@ -9818,17 +9779,23 @@ function bindElement(element, description, context2, document2 = globalThis.docu
   }
   return subscription;
 }
-function bindFragmentChildren(nodeDescription, node, subscription, context2) {
-  const { complete, error, componentRunner } = context2;
+function bindFragmentChildren(nodeDescription, node, subscription, context2, document2 = globalThis.document) {
+  const { complete, error, componentRunner, componentWirer } = context2;
   if (nodeDescription.childrenBind) {
+    const parent = node.parentElement;
+    if (!parent) {
+      throw new Error("Attempted to bind children to an unattached fragment");
+    }
+    if (nodeDescription.childrenBindMode === "replace") {
+      const activeChild = nodeDescription.childrenBind.pipe(switchMap((child) => componentWirer(child, context2, document2)));
+      const childComponent = activeChild;
+      childComponent.name = `${node.nodeName} replaceable child`;
+      subscription.add(componentRunner(node.parentElement, childComponent, context2, node, document2));
+    }
     subscription.add(nodeDescription.childrenBind.subscribe({
       next(child) {
-        const parent = node.parentElement;
-        if (!parent) {
-          throw new Error("Attempted to bind children to an unattached fragment");
-        }
-        const placeholder = document.createComment(`${child.name} component`);
-        if (nodeDescription.childrenPrepend) {
+        const placeholder = document2.createComment(`${child.name} component`);
+        if (nodeDescription.childrenBindMode === "prepend") {
           parent.insertBefore(node, placeholder);
         } else {
           const next = node.nextSibling;
@@ -9883,7 +9850,7 @@ function buildNode(description, container2, elementBinds, nodeBinds, document2 =
       return null;
     }
     case "fragment":
-      if (description.childrenBind && description.childrenPrepend) {
+      if (description.childrenBind && description.childrenBindMode === "prepend") {
         const fragmentComment = document2.createComment("fragment children binding");
         container2.appendChild(fragmentComment);
         nodeBinds.push([fragmentComment, description]);
@@ -9895,7 +9862,7 @@ function buildNode(description, container2, elementBinds, nodeBinds, document2 =
         }
         buildTree(child, container2, elementBinds, nodeBinds, document2);
       }
-      if (description.childrenBind && !description.childrenPrepend) {
+      if (description.childrenBind && description.childrenBindMode !== "prepend") {
         const fragmentComment = document2.createComment("fragment children binding");
         container2.appendChild(fragmentComment);
         nodeBinds.push([fragmentComment, description]);
@@ -9946,7 +9913,7 @@ function wireInternal(description, subscriber, context2, document2 = globalThis.
   const componentContext = {
     bindEffect(observable3, effect) {
       context2.isStaticComponent = false;
-      subscription.add(observable3.pipe(delay(0, animationFrameScheduler)).subscribe({
+      subscription.add(observable3.pipe(observeOn(animationFrameScheduler)).subscribe({
         next: effect,
         error,
         complete: () => {
@@ -9981,7 +9948,8 @@ function wireInternal(description, subscriber, context2, document2 = globalThis.
       subscriber.complete();
     },
     error,
-    componentRunner: run,
+    componentRunner: runInternal,
+    componentWirer: wire,
     eventBinder: handler,
     subscription
   };
@@ -9996,7 +9964,7 @@ function wireInternal(description, subscriber, context2, document2 = globalThis.
           isStaticComponent: true,
           isStaticTree: true
         };
-        subscription.add(run(container2, nodeDescription, nestedContext, node));
+        subscription.add(runInternal(container2, nodeDescription, nestedContext, node));
         context2.isStaticTree &&= nestedContext.isStaticTree;
         break;
       }
@@ -10031,9 +9999,9 @@ function wireChildrenComponent(nodeDescription, componentContext, description, c
     attributes: {},
     children: [...parentDescription.children],
     childrenBind: parentDescription.childrenBind,
-    childrenPrepend: parentDescription.childrenPrepend
+    childrenBindMode: parentDescription.childrenBindMode
   });
-  return run(container2, {
+  return runInternal(container2, {
     type: "component",
     component: childrenComponent,
     properties: {},
@@ -10041,6 +10009,9 @@ function wireChildrenComponent(nodeDescription, componentContext, description, c
   }, context2, node);
 }
 function wire(component, context2, document2 = globalThis.document) {
+  if (isObservable(component)) {
+    return component;
+  }
   let description;
   if ("type" in component) {
     description = component;
@@ -10057,8 +10028,8 @@ function wire(component, context2, document2 = globalThis.document) {
   }
   return new Observable((subscriber) => wireInternal(description, subscriber, context2, document2));
 }
-function run(container2, component, context2, placeholder, document2 = globalThis.document) {
-  const observable3 = wire(component, context2 ?? { isStaticComponent: true, isStaticTree: true }, document2);
+function runInternal(container2, component, context2, placeholder, document2 = globalThis.document) {
+  const observable3 = isObservable(component) ? component : wire(component, context2 ?? { isStaticComponent: true, isStaticTree: true }, document2);
   let previousNode = null;
   return observable3.subscribe({
     next(node) {
@@ -10100,7 +10071,7 @@ function wireSuspense(description, context2, document2 = globalThis.document) {
     attributes: {},
     children: description.children,
     childrenBind: description.childrenBind,
-    childrenPrepend: description.childrenPrepend
+    childrenBindMode: description.childrenBindMode
   };
   const mainComponent = () => mainComponentFragment;
   const mainContext = { ...context2, suspense };
@@ -10111,6 +10082,12 @@ function wireSuspense(description, context2, document2 = globalThis.document) {
   } else {
     return main;
   }
+}
+
+// node_modules/butterfloat/runtime.js
+function run(container2, component, options, placeholder, document2 = globalThis.document) {
+  const { preserveOnComplete } = options ?? {};
+  return runInternal(container2, component, { isStaticComponent: true, isStaticTree: true, preserveOnComplete }, placeholder, document2);
 }
 
 // main.tsx
@@ -10206,7 +10183,7 @@ function inferType(observable3) {
   }
   return "unknown";
 }
-function isObservable(arg) {
+function isObservable2(arg) {
   return arg && arg.subscribe;
 }
 var SafeSubscriberCtor;
@@ -10246,14 +10223,14 @@ function matches(arg, match, value) {
   var observable3;
   var subscriber = void 0;
   var subscription = void 0;
-  if (isObservable(arg)) {
+  if (isObservable2(arg)) {
     observable3 = arg;
   } else {
     observable3 = arg.observable;
     subscriber = arg.subscriber;
     subscription = isSubscriptionRef(arg) ? arg.subscription : void 0;
   }
-  if (isObservable(match)) {
+  if (isObservable2(match)) {
     return observable3 === match;
   }
   var observableId = identify(observable3);
@@ -10283,7 +10260,7 @@ function read(observable3) {
   return tag2;
 }
 function toString(match) {
-  if (isObservable(match)) {
+  if (isObservable2(match)) {
     return "[Observable]";
   } else if (typeof match === "function") {
     return "[Function]";
@@ -14571,7 +14548,14 @@ function Main(_props, { bindImmediateEffect, events }) {
     },
     /* @__PURE__ */ jsx("span", { className: "glyphicon glyphicon-play" }),
     " All"
-  )), /* @__PURE__ */ jsx("div", { className: "list-group", childrenBind: children, childrenPrepend: true })));
+  )), /* @__PURE__ */ jsx(
+    "div",
+    {
+      className: "list-group",
+      childrenBind: children,
+      childrenBindMode: "prepend"
+    }
+  )));
 }
 var container = document.getElementById("container");
 run(container, Main);

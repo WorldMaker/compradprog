@@ -140,7 +140,11 @@ function Main(
           </button>
         </div>
 
-        <div className="list-group" childrenBind={children} childrenPrepend />
+        <div
+          className="list-group"
+          childrenBind={children}
+          childrenBindMode="prepend"
+        />
       </div>
     </div>
   )
