@@ -9842,14 +9842,14 @@ function bindElementClasses(element, description, { complete, error, subscriptio
   }
 }
 function bindElementStyles(element, description, { complete, error, subscription, suspense }) {
-  if (Object.keys(description.classBind).length > 0) {
+  if (Object.keys(description.styleBind).length > 0) {
     const entries = [];
-    for (const [key, observable3] of Object.entries(description.classBind)) {
+    for (const [key, observable3] of Object.entries(description.styleBind)) {
       entries.push(makeEntries(key, observable3));
     }
     subscription.add(bindObjectChanges(element.style, bufferEntries(merge(...entries), suspense), error, complete));
   }
-  for (const [key, observable3] of Object.entries(description.immediateClassBind)) {
+  for (const [key, observable3] of Object.entries(description.immediateStyleBind)) {
     subscription.add(bindObjectKey(element.style, key, observable3, error, complete));
   }
 }
