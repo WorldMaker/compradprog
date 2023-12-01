@@ -20,16 +20,12 @@ export function Progress(
 ) {
   const { finish, pause, slowDown, speedUp, unpause } = events
 
-  const progressStyle = item.roundPercent.pipe(
-    map((percent) => `min-width: 2em; width: ${percent}`),
+  const pauseDisplay = item.paused.pipe(
+    map((paused) => (paused ? `none` : `block`)),
   )
 
-  const pauseVisible = item.paused.pipe(
-    map((paused) => (paused ? `visibility: hidden` : `visibility: visible`)),
-  )
-
-  const unpauseVisible = item.paused.pipe(
-    map((paused) => (paused ? `visibility: visible` : `visibility: hidden`)),
+  const unpauseDisplay = item.paused.pipe(
+    map((paused) => (paused ? `block` : `none`)),
   )
 
   bindImmediateEffect(finish, () => item.finish())
@@ -46,7 +42,8 @@ export function Progress(
           className="progress-bar"
           role="progressbar"
           style="min-width: 2em"
-          bind={{ innerText: item.roundPercent, style: progressStyle }}
+          bind={{ innerText: item.roundPercent }}
+          styleBind={{ width: item.roundPercent }}
         ></div>
       </div>
       <div className="btn-group">
@@ -54,7 +51,7 @@ export function Progress(
           type="button"
           title="Pause"
           className="btn btn-default"
-          bind={{ style: pauseVisible }}
+          styleBind={{ display: pauseDisplay }}
           events={{ click: pause }}
         >
           <span className="glyphicon glyphicon-pause"></span>
@@ -63,7 +60,7 @@ export function Progress(
           type="button"
           title="Unpause"
           className="btn btn-default"
-          bind={{ style: unpauseVisible }}
+          styleBind={{ display: unpauseDisplay }}
           events={{ click: unpause }}
         >
           <span class="glyphicon glyphicon-play"></span>

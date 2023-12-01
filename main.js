@@ -9602,7 +9602,7 @@ function makeEventProxy(componentName, baseEvents = {}) {
 
 // node_modules/butterfloat/component.js
 function hasAnyBinds(description) {
-  return description.childrenBind || Object.keys(description.bind).length > 0 || Object.keys(description.immediateBind).length > 0 || Object.keys(description.events).length > 0;
+  return description.childrenBind || Object.keys(description.bind).length > 0 || Object.keys(description.immediateBind).length > 0 || Object.keys(description.events).length > 0 || Object.keys(description.styleBind).length > 0 || Object.keys(description.immediateStyleBind).length > 0 || Object.keys(description.classBind).length > 0 || Object.keys(description.immediateClassBind).length > 0;
 }
 
 // node_modules/butterfloat/butterfly.js
@@ -9643,7 +9643,7 @@ function Fragment(attributes, ...children) {
 }
 function jsx(element, attributes, ...children) {
   if (typeof element === "string") {
-    const { bind: bind2, immediateBind, childrenBind, childrenBindMode, events, ...otherAttributes } = attributes ?? {};
+    const { bind: bind2, immediateBind, childrenBind, childrenBindMode, events, styleBind, immediateStyleBind, classBind, immediateClassBind, ...otherAttributes } = attributes ?? {};
     return {
       type: "element",
       element,
@@ -9653,7 +9653,11 @@ function jsx(element, attributes, ...children) {
       children,
       childrenBind,
       childrenBindMode,
-      events: events ?? {}
+      events: events ?? {},
+      styleBind: styleBind ?? {},
+      immediateStyleBind: immediateStyleBind ?? {},
+      classBind: classBind ?? {},
+      immediateClassBind: immediateClassBind ?? {}
     };
   }
   if (typeof element === "function") {
@@ -9712,6 +9716,48 @@ function bindObjectChanges(item, observable3, error, complete) {
     }
   });
 }
+function bindClassListKey(item, key, observable3, error, complete) {
+  return observable3.subscribe({
+    next: (value) => {
+      if (value) {
+        item.classList.add(key);
+      } else {
+        item.classList.remove(key);
+      }
+    },
+    error,
+    complete: () => {
+      console.debug(`${key.toString()} classList binding completed`, item);
+      complete();
+    }
+  });
+}
+function bindClassListChanges(item, observable3, error, complete) {
+  return observable3.subscribe({
+    next: (changes) => {
+      const adds = [];
+      const removes = [];
+      for (const [key, add] of Object.entries(changes)) {
+        if (add) {
+          adds.push(key);
+        } else {
+          removes.push(key);
+        }
+      }
+      if (adds.length > 0) {
+        item.classList.add(...adds);
+      }
+      if (removes.length > 0) {
+        item.classList.remove(...removes);
+      }
+    },
+    error,
+    complete: () => {
+      console.debug(`classList changes binding completed`, item);
+      complete();
+    }
+  });
+}
 function bufferEntries(observable3, suspense) {
   if (suspense) {
     return combineLatest([suspense, observable3]).pipe(bufferTime(0, animationFrameScheduler), map((states) => states.reduce((acc, [suspend, entry]) => ({
@@ -9730,8 +9776,7 @@ function schedulable(key, immediate) {
 function makeEntries(key, observable3) {
   return observable3.pipe(map((value) => [key, value]));
 }
-function bindElement(element, description, context2, document2 = globalThis.document) {
-  const { complete, componentRunner, componentWirer, error, eventBinder, suspense, subscription } = context2;
+function bindElementBinds(element, description, { complete, error, suspense, subscription }) {
   const schedulables = [];
   const binds = [
     ...Object.entries(description.bind).map(([key, observable3]) => [key, observable3, false]),
@@ -9748,9 +9793,14 @@ function bindElement(element, description, context2, document2 = globalThis.docu
     const scheduled2 = schedulables.map(([key, observable3]) => makeEntries(key, observable3));
     subscription.add(bindObjectChanges(element, bufferEntries(merge(...scheduled2), suspense), error, complete));
   }
+}
+function bindElementEvents(element, description, { eventBinder, subscription }) {
   for (const [key, event] of Object.entries(description.events)) {
     subscription.add(eventBinder.applyEvent(event, element, key));
   }
+}
+function bindElementChildren(element, description, context2, document2 = globalThis.document) {
+  const { complete, componentRunner, componentWirer, error, subscription } = context2;
   if (description.childrenBind) {
     if (description.childrenBindMode === "replace") {
       const placeholder = document2.createComment(`replaceable child component`);
@@ -9759,24 +9809,57 @@ function bindElement(element, description, context2, document2 = globalThis.docu
       const childComponent = activeChild;
       childComponent.name = `${element.nodeName} replaceable child`;
       subscription.add(componentRunner(element, childComponent, context2, placeholder, document2));
-    }
-    subscription.add(description.childrenBind.subscribe({
-      next(child) {
-        const placeholder = document2.createComment(`${child.name} component`);
-        if (description.childrenBindMode === "prepend") {
-          element.prepend(placeholder);
-        } else {
-          element.append(placeholder);
+    } else {
+      subscription.add(description.childrenBind.subscribe({
+        next(child) {
+          const placeholder = document2.createComment(`${child.name} component`);
+          if (description.childrenBindMode === "prepend") {
+            element.prepend(placeholder);
+          } else {
+            element.append(placeholder);
+          }
+          subscription.add(componentRunner(element, child, context2, placeholder, document2));
+        },
+        error,
+        complete: () => {
+          console.debug(`Children binding completed`, element);
+          complete();
         }
-        subscription.add(componentRunner(element, child, context2, placeholder, document2));
-      },
-      error,
-      complete: () => {
-        console.debug(`Children binding completed`, element);
-        complete();
-      }
-    }));
+      }));
+    }
   }
+}
+function bindElementClasses(element, description, { complete, error, subscription, suspense }) {
+  if (Object.keys(description.classBind).length > 0) {
+    const entries = [];
+    for (const [key, observable3] of Object.entries(description.classBind)) {
+      entries.push(makeEntries(key, observable3));
+    }
+    subscription.add(bindClassListChanges(element, bufferEntries(merge(...entries), suspense), error, complete));
+  }
+  for (const [key, observable3] of Object.entries(description.immediateClassBind)) {
+    subscription.add(bindClassListKey(element, key, observable3, error, complete));
+  }
+}
+function bindElementStyles(element, description, { complete, error, subscription, suspense }) {
+  if (Object.keys(description.classBind).length > 0) {
+    const entries = [];
+    for (const [key, observable3] of Object.entries(description.classBind)) {
+      entries.push(makeEntries(key, observable3));
+    }
+    subscription.add(bindObjectChanges(element.style, bufferEntries(merge(...entries), suspense), error, complete));
+  }
+  for (const [key, observable3] of Object.entries(description.immediateClassBind)) {
+    subscription.add(bindObjectKey(element.style, key, observable3, error, complete));
+  }
+}
+function bindElement(element, description, context2, document2 = globalThis.document) {
+  const { subscription } = context2;
+  bindElementBinds(element, description, context2);
+  bindElementEvents(element, description, context2);
+  bindElementChildren(element, description, context2, document2);
+  bindElementClasses(element, description, context2);
+  bindElementStyles(element, description, context2);
   return subscription;
 }
 function bindFragmentChildren(nodeDescription, node, subscription, context2, document2 = globalThis.document) {
@@ -9791,30 +9874,31 @@ function bindFragmentChildren(nodeDescription, node, subscription, context2, doc
       const childComponent = activeChild;
       childComponent.name = `${node.nodeName} replaceable child`;
       subscription.add(componentRunner(node.parentElement, childComponent, context2, node, document2));
-    }
-    subscription.add(nodeDescription.childrenBind.subscribe({
-      next(child) {
-        const placeholder = document2.createComment(`${child.name} component`);
-        if (nodeDescription.childrenBindMode === "prepend") {
-          parent.insertBefore(node, placeholder);
-        } else {
-          const next = node.nextSibling;
-          if (next) {
-            parent.insertBefore(next, placeholder);
+    } else {
+      subscription.add(nodeDescription.childrenBind.subscribe({
+        next(child) {
+          const placeholder = document2.createComment(`${child.name} component`);
+          if (nodeDescription.childrenBindMode === "prepend") {
+            parent.insertBefore(node, placeholder);
           } else {
-            parent.append(placeholder);
+            const next = node.nextSibling;
+            if (next) {
+              parent.insertBefore(next, placeholder);
+            } else {
+              parent.append(placeholder);
+            }
           }
-        }
-        subscription.add(componentRunner(parent, {
-          type: "component",
-          component: child,
-          properties: {},
-          children: []
-        }, context2, placeholder));
-      },
-      error,
-      complete
-    }));
+          subscription.add(componentRunner(parent, {
+            type: "component",
+            component: child,
+            properties: {},
+            children: []
+          }, context2, placeholder));
+        },
+        error,
+        complete
+      }));
+    }
   }
 }
 
@@ -9822,8 +9906,17 @@ function bindFragmentChildren(nodeDescription, node, subscription, context2, doc
 function buildElement(description, document2 = globalThis.document) {
   const element = document2.createElement(description.element);
   for (const [key, value] of Object.entries(description.attributes)) {
-    ;
-    element[key] = value;
+    if (key.startsWith("data-")) {
+      element.dataset[key.replace(/^data-/, "")] = value;
+    } else if (key === "class") {
+      element.className = value;
+    } else if (key === "for") {
+      ;
+      element.htmlFor = value;
+    } else {
+      ;
+      element[key] = value;
+    }
   }
   return element;
 }
@@ -10034,7 +10127,12 @@ function runInternal(container2, component, context2, placeholder, document2 = g
   return observable3.subscribe({
     next(node) {
       if (previousNode) {
-        previousNode.replaceWith(node);
+        try {
+          previousNode.replaceWith(node);
+        } catch (error) {
+          console.warn("Cannot exactly replace previous node, replacing all children in container", previousNode);
+          container2.replaceChildren(node);
+        }
       } else if (placeholder) {
         placeholder.replaceWith(node);
       } else {
@@ -14378,14 +14476,11 @@ var CompRadProgVm = class {
 // progress.tsx
 function Progress({ item }, { bindImmediateEffect, events }) {
   const { finish, pause, slowDown, speedUp, unpause } = events;
-  const progressStyle = item.roundPercent.pipe(
-    map((percent) => `min-width: 2em; width: ${percent}`)
+  const pauseDisplay = item.paused.pipe(
+    map((paused) => paused ? `none` : `block`)
   );
-  const pauseVisible = item.paused.pipe(
-    map((paused) => paused ? `visibility: hidden` : `visibility: visible`)
-  );
-  const unpauseVisible = item.paused.pipe(
-    map((paused) => paused ? `visibility: visible` : `visibility: hidden`)
+  const unpauseDisplay = item.paused.pipe(
+    map((paused) => paused ? `block` : `none`)
   );
   bindImmediateEffect(finish, () => item.finish());
   bindImmediateEffect(pause, () => item.pause());
@@ -14399,7 +14494,8 @@ function Progress({ item }, { bindImmediateEffect, events }) {
       className: "progress-bar",
       role: "progressbar",
       style: "min-width: 2em",
-      bind: { innerText: item.roundPercent, style: progressStyle }
+      bind: { innerText: item.roundPercent },
+      styleBind: { width: item.roundPercent }
     }
   )), /* @__PURE__ */ jsx("div", { className: "btn-group" }, /* @__PURE__ */ jsx(
     "button",
@@ -14407,7 +14503,7 @@ function Progress({ item }, { bindImmediateEffect, events }) {
       type: "button",
       title: "Pause",
       className: "btn btn-default",
-      bind: { style: pauseVisible },
+      styleBind: { display: pauseDisplay },
       events: { click: pause }
     },
     /* @__PURE__ */ jsx("span", { className: "glyphicon glyphicon-pause" })
@@ -14417,7 +14513,7 @@ function Progress({ item }, { bindImmediateEffect, events }) {
       type: "button",
       title: "Unpause",
       className: "btn btn-default",
-      bind: { style: unpauseVisible },
+      styleBind: { display: unpauseDisplay },
       events: { click: unpause }
     },
     /* @__PURE__ */ jsx("span", { class: "glyphicon glyphicon-play" })
@@ -14482,10 +14578,6 @@ function Main(_props, { bindImmediateEffect, events }) {
     tag("target-percent"),
     shareReplay(1)
   );
-  const progressStyle = targetRoundPercent.pipe(
-    map((targetRoundPercent2) => `min-width: 2em; width: ${targetRoundPercent2}`),
-    tag("progress-style")
-  );
   bindImmediateEffect(
     addItem.pipe(withLatestFrom(vm), tag("add-item")),
     ([, vm2]) => vm2.addItem()
@@ -14519,7 +14611,8 @@ function Main(_props, { bindImmediateEffect, events }) {
       className: "progress-bar",
       role: "progressbar",
       style: "min-width: 2em",
-      bind: { innerText: targetRoundPercent, style: progressStyle }
+      bind: { innerText: targetRoundPercent },
+      immediateStyleBind: { width: targetRoundPercent }
     }
   )), /* @__PURE__ */ jsx(
     "button",

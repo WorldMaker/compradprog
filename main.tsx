@@ -66,11 +66,6 @@ function Main(
     shareReplay(1),
   )
 
-  const progressStyle = targetRoundPercent.pipe(
-    map((targetRoundPercent) => `min-width: 2em; width: ${targetRoundPercent}`),
-    tag('progress-style'),
-  )
-
   bindImmediateEffect(
     addItem.pipe(withLatestFrom(vm), tag('add-item')),
     ([, vm]) => vm.addItem(),
@@ -113,7 +108,8 @@ function Main(
             className="progress-bar"
             role="progressbar"
             style="min-width: 2em"
-            bind={{ innerText: targetRoundPercent, style: progressStyle }}
+            bind={{ innerText: targetRoundPercent }}
+            immediateStyleBind={{ width: targetRoundPercent }}
           ></div>
         </div>
         <button
