@@ -9995,22 +9995,59 @@ function buildTree(description, container2 = null, elementBinds = [], nodeBinds 
   };
 }
 
+// node_modules/butterfloat/suspense.js
+var Suspense = () => {
+  throw new Error("Suspense is a custom-wired component");
+};
+function wireSuspense(description, context2, document2 = globalThis.document) {
+  context2.isStaticComponent = false;
+  context2.isStaticTree = false;
+  const props = description.properties;
+  const suspense = context2.suspense ? combineLatest([props.when, context2.suspense]).pipe(map(([a, b]) => a || b)) : props.when;
+  const mainComponentFragment = {
+    type: "fragment",
+    attributes: {},
+    children: description.children,
+    childrenBind: description.childrenBind,
+    childrenBindMode: description.childrenBindMode
+  };
+  const mainComponent = () => mainComponentFragment;
+  const mainContext = { ...context2, suspense };
+  const main = wire(mainComponent, mainContext, document2);
+  if (props.suspenseView) {
+    const suspenseView = wire(props.suspenseView, { ...context2 }, document2);
+    return combineLatest([props.when, main, suspenseView]).pipe(map(([suspend, main2, suspenseView2]) => suspend ? suspenseView2 : main2), distinctUntilChanged());
+  } else {
+    return main;
+  }
+}
+
 // node_modules/butterfloat/wiring.js
 var contextChildrenDescriptions = /* @__PURE__ */ new WeakMap();
 function wireInternal(description, subscriber, context2, document2 = globalThis.document) {
+  const { treeError } = context2;
   const subscription = new Subscription();
-  const error = (error2) => {
-    console.error(`Error in component ${description.component.name}`, error2);
+  const componentName = description.component.name;
+  const error = treeError ? (error2) => {
+    console.error(`Error in component ${componentName}`, error2);
+    treeError(error2);
+  } : (error2) => {
+    console.error(`Error in component ${componentName}`, error2);
   };
-  const { events, handler } = makeEventProxy(description.component.name);
+  const { events, handler } = makeEventProxy(componentName);
   const componentContext = {
     bindEffect(observable3, effect) {
       context2.isStaticComponent = false;
       subscription.add(observable3.pipe(observeOn(animationFrameScheduler)).subscribe({
-        next: effect,
+        next(value) {
+          const promise = effect(value);
+          if (promise && "catch" in promise) {
+            promise.catch(error);
+          }
+        },
         error,
         complete: () => {
-          console.debug(`Effect in component ${description.component.name} completed`);
+          console.debug(`Effect in component ${componentName} completed`);
           subscriber.complete();
         }
       }));
@@ -10018,10 +10055,15 @@ function wireInternal(description, subscriber, context2, document2 = globalThis.
     bindImmediateEffect(observable3, effect) {
       context2.isStaticComponent = false;
       subscription.add(observable3.subscribe({
-        next: effect,
+        next(value) {
+          const promise = effect(value);
+          if (promise && "catch" in promise) {
+            promise.catch(error);
+          }
+        },
         error,
         complete: () => {
-          console.debug(`Immediate effect in component ${description.component.name} completed`);
+          console.debug(`Immediate effect in component ${componentName} completed`);
           subscriber.complete();
         }
       }));
@@ -10037,7 +10079,7 @@ function wireInternal(description, subscriber, context2, document2 = globalThis.
   const bindContext = {
     ...context2,
     complete: () => {
-      console.debug(`Binding in component ${description.component.name} completed`);
+      console.debug(`Binding in component ${componentName} completed`);
       subscriber.complete();
     },
     error,
@@ -10116,6 +10158,9 @@ function wire(component, context2, document2 = globalThis.document) {
       properties: {}
     };
   }
+  if (description.component === ErrorBoundary) {
+    return wireErrorBoundary(description, context2, document2);
+  }
   if (description.component === Suspense) {
     return wireSuspense(description, context2, document2);
   }
@@ -10124,6 +10169,7 @@ function wire(component, context2, document2 = globalThis.document) {
 function runInternal(container2, component, context2, placeholder, document2 = globalThis.document) {
   const observable3 = isObservable(component) ? component : wire(component, context2 ?? { isStaticComponent: true, isStaticTree: true }, document2);
   let previousNode = null;
+  const componentName = "type" in component ? component.component.name : component.name;
   return observable3.subscribe({
     next(node) {
       if (previousNode) {
@@ -10141,11 +10187,7 @@ function runInternal(container2, component, context2, placeholder, document2 = g
       previousNode = node;
     },
     error(error) {
-      if ("type" in component) {
-        console.error(`Error in component ${component.component.name}`, error);
-      } else {
-        console.error(`Error in component ${component.name}`, error);
-      }
+      console.error(`Error in component ${componentName}`, error);
     },
     complete() {
       if (!context2?.preserveOnComplete && previousNode) {
@@ -10155,15 +10197,25 @@ function runInternal(container2, component, context2, placeholder, document2 = g
   });
 }
 
-// node_modules/butterfloat/suspense.js
-var Suspense = () => {
-  throw new Error("Suspense is a custom-wired component");
+// node_modules/butterfloat/error-boundary.js
+var ErrorBoundary = () => {
+  throw new Error("ErrorBoundary is a custom-wired component");
 };
-function wireSuspense(description, context2, document2 = globalThis.document) {
+function wireErrorBoundary(description, context2, document2 = globalThis.document) {
   context2.isStaticComponent = false;
   context2.isStaticTree = false;
-  const props = description.properties;
-  const suspense = context2.suspense ? combineLatest([props.when, context2.suspense]).pipe(map(([a, b]) => a || b)) : props.when;
+  const { errorView, errorViewBindMode, preserveOnComplete } = description.properties;
+  const errorOccurred = new Subject();
+  const treeError = errorOccurred.next.bind(errorOccurred);
+  const errorViewChildren = errorOccurred.pipe(map((error) => () => {
+    const childComponent = {
+      type: "component",
+      component: errorView,
+      children: [],
+      properties: { error }
+    };
+    return childComponent;
+  }));
   const mainComponentFragment = {
     type: "fragment",
     attributes: {},
@@ -10171,15 +10223,17 @@ function wireSuspense(description, context2, document2 = globalThis.document) {
     childrenBind: description.childrenBind,
     childrenBindMode: description.childrenBindMode
   };
-  const mainComponent = () => mainComponentFragment;
-  const mainContext = { ...context2, suspense };
+  const errorViewComponentFragment = {
+    type: "fragment",
+    attributes: {},
+    children: [mainComponentFragment],
+    childrenBind: errorViewChildren,
+    childrenBindMode: errorViewBindMode ?? "prepend"
+  };
+  const mainComponent = () => errorViewComponentFragment;
+  const mainContext = { ...context2, treeError, preserveOnComplete };
   const main = wire(mainComponent, mainContext, document2);
-  if (props.suspenseView) {
-    const suspenseView = wire(props.suspenseView, { ...context2 }, document2);
-    return combineLatest([props.when, main, suspenseView]).pipe(map(([suspend, main2, suspenseView2]) => suspend ? suspenseView2 : main2), distinctUntilChanged());
-  } else {
-    return main;
-  }
+  return main;
 }
 
 // node_modules/butterfloat/runtime.js
