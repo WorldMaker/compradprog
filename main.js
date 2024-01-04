@@ -9773,6 +9773,12 @@ function bufferEntries(observable3, suspense) {
 function schedulable(key, immediate) {
   return !(immediate || key === "value");
 }
+function scheduledKey(key) {
+  if (key === "bfDelayValue") {
+    return "value";
+  }
+  return key;
+}
 function makeEntries(key, observable3) {
   return observable3.pipe(map((value) => [key, value]));
 }
@@ -9784,7 +9790,7 @@ function bindElementBinds(element, description, { complete, error, suspense, sub
   ];
   for (const [key, observable3, immediate] of binds) {
     if (schedulable(key, immediate)) {
-      schedulables.push([key, observable3]);
+      schedulables.push([scheduledKey(key), observable3]);
     } else {
       subscription.add(bindObjectKey(element, key, observable3, error, complete));
     }
@@ -14536,69 +14542,79 @@ function Progress({ item }, { bindImmediateEffect, events }) {
   const unpauseDisplay = item.paused.pipe(
     map((paused) => paused ? `block` : `none`)
   );
+  const notPaused = item.paused.pipe(map((paused) => !paused));
   bindImmediateEffect(finish, () => item.finish());
   bindImmediateEffect(pause, () => item.pause());
   bindImmediateEffect(slowDown, () => item.slowDown());
   bindImmediateEffect(speedUp, () => item.speedUp());
   bindImmediateEffect(unpause, () => item.unpause());
-  return /* @__PURE__ */ jsx("div", { className: "list-group-item" }, /* @__PURE__ */ jsx("div", { className: "progress" }, /* @__PURE__ */ jsx(
-    "div",
-    {
-      title: "Item Progress",
-      className: "progress-bar",
-      role: "progressbar",
-      style: "min-width: 2em",
-      bind: { innerText: item.roundPercent },
-      styleBind: { width: item.roundPercent }
-    }
-  )), /* @__PURE__ */ jsx("div", { className: "btn-group" }, /* @__PURE__ */ jsx(
+  return /* @__PURE__ */ jsx("div", { className: "card" }, /* @__PURE__ */ jsx("div", { className: "level" }, /* @__PURE__ */ jsx("div", { className: "level-item" }, /* @__PURE__ */ jsx("div", { className: "buttons has-addons" }, /* @__PURE__ */ jsx(
     "button",
     {
       type: "button",
       title: "Pause",
-      className: "btn btn-default",
+      className: "button",
       styleBind: { display: pauseDisplay },
       events: { click: pause }
     },
-    /* @__PURE__ */ jsx("span", { className: "glyphicon glyphicon-pause" })
+    /* @__PURE__ */ jsx("span", { className: "icon" }, /* @__PURE__ */ jsx("span", { className: "fa fa-pause" }))
   ), /* @__PURE__ */ jsx(
     "button",
     {
       type: "button",
       title: "Unpause",
-      className: "btn btn-default",
+      className: "button",
       styleBind: { display: unpauseDisplay },
       events: { click: unpause }
     },
-    /* @__PURE__ */ jsx("span", { class: "glyphicon glyphicon-play" })
+    /* @__PURE__ */ jsx("span", { className: "icon" }, /* @__PURE__ */ jsx("span", { class: "fa fa-play" }))
   ), /* @__PURE__ */ jsx(
     "button",
     {
       type: "button",
       title: "Slow Down",
-      className: "btn btn-default",
+      className: "button",
       events: { click: slowDown }
     },
-    /* @__PURE__ */ jsx("span", { className: "glyphicon glyphicon-backward" })
+    /* @__PURE__ */ jsx("span", { className: "icon" }, /* @__PURE__ */ jsx("span", { className: "fa fa-backward" }))
   ), /* @__PURE__ */ jsx(
     "button",
     {
       type: "button",
       title: "Speed Up",
-      className: "btn btn-default",
+      className: "button",
       events: { click: speedUp }
     },
-    /* @__PURE__ */ jsx("span", { className: "glyphicon glyphicon-forward" })
+    /* @__PURE__ */ jsx("span", { className: "icon" }, /* @__PURE__ */ jsx("span", { className: "fa fa-forward" }))
   ), /* @__PURE__ */ jsx(
     "button",
     {
       type: "button",
       title: "Finish",
-      className: "btn btn-default",
+      className: "button",
       events: { click: finish }
     },
-    /* @__PURE__ */ jsx("span", { className: "glyphicon glyphicon-fast-forward" })
-  )));
+    /* @__PURE__ */ jsx("span", { className: "icon" }, /* @__PURE__ */ jsx("span", { className: "fa fa-fast-forward" }))
+  ))), /* @__PURE__ */ jsx("div", { className: "level-item" }, /* @__PURE__ */ jsx("div", null, /* @__PURE__ */ jsx("div", { className: "heading is-capitalized" }, "Item Progress"), /* @__PURE__ */ jsx(
+    "div",
+    {
+      className: "title",
+      bind: { innerText: item.roundPercent }
+    }
+  ))), /* @__PURE__ */ jsx("div", { className: "level-item is-flex-grow-5" }, /* @__PURE__ */ jsx(
+    "progress",
+    {
+      className: "progress",
+      bind: {
+        innerText: item.roundPercent,
+        bfDelayValue: item.percent
+      },
+      classBind: {
+        "is-info": notPaused,
+        "is-warning": item.paused
+      }
+    }
+  ))));
 }
 
 // main.tsx
@@ -14627,9 +14643,10 @@ function Main(_props, { bindImmediateEffect, events }) {
     tag("vm"),
     shareReplay(1)
   );
+  const targetPercent = vm.pipe(switchMap((vm2) => vm2.targetPercent));
   const targetRoundPercent = vm.pipe(
     switchMap((vm2) => vm2.targetRoundPercent),
-    tag("target-percent"),
+    tag("target-round-percent"),
     shareReplay(1)
   );
   bindImmediateEffect(
@@ -14650,7 +14667,60 @@ function Main(_props, { bindImmediateEffect, events }) {
     map((progVm) => () => /* @__PURE__ */ jsx(Progress, { item: progVm })),
     tag("children")
   );
-  return /* @__PURE__ */ jsx("div", { className: "row" }, /* @__PURE__ */ jsx("div", { className: "col-md-6" }, /* @__PURE__ */ jsx(
+  const menuIsActive = events.toggleMenu.pipe(
+    scan((acc) => !acc, false),
+    shareReplay(1)
+  );
+  return /* @__PURE__ */ jsx(Fragment, null, /* @__PURE__ */ jsx("section", { class: "hero is-primary" }, /* @__PURE__ */ jsx("div", { class: "hero-head" }, /* @__PURE__ */ jsx("nav", { class: "navbar" }, /* @__PURE__ */ jsx("div", { class: "container" }, /* @__PURE__ */ jsx("div", { class: "navbar-brand" }, /* @__PURE__ */ jsx(
+    "a",
+    {
+      class: "navbar-item",
+      href: "https://worldmaker.net/compradprog/"
+    },
+    "CompRadProg"
+  ), /* @__PURE__ */ jsx(
+    "a",
+    {
+      role: "button",
+      class: "navbar-burger",
+      title: "menu",
+      bind: { ariaExpanded: menuIsActive },
+      classBind: { "is-active": menuIsActive },
+      events: { click: events.toggleMenu }
+    },
+    /* @__PURE__ */ jsx("span", null),
+    /* @__PURE__ */ jsx("span", null),
+    /* @__PURE__ */ jsx("span", null)
+  )), /* @__PURE__ */ jsx(
+    "div",
+    {
+      class: "navbar-menu",
+      classBind: { "is-active": menuIsActive }
+    },
+    /* @__PURE__ */ jsx("div", { class: "navbar-end" }, /* @__PURE__ */ jsx(
+      "a",
+      {
+        class: "navbar-item is-active",
+        href: "https://worldmaker.net/compradprog/"
+      },
+      "Demo"
+    ), /* @__PURE__ */ jsx(
+      "a",
+      {
+        class: "navbar-item",
+        href: "https://blog.worldmaker.net/2015/03/17/compradprog/"
+      },
+      "Motivation"
+    ), /* @__PURE__ */ jsx("span", { class: "navbar-item" }, /* @__PURE__ */ jsx(
+      "a",
+      {
+        class: "button is-primary is-inverted",
+        href: "https://github.com/WorldMaker/compradprog/"
+      },
+      /* @__PURE__ */ jsx("span", { class: "icon" }, /* @__PURE__ */ jsx("i", { class: "fa fa-github" })),
+      /* @__PURE__ */ jsx("span", null, "Source")
+    )))
+  )))), /* @__PURE__ */ jsx("div", { class: "hero-body" }, /* @__PURE__ */ jsx("div", { class: "container has-text-centered" }, /* @__PURE__ */ jsx("p", { class: "title" }, "Composite Radial Progress Demo"), /* @__PURE__ */ jsx("p", { class: "subtitle" }, "Visualize complex multi-item progress with a combined radial")))), /* @__PURE__ */ jsx("section", { class: "section" }, /* @__PURE__ */ jsx("div", { className: "dashboard" }, /* @__PURE__ */ jsx("div", { className: "dial" }, /* @__PURE__ */ jsx(
     "input",
     {
       type: "text",
@@ -14659,50 +14729,58 @@ function Main(_props, { bindImmediateEffect, events }) {
       value: "0",
       events: { bfDomAttach }
     }
-  ), /* @__PURE__ */ jsx("label", { htmlFor: "dial", className: "hidden" }, "Total Progress")), /* @__PURE__ */ jsx("div", { className: "col-md-6" }, /* @__PURE__ */ jsx("div", { className: "progress" }, /* @__PURE__ */ jsx(
+  ), /* @__PURE__ */ jsx("label", { htmlFor: "dial", className: "is-hidden" }, "Total Progress Dial")), /* @__PURE__ */ jsx("div", { className: "total" }, /* @__PURE__ */ jsx("div", { className: "level" }, /* @__PURE__ */ jsx("div", { className: "level-item" }, /* @__PURE__ */ jsx("div", null, /* @__PURE__ */ jsx("div", { className: "heading is-capitalized" }, "Total Progress"), /* @__PURE__ */ jsx(
     "div",
     {
-      className: "progress-bar",
-      role: "progressbar",
-      style: "min-width: 2em",
-      bind: { innerText: targetRoundPercent },
-      immediateStyleBind: { width: targetRoundPercent }
+      className: "title",
+      bind: { innerText: targetRoundPercent }
     }
-  )), /* @__PURE__ */ jsx(
+  ))), /* @__PURE__ */ jsx("div", { className: "level-item is-flex-grow-5" }, /* @__PURE__ */ jsx(
+    "progress",
+    {
+      className: "progress is-info",
+      bind: {
+        innerText: targetRoundPercent,
+        bfDelayValue: targetPercent
+      }
+    }
+  ))), /* @__PURE__ */ jsx("div", { className: "level" }, /* @__PURE__ */ jsx("div", { className: "level-left" }, /* @__PURE__ */ jsx(
     "button",
     {
       type: "button",
-      className: "btn btn-default",
+      className: "button",
       events: { click: addItem }
     },
-    /* @__PURE__ */ jsx("span", { className: "glyphicon glyphicon-plus" }),
-    " Add Item"
-  ), /* @__PURE__ */ jsx("div", { className: "btn-group" }, /* @__PURE__ */ jsx(
+    /* @__PURE__ */ jsx("span", { className: "icon" }, /* @__PURE__ */ jsx("span", { className: "fa fa-plus" })),
+    /* @__PURE__ */ jsx("span", null, "Add Item")
+  )), /* @__PURE__ */ jsx("div", { className: "level-right" }, /* @__PURE__ */ jsx("div", { className: "buttons has-addons" }, /* @__PURE__ */ jsx(
     "button",
     {
       type: "button",
-      className: "btn btn-default",
+      className: "button",
+      title: "Pause All",
       events: { click: pauseAll }
     },
-    /* @__PURE__ */ jsx("span", { className: "glyphicon glyphicon-pause" }),
-    " All"
+    /* @__PURE__ */ jsx("span", { className: "icon" }, /* @__PURE__ */ jsx("span", { className: "fa fa-pause" })),
+    /* @__PURE__ */ jsx("span", null, "All")
   ), /* @__PURE__ */ jsx(
     "button",
     {
       type: "button",
-      className: "btn btn-default",
+      className: "button",
+      title: "Resume All",
       events: { click: unpauseAll }
     },
-    /* @__PURE__ */ jsx("span", { className: "glyphicon glyphicon-play" }),
-    " All"
-  )), /* @__PURE__ */ jsx(
+    /* @__PURE__ */ jsx("span", { className: "icon" }, /* @__PURE__ */ jsx("span", { className: "fa fa-play" })),
+    /* @__PURE__ */ jsx("span", null, "All")
+  ))))), /* @__PURE__ */ jsx(
     "div",
     {
-      className: "list-group",
+      className: "items",
       childrenBind: children,
       childrenBindMode: "prepend"
     }
-  )));
+  ))));
 }
 var container = document.getElementById("container");
 run(container, Main);

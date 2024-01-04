@@ -1,0 +1,24 @@
+@import url('https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css');
+@import url('https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css');
+
+.dashboard {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    'dial total'
+    'items items';
+  gap: 1em;
+}
+
+.dial {
+  grid-area: dial;
+}
+
+.total {
+  grid-area: total;
+}
+
+.items {
+  grid-area: items;
+}
