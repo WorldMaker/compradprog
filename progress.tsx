@@ -1,5 +1,7 @@
 import { ComponentContext, ObservableEvent, jsx } from 'butterfloat'
+import { FastForward, Pause, Play, Rewind, SkipForward, StepBack } from 'lucide'
 import { map } from 'rxjs'
+import { Icon } from './icon'
 import { ProgVm } from './progvm'
 
 export interface ProgressProps {
@@ -49,7 +51,7 @@ export function Progress(
               events={{ click: pause }}
             >
               <span className="icon">
-                <span className="fa fa-pause"></span>
+                <Icon icon={Pause} />
               </span>
             </button>
             <button
@@ -60,7 +62,7 @@ export function Progress(
               events={{ click: unpause }}
             >
               <span className="icon">
-                <span class="fa fa-play"></span>
+                <Icon icon={Play} />
               </span>
             </button>
             <button
@@ -70,7 +72,7 @@ export function Progress(
               events={{ click: slowDown }}
             >
               <span className="icon">
-                <span className="fa fa-backward"></span>
+                <Icon icon={Rewind} />
               </span>
             </button>
             <button
@@ -80,7 +82,7 @@ export function Progress(
               events={{ click: speedUp }}
             >
               <span className="icon">
-                <span className="fa fa-forward"></span>
+                <Icon icon={FastForward} />
               </span>
             </button>
             <button
@@ -90,7 +92,7 @@ export function Progress(
               events={{ click: finish }}
             >
               <span className="icon">
-                <span className="fa fa-fast-forward"></span>
+                <Icon icon={SkipForward} />
               </span>
             </button>
           </div>
