@@ -6,6 +6,7 @@ import {
   run,
 } from 'butterfloat'
 import $ from 'jquery'
+import { Github, Pause, Play, Plus } from 'lucide'
 import {
   Observable,
   filter,
@@ -19,6 +20,7 @@ import {
 import { create } from 'rxjs-spy'
 import { tag } from 'rxjs-spy/operators'
 import { CompRadProgVm } from './compradprogvm'
+import { Icon } from './icon'
 import { Progress } from './progress'
 
 const spy = create()
@@ -120,7 +122,9 @@ function Main(
                   role="button"
                   class="navbar-burger"
                   title="menu"
-                  bind={{ ariaExpanded: menuIsActive }}
+                  bind={{
+                    ariaExpanded: menuIsActive.pipe(map((a) => a.toString())),
+                  }}
                   classBind={{ 'is-active': menuIsActive }}
                   events={{ click: events.toggleMenu }}
                 >
@@ -152,7 +156,7 @@ function Main(
                       href="https://github.com/WorldMaker/compradprog/"
                     >
                       <span class="icon">
-                        <i class="fa fa-github"></i>
+                        <Icon icon={Github} />
                       </span>
                       <span>Source</span>
                     </a>
@@ -217,7 +221,7 @@ function Main(
                   events={{ click: addItem }}
                 >
                   <span className="icon">
-                    <span className="fa fa-plus"></span>
+                    <Icon icon={Plus} />
                   </span>
                   <span>Add Item</span>
                 </button>
@@ -231,7 +235,7 @@ function Main(
                     events={{ click: pauseAll }}
                   >
                     <span className="icon">
-                      <span className="fa fa-pause"></span>
+                      <Icon icon={Pause} />
                     </span>
                     <span>All</span>
                   </button>
@@ -242,7 +246,7 @@ function Main(
                     events={{ click: unpauseAll }}
                   >
                     <span className="icon">
-                      <span className="fa fa-play"></span>
+                      <Icon icon={Play} />
                     </span>
                     <span>All</span>
                   </button>

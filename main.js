@@ -9641,6 +9641,12 @@ function Fragment(attributes, ...children) {
     childrenBindMode
   };
 }
+function Static({ element }) {
+  return {
+    type: "static",
+    element
+  };
+}
 function jsx(element, attributes, ...children) {
   if (typeof element === "string") {
     const { bind: bind2, immediateBind, childrenBind, childrenBindMode, events, styleBind, immediateStyleBind, classBind, immediateClassBind, ...otherAttributes } = attributes ?? {};
@@ -9661,22 +9667,11 @@ function jsx(element, attributes, ...children) {
     };
   }
   if (typeof element === "function") {
-    const { childrenBind, childrenBindMode, ...otherAttributes } = attributes ?? {};
-    if (element === Fragment) {
-      return {
-        type: "fragment",
-        attributes: otherAttributes,
-        children,
-        childrenBind,
-        childrenBindMode
-      };
-    } else if (element === Children) {
-      const { context: context2 } = otherAttributes;
-      return {
-        type: "children",
-        context: context2
-      };
+    if (element === Fragment || element === Children || element === Static) {
+      const func = element;
+      return func(attributes ?? {}, ...children);
     }
+    const { childrenBind, childrenBindMode, ...otherAttributes } = attributes ?? {};
     return {
       type: "component",
       component: element,
@@ -9912,8 +9907,8 @@ function bindFragmentChildren(nodeDescription, node, subscription, context2, doc
 function buildElement(description, document2 = globalThis.document) {
   const element = document2.createElement(description.element);
   for (const [key, value] of Object.entries(description.attributes)) {
-    if (key.startsWith("data-")) {
-      element.dataset[key.replace(/^data-/, "")] = value;
+    if (key.includes("-")) {
+      element.setAttribute(key, (value ?? "").toString());
     } else if (key === "class") {
       element.className = value;
     } else if (key === "for") {
@@ -9967,6 +9962,9 @@ function buildNode(description, container2, elementBinds, nodeBinds, document2 =
         nodeBinds.push([fragmentComment, description]);
       }
       return container2;
+    case "static":
+      container2.appendChild(description.element);
+      return container2;
   }
 }
 function buildTree(description, container2 = null, elementBinds = [], nodeBinds = [], document2 = globalThis.document) {
@@ -9976,6 +9974,12 @@ function buildTree(description, container2 = null, elementBinds = [], nodeBinds 
     if (hasAnyBinds(description)) {
       elementBinds.push([element, description]);
     }
+  } else if (!container2 && description.type === "static") {
+    return {
+      elementBinds,
+      nodeBinds,
+      container: description.element
+    };
   } else if (!container2) {
     container2 = document2.createDocumentFragment();
     buildNode(description, container2, elementBinds, nodeBinds, document2);
@@ -9985,7 +9989,7 @@ function buildTree(description, container2 = null, elementBinds = [], nodeBinds 
       container2 = nextNode;
     }
   }
-  if (description.type !== "children" && description.type !== "fragment") {
+  if (description.type !== "children" && description.type !== "fragment" && description.type !== "static") {
     for (const child of description.children) {
       if (typeof child === "string") {
         container2.appendChild(document2.createTextNode(child));
@@ -10250,6 +10254,103 @@ function run(container2, component, options, placeholder, document2 = globalThis
 
 // main.tsx
 var import_jquery = __toESM(require_jquery(), 1);
+
+// node_modules/lucide/dist/esm/createElement.js
+var createElement = (tag2, attrs, children = []) => {
+  const element = document.createElementNS("http://www.w3.org/2000/svg", tag2);
+  Object.keys(attrs).forEach((name) => {
+    element.setAttribute(name, String(attrs[name]));
+  });
+  if (children.length) {
+    children.forEach((child) => {
+      const childElement = createElement(...child);
+      element.appendChild(childElement);
+    });
+  }
+  return element;
+};
+var createElement$1 = ([tag2, attrs, children]) => createElement(tag2, attrs, children);
+
+// node_modules/lucide/dist/esm/defaultAttributes.js
+var defaultAttributes = {
+  xmlns: "http://www.w3.org/2000/svg",
+  width: 24,
+  height: 24,
+  viewBox: "0 0 24 24",
+  fill: "none",
+  stroke: "currentColor",
+  "stroke-width": 2,
+  "stroke-linecap": "round",
+  "stroke-linejoin": "round"
+};
+
+// node_modules/lucide/dist/esm/icons/fast-forward.js
+var FastForward = [
+  "svg",
+  defaultAttributes,
+  [
+    ["polygon", { points: "13 19 22 12 13 5 13 19" }],
+    ["polygon", { points: "2 19 11 12 2 5 2 19" }]
+  ]
+];
+
+// node_modules/lucide/dist/esm/icons/github.js
+var Github = [
+  "svg",
+  defaultAttributes,
+  [
+    [
+      "path",
+      {
+        d: "M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"
+      }
+    ],
+    ["path", { d: "M9 18c-4.51 2-5-2-7-2" }]
+  ]
+];
+
+// node_modules/lucide/dist/esm/icons/pause.js
+var Pause = [
+  "svg",
+  defaultAttributes,
+  [
+    ["rect", { width: "4", height: "16", x: "6", y: "4" }],
+    ["rect", { width: "4", height: "16", x: "14", y: "4" }]
+  ]
+];
+
+// node_modules/lucide/dist/esm/icons/play.js
+var Play = ["svg", defaultAttributes, [["polygon", { points: "5 3 19 12 5 21 5 3" }]]];
+
+// node_modules/lucide/dist/esm/icons/plus.js
+var Plus = [
+  "svg",
+  defaultAttributes,
+  [
+    ["path", { d: "M5 12h14" }],
+    ["path", { d: "M12 5v14" }]
+  ]
+];
+
+// node_modules/lucide/dist/esm/icons/rewind.js
+var Rewind = [
+  "svg",
+  defaultAttributes,
+  [
+    ["polygon", { points: "11 19 2 12 11 5 11 19" }],
+    ["polygon", { points: "22 19 13 12 22 5 22 19" }]
+  ]
+];
+
+// node_modules/lucide/dist/esm/icons/skip-forward.js
+var SkipForward = [
+  "svg",
+  defaultAttributes,
+  [
+    ["polygon", { points: "5 4 15 12 5 20 5 4" }],
+    ["line", { x1: "19", x2: "19", y1: "5", y2: "19" }]
+  ]
+];
 
 // node_modules/rxjs-spy/esm/index.js
 var noop_ = function noop_2() {
@@ -14533,6 +14634,11 @@ var CompRadProgVm = class {
   }
 };
 
+// icon.tsx
+function Icon({ icon }) {
+  return /* @__PURE__ */ jsx(Static, { element: createElement$1(icon) });
+}
+
 // progress.tsx
 function Progress({ item }, { bindImmediateEffect, events }) {
   const { finish, pause, slowDown, speedUp, unpause } = events;
@@ -14557,7 +14663,7 @@ function Progress({ item }, { bindImmediateEffect, events }) {
       styleBind: { display: pauseDisplay },
       events: { click: pause }
     },
-    /* @__PURE__ */ jsx("span", { className: "icon" }, /* @__PURE__ */ jsx("span", { className: "fa fa-pause" }))
+    /* @__PURE__ */ jsx("span", { className: "icon" }, /* @__PURE__ */ jsx(Icon, { icon: Pause }))
   ), /* @__PURE__ */ jsx(
     "button",
     {
@@ -14567,7 +14673,7 @@ function Progress({ item }, { bindImmediateEffect, events }) {
       styleBind: { display: unpauseDisplay },
       events: { click: unpause }
     },
-    /* @__PURE__ */ jsx("span", { className: "icon" }, /* @__PURE__ */ jsx("span", { class: "fa fa-play" }))
+    /* @__PURE__ */ jsx("span", { className: "icon" }, /* @__PURE__ */ jsx(Icon, { icon: Play }))
   ), /* @__PURE__ */ jsx(
     "button",
     {
@@ -14576,7 +14682,7 @@ function Progress({ item }, { bindImmediateEffect, events }) {
       className: "button",
       events: { click: slowDown }
     },
-    /* @__PURE__ */ jsx("span", { className: "icon" }, /* @__PURE__ */ jsx("span", { className: "fa fa-backward" }))
+    /* @__PURE__ */ jsx("span", { className: "icon" }, /* @__PURE__ */ jsx(Icon, { icon: Rewind }))
   ), /* @__PURE__ */ jsx(
     "button",
     {
@@ -14585,7 +14691,7 @@ function Progress({ item }, { bindImmediateEffect, events }) {
       className: "button",
       events: { click: speedUp }
     },
-    /* @__PURE__ */ jsx("span", { className: "icon" }, /* @__PURE__ */ jsx("span", { className: "fa fa-forward" }))
+    /* @__PURE__ */ jsx("span", { className: "icon" }, /* @__PURE__ */ jsx(Icon, { icon: FastForward }))
   ), /* @__PURE__ */ jsx(
     "button",
     {
@@ -14594,7 +14700,7 @@ function Progress({ item }, { bindImmediateEffect, events }) {
       className: "button",
       events: { click: finish }
     },
-    /* @__PURE__ */ jsx("span", { className: "icon" }, /* @__PURE__ */ jsx("span", { className: "fa fa-fast-forward" }))
+    /* @__PURE__ */ jsx("span", { className: "icon" }, /* @__PURE__ */ jsx(Icon, { icon: SkipForward }))
   ))), /* @__PURE__ */ jsx("div", { className: "level-item" }, /* @__PURE__ */ jsx("div", null, /* @__PURE__ */ jsx("div", { className: "heading is-capitalized" }, "Item Progress"), /* @__PURE__ */ jsx(
     "div",
     {
@@ -14684,7 +14790,9 @@ function Main(_props, { bindImmediateEffect, events }) {
       role: "button",
       class: "navbar-burger",
       title: "menu",
-      bind: { ariaExpanded: menuIsActive },
+      bind: {
+        ariaExpanded: menuIsActive.pipe(map((a) => a.toString()))
+      },
       classBind: { "is-active": menuIsActive },
       events: { click: events.toggleMenu }
     },
@@ -14717,7 +14825,7 @@ function Main(_props, { bindImmediateEffect, events }) {
         class: "button is-primary is-inverted",
         href: "https://github.com/WorldMaker/compradprog/"
       },
-      /* @__PURE__ */ jsx("span", { class: "icon" }, /* @__PURE__ */ jsx("i", { class: "fa fa-github" })),
+      /* @__PURE__ */ jsx("span", { class: "icon" }, /* @__PURE__ */ jsx(Icon, { icon: Github })),
       /* @__PURE__ */ jsx("span", null, "Source")
     )))
   )))), /* @__PURE__ */ jsx("div", { class: "hero-body" }, /* @__PURE__ */ jsx("div", { class: "container has-text-centered" }, /* @__PURE__ */ jsx("p", { class: "title" }, "Composite Radial Progress Demo"), /* @__PURE__ */ jsx("p", { class: "subtitle" }, "Visualize complex multi-item progress with a combined radial")))), /* @__PURE__ */ jsx("section", { class: "section" }, /* @__PURE__ */ jsx("div", { className: "dashboard" }, /* @__PURE__ */ jsx("div", { className: "dial" }, /* @__PURE__ */ jsx(
@@ -14751,7 +14859,7 @@ function Main(_props, { bindImmediateEffect, events }) {
       className: "button",
       events: { click: addItem }
     },
-    /* @__PURE__ */ jsx("span", { className: "icon" }, /* @__PURE__ */ jsx("span", { className: "fa fa-plus" })),
+    /* @__PURE__ */ jsx("span", { className: "icon" }, /* @__PURE__ */ jsx(Icon, { icon: Plus })),
     /* @__PURE__ */ jsx("span", null, "Add Item")
   )), /* @__PURE__ */ jsx("div", { className: "level-right" }, /* @__PURE__ */ jsx("div", { className: "buttons has-addons" }, /* @__PURE__ */ jsx(
     "button",
@@ -14761,7 +14869,7 @@ function Main(_props, { bindImmediateEffect, events }) {
       title: "Pause All",
       events: { click: pauseAll }
     },
-    /* @__PURE__ */ jsx("span", { className: "icon" }, /* @__PURE__ */ jsx("span", { className: "fa fa-pause" })),
+    /* @__PURE__ */ jsx("span", { className: "icon" }, /* @__PURE__ */ jsx(Icon, { icon: Pause })),
     /* @__PURE__ */ jsx("span", null, "All")
   ), /* @__PURE__ */ jsx(
     "button",
@@ -14771,7 +14879,7 @@ function Main(_props, { bindImmediateEffect, events }) {
       title: "Resume All",
       events: { click: unpauseAll }
     },
-    /* @__PURE__ */ jsx("span", { className: "icon" }, /* @__PURE__ */ jsx("span", { className: "fa fa-play" })),
+    /* @__PURE__ */ jsx("span", { className: "icon" }, /* @__PURE__ */ jsx(Icon, { icon: Play })),
     /* @__PURE__ */ jsx("span", null, "All")
   ))))), /* @__PURE__ */ jsx(
     "div",
@@ -14799,6 +14907,86 @@ jquery/dist/jquery.js:
    * https://jquery.org/license
    *
    * Date: 2021-03-02T17:08Z
+   *)
+
+lucide/dist/esm/createElement.js:
+  (**
+   * @license lucide v0.307.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+
+lucide/dist/esm/defaultAttributes.js:
+  (**
+   * @license lucide v0.307.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+
+lucide/dist/esm/icons/fast-forward.js:
+  (**
+   * @license lucide v0.307.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+
+lucide/dist/esm/icons/github.js:
+  (**
+   * @license lucide v0.307.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+
+lucide/dist/esm/icons/pause.js:
+  (**
+   * @license lucide v0.307.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+
+lucide/dist/esm/icons/play.js:
+  (**
+   * @license lucide v0.307.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+
+lucide/dist/esm/icons/plus.js:
+  (**
+   * @license lucide v0.307.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+
+lucide/dist/esm/icons/rewind.js:
+  (**
+   * @license lucide v0.307.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+
+lucide/dist/esm/icons/skip-forward.js:
+  (**
+   * @license lucide v0.307.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
+   *)
+
+lucide/dist/esm/lucide.js:
+  (**
+   * @license lucide v0.307.0 - ISC
+   *
+   * This source code is licensed under the ISC license.
+   * See the LICENSE file in the root directory of this source tree.
    *)
 
 rxjs-spy/esm/index.js:
