@@ -6,6 +6,7 @@
   "type": "module",
   "dependencies": {
     "@types/node": "^20.9.3",
+    "bulma": "^0.9.4",
     "butterfloat": "^1.3.0",
     "jquery": "^3.6.0",
     "jquery-knob": "^1.2.11",
