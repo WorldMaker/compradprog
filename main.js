@@ -9602,7 +9602,7 @@ function makeEventProxy(componentName, baseEvents = {}) {
 
 // node_modules/butterfloat/component.js
 function hasAnyBinds(description) {
-  return description.childrenBind || Object.keys(description.bind).length > 0 || Object.keys(description.immediateBind).length > 0 || Object.keys(description.events).length > 0 || Object.keys(description.styleBind).length > 0 || Object.keys(description.immediateStyleBind).length > 0 || Object.keys(description.classBind).length > 0 || Object.keys(description.immediateClassBind).length > 0;
+  return Boolean(description.childrenBind) || Object.keys(description.bind).length > 0 || Object.keys(description.immediateBind).length > 0 || Object.keys(description.events).length > 0 || Object.keys(description.styleBind).length > 0 || Object.keys(description.immediateStyleBind).length > 0 || Object.keys(description.classBind).length > 0 || Object.keys(description.immediateClassBind).length > 0;
 }
 
 // node_modules/butterfloat/butterfly.js
@@ -9903,108 +9903,6 @@ function bindFragmentChildren(nodeDescription, node, subscription, context2, doc
   }
 }
 
-// node_modules/butterfloat/static-dom.js
-function buildElement(description, document2 = globalThis.document) {
-  const element = document2.createElement(description.element);
-  for (const [key, value] of Object.entries(description.attributes)) {
-    if (key.includes("-")) {
-      element.setAttribute(key, (value ?? "").toString());
-    } else if (key === "class") {
-      element.className = value;
-    } else if (key === "for") {
-      ;
-      element.htmlFor = value;
-    } else {
-      ;
-      element[key] = value;
-    }
-  }
-  return element;
-}
-function buildNode(description, container2, elementBinds, nodeBinds, document2 = globalThis.document) {
-  switch (description.type) {
-    case "element": {
-      const element = buildElement(description, document2);
-      if (hasAnyBinds(description)) {
-        elementBinds.push([element, description]);
-      }
-      container2.appendChild(element);
-      return element;
-    }
-    case "children": {
-      const childrenComment = document2.createComment("Children component");
-      container2.appendChild(childrenComment);
-      nodeBinds.push([childrenComment, description]);
-      return null;
-    }
-    case "component": {
-      const componentComment = document2.createComment(`${description.component.name} component`);
-      container2.appendChild(componentComment);
-      nodeBinds.push([componentComment, description]);
-      return null;
-    }
-    case "fragment":
-      if (description.childrenBind && description.childrenBindMode === "prepend") {
-        const fragmentComment = document2.createComment("fragment children binding");
-        container2.appendChild(fragmentComment);
-        nodeBinds.push([fragmentComment, description]);
-      }
-      for (const child of description.children) {
-        if (typeof child === "string") {
-          container2.appendChild(document2.createTextNode(child));
-          continue;
-        }
-        buildTree(child, container2, elementBinds, nodeBinds, document2);
-      }
-      if (description.childrenBind && description.childrenBindMode !== "prepend") {
-        const fragmentComment = document2.createComment("fragment children binding");
-        container2.appendChild(fragmentComment);
-        nodeBinds.push([fragmentComment, description]);
-      }
-      return container2;
-    case "static":
-      container2.appendChild(description.element);
-      return container2;
-  }
-}
-function buildTree(description, container2 = null, elementBinds = [], nodeBinds = [], document2 = globalThis.document) {
-  if (!container2 && description.type === "element") {
-    const element = buildElement(description, document2);
-    container2 = element;
-    if (hasAnyBinds(description)) {
-      elementBinds.push([element, description]);
-    }
-  } else if (!container2 && description.type === "static") {
-    return {
-      elementBinds,
-      nodeBinds,
-      container: description.element
-    };
-  } else if (!container2) {
-    container2 = document2.createDocumentFragment();
-    buildNode(description, container2, elementBinds, nodeBinds, document2);
-  } else {
-    const nextNode = buildNode(description, container2, elementBinds, nodeBinds, document2);
-    if (nextNode !== null) {
-      container2 = nextNode;
-    }
-  }
-  if (description.type !== "children" && description.type !== "fragment" && description.type !== "static") {
-    for (const child of description.children) {
-      if (typeof child === "string") {
-        container2.appendChild(document2.createTextNode(child));
-        continue;
-      }
-      buildTree(child, container2, elementBinds, nodeBinds, document2);
-    }
-  }
-  return {
-    elementBinds,
-    nodeBinds,
-    container: container2
-  };
-}
-
 // node_modules/butterfloat/suspense.js
 var Suspense = () => {
   throw new Error("Suspense is a custom-wired component");
@@ -10081,54 +9979,57 @@ function wireInternal(description, subscriber, context2, document2 = globalThis.
     events
   };
   contextChildrenDescriptions.set(componentContext, description);
-  const tree = description.component(description.properties, componentContext);
-  const { elementBinds, nodeBinds, container: container2 } = buildTree(tree, void 0, void 0, void 0, document2);
-  context2.isStaticComponent &&= elementBinds.length === 0;
-  context2.isStaticTree &&= context2.isStaticComponent;
-  subscriber.next(container2);
-  const bindContext = {
-    ...context2,
-    complete: () => {
-      console.debug(`Binding in component ${componentName} completed`);
-      subscriber.complete();
-    },
-    error,
-    componentRunner: runInternal,
-    componentWirer: wire,
-    eventBinder: handler,
-    subscription
-  };
-  for (const [element, bindDescription] of elementBinds) {
-    subscription.add(bindElement(element, bindDescription, bindContext, document2));
-  }
-  for (const [node, nodeDescription] of nodeBinds) {
-    switch (nodeDescription.type) {
-      case "component": {
-        const nestedContext = {
-          ...context2,
-          isStaticComponent: true,
-          isStaticTree: true
-        };
-        subscription.add(runInternal(container2, nodeDescription, nestedContext, node));
-        context2.isStaticTree &&= nestedContext.isStaticTree;
-        break;
-      }
-      case "children": {
-        const nestedContext = {
-          ...context2,
-          isStaticComponent: true,
-          isStaticTree: true
-        };
-        subscription.add(wireChildrenComponent(nodeDescription, componentContext, description, container2, nestedContext, node));
-        context2.isStaticTree &&= nestedContext.isStaticTree;
-        break;
-      }
-      case "fragment":
-        context2.isStaticComponent = false;
-        context2.isStaticTree = false;
-        bindFragmentChildren(nodeDescription, node, subscription, bindContext);
-        break;
+  try {
+    const { elementBinds, nodeBinds, container: container2 } = context2.domStrategy(description.component, description.properties, componentContext, document2);
+    context2.isStaticComponent &&= elementBinds.length === 0;
+    context2.isStaticTree &&= context2.isStaticComponent;
+    subscriber.next(container2);
+    const bindContext = {
+      ...context2,
+      complete: () => {
+        console.debug(`Binding in component ${componentName} completed`);
+        subscriber.complete();
+      },
+      error,
+      componentRunner: runInternal,
+      componentWirer: wire,
+      eventBinder: handler,
+      subscription
+    };
+    for (const [element, bindDescription] of elementBinds) {
+      subscription.add(bindElement(element, bindDescription, bindContext, document2));
     }
+    for (const [node, nodeDescription] of nodeBinds) {
+      switch (nodeDescription.type) {
+        case "component": {
+          const nestedContext = {
+            ...context2,
+            isStaticComponent: true,
+            isStaticTree: true
+          };
+          subscription.add(runInternal(container2, nodeDescription, nestedContext, node));
+          context2.isStaticTree &&= nestedContext.isStaticTree;
+          break;
+        }
+        case "children": {
+          const nestedContext = {
+            ...context2,
+            isStaticComponent: true,
+            isStaticTree: true
+          };
+          subscription.add(wireChildrenComponent(nodeDescription, componentContext, description, container2, nestedContext, node));
+          context2.isStaticTree &&= nestedContext.isStaticTree;
+          break;
+        }
+        case "fragment":
+          context2.isStaticComponent = false;
+          context2.isStaticTree = false;
+          bindFragmentChildren(nodeDescription, node, subscription, bindContext);
+          break;
+      }
+    }
+  } catch (err) {
+    subscriber.error(err);
   }
   return () => {
     subscription.unsubscribe();
@@ -10177,7 +10078,7 @@ function wire(component, context2, document2 = globalThis.document) {
   return new Observable((subscriber) => wireInternal(description, subscriber, context2, document2));
 }
 function runInternal(container2, component, context2, placeholder, document2 = globalThis.document) {
-  const observable3 = isObservable(component) ? component : wire(component, context2 ?? { isStaticComponent: true, isStaticTree: true }, document2);
+  const observable3 = isObservable(component) ? component : wire(component, context2, document2);
   let previousNode = null;
   const componentName = "type" in component ? component.component.name : component.name;
   return observable3.subscribe({
@@ -10246,10 +10147,176 @@ function wireErrorBoundary(description, context2, document2 = globalThis.documen
   return main;
 }
 
+// node_modules/butterfloat/static-dom.js
+function buildElement(description, nsContext, document2 = globalThis.document) {
+  if (description.attributes.xmlns) {
+    nsContext = {
+      defaultNamespace: description.attributes.xmlns,
+      namespaceMap: { ...nsContext?.namespaceMap }
+    };
+  }
+  let element;
+  if (description.element.includes(":")) {
+    const [nsAbbrev, elementName] = description.element.split(":");
+    let ns = nsContext?.namespaceMap[nsAbbrev];
+    if (!ns) {
+      for (const [key, value] of Object.entries(description.attributes)) {
+        if (key.startsWith("xmlns:")) {
+          const nsAbbrev2 = key.replace("xmlns:", "");
+          nsContext = {
+            defaultNamespace: nsContext?.defaultNamespace ?? null,
+            namespaceMap: {
+              ...nsContext?.namespaceMap,
+              [nsAbbrev2]: value
+            }
+          };
+        }
+      }
+      ns = nsContext?.namespaceMap[nsAbbrev];
+      if (!ns) {
+        throw new Error(`Unknown namespace for '${description.element}'`);
+      }
+    }
+    element = document2.createElementNS(ns, elementName);
+  } else if (nsContext?.defaultNamespace) {
+    element = document2.createElementNS(nsContext.defaultNamespace, description.element);
+  } else {
+    element = document2.createElement(description.element);
+  }
+  for (const [key, value] of Object.entries(description.attributes)) {
+    if (key.startsWith("xmlns:")) {
+      const nsAbbrev = key.replace("xmlns:", "");
+      nsContext = {
+        defaultNamespace: nsContext?.defaultNamespace ?? null,
+        namespaceMap: {
+          ...nsContext?.namespaceMap,
+          [nsAbbrev]: value
+        }
+      };
+    } else if (key.includes(":")) {
+      const [nsAbbrev, attributeName] = key.split(":");
+      const ns = nsContext?.namespaceMap?.[nsAbbrev];
+      if (!ns) {
+        throw new Error(`Unknown namespace for '${key}' attribute`);
+      }
+      element.setAttributeNS(ns, attributeName, (value ?? "").toString());
+    } else if (key.includes("-")) {
+      element.setAttribute(key, (value ?? "").toString());
+    } else if (key === "class") {
+      element.className = value;
+    } else if (key === "for") {
+      ;
+      element.htmlFor = value;
+    } else {
+      ;
+      element[key] = value;
+    }
+  }
+  return { element, nsContext };
+}
+function buildNode(description, container2, elementBinds, nodeBinds, nsContext, document2 = globalThis.document) {
+  switch (description.type) {
+    case "element": {
+      const { element, nsContext: newContext } = buildElement(description, nsContext, document2);
+      if (hasAnyBinds(description)) {
+        elementBinds.push([element, description]);
+      }
+      container2.appendChild(element);
+      return { container: element, nsContext: newContext };
+    }
+    case "children": {
+      const childrenComment = document2.createComment("Children component");
+      container2.appendChild(childrenComment);
+      nodeBinds.push([childrenComment, description]);
+      return null;
+    }
+    case "component": {
+      const componentComment = document2.createComment(`${description.component.name} component`);
+      container2.appendChild(componentComment);
+      nodeBinds.push([componentComment, description]);
+      return null;
+    }
+    case "fragment":
+      if (description.childrenBind && description.childrenBindMode === "prepend") {
+        const fragmentComment = document2.createComment("fragment children binding");
+        container2.appendChild(fragmentComment);
+        nodeBinds.push([fragmentComment, description]);
+      }
+      for (const child of description.children) {
+        if (typeof child === "string") {
+          container2.appendChild(document2.createTextNode(child));
+          continue;
+        }
+        buildTree(child, container2, elementBinds, nodeBinds, nsContext, document2);
+      }
+      if (description.childrenBind && description.childrenBindMode !== "prepend") {
+        const fragmentComment = document2.createComment("fragment children binding");
+        container2.appendChild(fragmentComment);
+        nodeBinds.push([fragmentComment, description]);
+      }
+      return { container: container2, nsContext };
+    case "static":
+      container2.appendChild(description.element);
+      return { container: container2, nsContext };
+  }
+}
+function buildTree(description, container2 = null, elementBinds = [], nodeBinds = [], nsContext, document2 = globalThis.document) {
+  if (!container2 && description.type === "element") {
+    const { element, nsContext: newContext } = buildElement(description, nsContext, document2);
+    nsContext = newContext;
+    container2 = element;
+    if (hasAnyBinds(description)) {
+      elementBinds.push([element, description]);
+    }
+  } else if (!container2 && description.type === "static") {
+    return {
+      elementBinds,
+      nodeBinds,
+      container: description.element
+    };
+  } else if (!container2) {
+    container2 = document2.createDocumentFragment();
+    buildNode(description, container2, elementBinds, nodeBinds, nsContext, document2);
+  } else {
+    const nextNode = buildNode(description, container2, elementBinds, nodeBinds, nsContext, document2);
+    if (nextNode !== null) {
+      const { container: newContainer, nsContext: newContext } = nextNode;
+      container2 = newContainer;
+      nsContext = newContext;
+    }
+  }
+  if (description.type !== "children" && description.type !== "fragment" && description.type !== "static") {
+    for (const child of description.children) {
+      if (typeof child === "string") {
+        container2.appendChild(document2.createTextNode(child));
+        continue;
+      }
+      buildTree(child, container2, elementBinds, nodeBinds, nsContext, document2);
+    }
+  }
+  return {
+    elementBinds,
+    nodeBinds,
+    container: container2
+  };
+}
+
+// node_modules/butterfloat/wiring-dom-build.js
+var buildDomStrategy = (component, properties, context2, document2, container2) => {
+  const tree = component(properties, context2);
+  return buildTree(tree, container2, void 0, void 0, void 0, document2);
+};
+var wiring_dom_build_default = buildDomStrategy;
+
 // node_modules/butterfloat/runtime.js
 function run(container2, component, options, placeholder, document2 = globalThis.document) {
   const { preserveOnComplete } = options ?? {};
-  return runInternal(container2, component, { isStaticComponent: true, isStaticTree: true, preserveOnComplete }, placeholder, document2);
+  return runInternal(container2, component, {
+    domStrategy: wiring_dom_build_default,
+    isStaticComponent: true,
+    isStaticTree: true,
+    preserveOnComplete
+  }, placeholder, document2);
 }
 
 // main.tsx
