@@ -2,9 +2,16 @@ import * as esbuild from 'esbuild'
 import { sassPlugin } from 'esbuild-sass-plugin'
 
 await esbuild.build({
-  entryPoints: ['main.tsx'],
+  entryPoints: ['index.ts'],
   bundle: true,
-  outfile: 'main.js',
+  outfile: 'index.js',
+  format: 'esm',
+})
+
+await esbuild.build({
+  entryPoints: ['index-stamp.ts'],
+  bundle: true,
+  outfile: 'index-stamp.js',
   format: 'esm',
 })
 
@@ -17,10 +24,13 @@ await esbuild.build({
 
 // *** Test Modules ***
 await esbuild.build({
-  entryPoints: ['*.test.ts'],
+  entryPoints: ['*.test.ts', '_stamp.ts'],
   platform: 'node',
   bundle: true,
   splitting: true,
   outdir: '.',
   format: 'esm',
+  external: ['jsdom'],
 })
+
+await import('./_stamp.js')

@@ -7,7 +7,7 @@
   "dependencies": {
     "@types/node": "^20.9.3",
     "bulma": "^0.9.4",
-    "butterfloat": "^1.5.0-alpha.0",
+    "butterfloat": "^1.5.0-alpha.1",
     "esbuild-sass-plugin": "^2.16.1",
     "jquery": "^3.6.0",
     "jquery-knob": "^1.2.11",
@@ -18,8 +18,10 @@
   "devDependencies": {
     "@types/jquery": "^3.5.20",
     "@types/jquery-knob": "^1.2.33",
+    "@types/jsdom": "^21.1.7",
     "esbuild": "^0.19.4",
     "http-server": "^14.1.1",
+    "jsdom": "^25.0.1",
     "prettier": "^3.0.3",
     "typescript": "^5.2.2"
   },

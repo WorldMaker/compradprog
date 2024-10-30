@@ -1,5 +1,5 @@
 import { ComponentContext, ObservableEvent, jsx } from 'butterfloat'
-import { FastForward, Pause, Play, Rewind, SkipForward, StepBack } from 'lucide'
+import { FastForward, Pause, Play, Rewind, SkipForward } from 'lucide'
 import { map } from 'rxjs'
 import { Icon } from './icon'
 import { ProgVm } from './progvm'

@@ -3,9 +3,7 @@ import {
   Fragment,
   ObservableEvent,
   jsx,
-  run,
 } from 'butterfloat'
-import $ from 'jquery'
 import { Github, Pause, Play, Plus } from 'lucide'
 import {
   Observable,
@@ -17,20 +15,10 @@ import {
   switchMap,
   withLatestFrom,
 } from 'rxjs'
-import { create } from 'rxjs-spy'
 import { tag } from 'rxjs-spy/operators'
 import { CompRadProgVm } from './compradprogvm'
 import { Icon } from './icon'
 import { Progress } from './progress'
-
-const spy = create()
-
-// Set global for jquery-knob
-const w = window as any
-w.jQuery = w.$ = $
-
-// @ts-ignore
-await import('jquery-knob')
 
 interface MainEvents {
   toggleMenu: ObservableEvent<MouseEvent>
@@ -40,7 +28,7 @@ interface MainEvents {
   unpauseAll: ObservableEvent<MouseEvent>
 }
 
-function Main(
+export function Main(
   _props: {},
   { bindImmediateEffect, events }: ComponentContext<MainEvents>,
 ) {
@@ -265,6 +253,3 @@ function Main(
     </>
   )
 }
-
-const container = document.getElementById('container')!
-run(container, Main)
