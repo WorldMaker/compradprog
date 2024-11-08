@@ -9,7 +9,7 @@ import {
   makeTestComponentContext,
   makeTestEvent,
   require_lucide
-} from "./chunk-QPAERKLX.js";
+} from "./chunk-X4RUJGUJ.js";
 import {
   __toESM,
   require_cjs
@@ -49,14 +49,11 @@ var { context: testMainContext } = makeTestComponentContext({
   pauseAll: makeTestEvent(import_rxjs.NEVER),
   unpauseAll: makeTestEvent(import_rxjs.NEVER)
 });
-var { Main } = await import("./main-ZO5XGXKY.js");
+var { Main } = await import("./main-PT6WCVI2.js");
 var mainTree = Main({}, testMainContext);
 var mainStamp = buildStamp(mainTree, document);
-container.append(...mainStamp.childNodes);
+container.append(mainStamp.content);
 function appendStamp(stamp) {
-  const div = document.createElement("div");
-  div.append(...stamp.childNodes);
-  stamp.innerHTML = div.innerHTML;
   container.append(stamp);
 }
 var githubIconStamp = buildStamp(Icon({ icon: import_lucide.Github }), document);

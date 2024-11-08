@@ -54,14 +54,9 @@ const { context: testMainContext } = makeTestComponentContext({
 const { Main } = await import('./main.js')
 const mainTree = Main({}, testMainContext)
 const mainStamp = buildStamp(mainTree, document)
-container.append(...mainStamp.childNodes)
+container.append(mainStamp.content)
 
 function appendStamp(stamp: HTMLTemplateElement) {
-  // Workaround for jsdom not serializing the childNodes
-  // https://github.com/jsdom/jsdom/issues/3783
-  const div = document.createElement('div')
-  div.append(...stamp.childNodes)
-  stamp.innerHTML = div.innerHTML
   container.append(stamp)
 }
 
