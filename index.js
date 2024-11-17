@@ -9602,7 +9602,7 @@ function makeEventProxy(componentName, baseEvents = {}) {
 
 // node_modules/butterfloat/component.js
 function hasAnyBinds(description) {
-  return description.childrenBind || Object.keys(description.bind).length > 0 || Object.keys(description.immediateBind).length > 0 || Object.keys(description.events).length > 0 || Object.keys(description.styleBind).length > 0 || Object.keys(description.immediateStyleBind).length > 0 || Object.keys(description.classBind).length > 0 || Object.keys(description.immediateClassBind).length > 0;
+  return Boolean(description.childrenBind) || Object.keys(description.bind).length > 0 || Object.keys(description.immediateBind).length > 0 || Object.keys(description.events).length > 0 || Object.keys(description.styleBind).length > 0 || Object.keys(description.immediateStyleBind).length > 0 || Object.keys(description.classBind).length > 0 || Object.keys(description.immediateClassBind).length > 0;
 }
 
 // node_modules/butterfloat/butterfly.js
@@ -9806,7 +9806,7 @@ function bindElementChildren(element, description, context2, document2 = globalT
     if (description.childrenBindMode === "replace") {
       const placeholder = document2.createComment(`replaceable child component`);
       element.append(placeholder);
-      const activeChild = description.childrenBind.pipe(switchMap((child) => componentWirer(child, context2, document2)));
+      const activeChild = description.childrenBind.pipe(switchMap((child) => componentWirer(child, context2, void 0, document2)));
       const childComponent = activeChild;
       childComponent.name = `${element.nodeName} replaceable child`;
       subscription.add(componentRunner(element, childComponent, context2, placeholder, document2));
@@ -9871,7 +9871,7 @@ function bindFragmentChildren(nodeDescription, node, subscription, context2, doc
       throw new Error("Attempted to bind children to an unattached fragment");
     }
     if (nodeDescription.childrenBindMode === "replace") {
-      const activeChild = nodeDescription.childrenBind.pipe(switchMap((child) => componentWirer(child, context2, document2)));
+      const activeChild = nodeDescription.childrenBind.pipe(switchMap((child) => componentWirer(child, context2, void 0, document2)));
       const childComponent = activeChild;
       childComponent.name = `${node.nodeName} replaceable child`;
       subscription.add(componentRunner(node.parentElement, childComponent, context2, node, document2));
@@ -9903,108 +9903,6 @@ function bindFragmentChildren(nodeDescription, node, subscription, context2, doc
   }
 }
 
-// node_modules/butterfloat/static-dom.js
-function buildElement(description, document2 = globalThis.document) {
-  const element = document2.createElement(description.element);
-  for (const [key, value] of Object.entries(description.attributes)) {
-    if (key.includes("-")) {
-      element.setAttribute(key, (value ?? "").toString());
-    } else if (key === "class") {
-      element.className = value;
-    } else if (key === "for") {
-      ;
-      element.htmlFor = value;
-    } else {
-      ;
-      element[key] = value;
-    }
-  }
-  return element;
-}
-function buildNode(description, container2, elementBinds, nodeBinds, document2 = globalThis.document) {
-  switch (description.type) {
-    case "element": {
-      const element = buildElement(description, document2);
-      if (hasAnyBinds(description)) {
-        elementBinds.push([element, description]);
-      }
-      container2.appendChild(element);
-      return element;
-    }
-    case "children": {
-      const childrenComment = document2.createComment("Children component");
-      container2.appendChild(childrenComment);
-      nodeBinds.push([childrenComment, description]);
-      return null;
-    }
-    case "component": {
-      const componentComment = document2.createComment(`${description.component.name} component`);
-      container2.appendChild(componentComment);
-      nodeBinds.push([componentComment, description]);
-      return null;
-    }
-    case "fragment":
-      if (description.childrenBind && description.childrenBindMode === "prepend") {
-        const fragmentComment = document2.createComment("fragment children binding");
-        container2.appendChild(fragmentComment);
-        nodeBinds.push([fragmentComment, description]);
-      }
-      for (const child of description.children) {
-        if (typeof child === "string") {
-          container2.appendChild(document2.createTextNode(child));
-          continue;
-        }
-        buildTree(child, container2, elementBinds, nodeBinds, document2);
-      }
-      if (description.childrenBind && description.childrenBindMode !== "prepend") {
-        const fragmentComment = document2.createComment("fragment children binding");
-        container2.appendChild(fragmentComment);
-        nodeBinds.push([fragmentComment, description]);
-      }
-      return container2;
-    case "static":
-      container2.appendChild(description.element);
-      return container2;
-  }
-}
-function buildTree(description, container2 = null, elementBinds = [], nodeBinds = [], document2 = globalThis.document) {
-  if (!container2 && description.type === "element") {
-    const element = buildElement(description, document2);
-    container2 = element;
-    if (hasAnyBinds(description)) {
-      elementBinds.push([element, description]);
-    }
-  } else if (!container2 && description.type === "static") {
-    return {
-      elementBinds,
-      nodeBinds,
-      container: description.element
-    };
-  } else if (!container2) {
-    container2 = document2.createDocumentFragment();
-    buildNode(description, container2, elementBinds, nodeBinds, document2);
-  } else {
-    const nextNode = buildNode(description, container2, elementBinds, nodeBinds, document2);
-    if (nextNode !== null) {
-      container2 = nextNode;
-    }
-  }
-  if (description.type !== "children" && description.type !== "fragment" && description.type !== "static") {
-    for (const child of description.children) {
-      if (typeof child === "string") {
-        container2.appendChild(document2.createTextNode(child));
-        continue;
-      }
-      buildTree(child, container2, elementBinds, nodeBinds, document2);
-    }
-  }
-  return {
-    elementBinds,
-    nodeBinds,
-    container: container2
-  };
-}
-
 // node_modules/butterfloat/suspense.js
 var Suspense = () => {
   throw new Error("Suspense is a custom-wired component");
@@ -10023,9 +9921,9 @@ function wireSuspense(description, context2, document2 = globalThis.document) {
   };
   const mainComponent = () => mainComponentFragment;
   const mainContext = { ...context2, suspense };
-  const main = wire(mainComponent, mainContext, document2);
+  const main = wire(mainComponent, mainContext, void 0, document2);
   if (props.suspenseView) {
-    const suspenseView = wire(props.suspenseView, { ...context2 }, document2);
+    const suspenseView = wire(props.suspenseView, { ...context2 }, void 0, document2);
     return combineLatest([props.when, main, suspenseView]).pipe(map(([suspend, main2, suspenseView2]) => suspend ? suspenseView2 : main2), distinctUntilChanged());
   } else {
     return main;
@@ -10034,7 +9932,7 @@ function wireSuspense(description, context2, document2 = globalThis.document) {
 
 // node_modules/butterfloat/wiring.js
 var contextChildrenDescriptions = /* @__PURE__ */ new WeakMap();
-function wireInternal(description, subscriber, context2, document2 = globalThis.document) {
+function wireInternal(description, subscriber, context2, outerContainer, document2 = globalThis.document) {
   const { treeError } = context2;
   const subscription = new Subscription();
   const componentName = description.component.name;
@@ -10081,54 +9979,61 @@ function wireInternal(description, subscriber, context2, document2 = globalThis.
     events
   };
   contextChildrenDescriptions.set(componentContext, description);
-  const tree = description.component(description.properties, componentContext);
-  const { elementBinds, nodeBinds, container: container2 } = buildTree(tree, void 0, void 0, void 0, document2);
-  context2.isStaticComponent &&= elementBinds.length === 0;
-  context2.isStaticTree &&= context2.isStaticComponent;
-  subscriber.next(container2);
-  const bindContext = {
-    ...context2,
-    complete: () => {
-      console.debug(`Binding in component ${componentName} completed`);
-      subscriber.complete();
-    },
-    error,
-    componentRunner: runInternal,
-    componentWirer: wire,
-    eventBinder: handler,
-    subscription
-  };
-  for (const [element, bindDescription] of elementBinds) {
-    subscription.add(bindElement(element, bindDescription, bindContext, document2));
-  }
-  for (const [node, nodeDescription] of nodeBinds) {
-    switch (nodeDescription.type) {
-      case "component": {
-        const nestedContext = {
-          ...context2,
-          isStaticComponent: true,
-          isStaticTree: true
-        };
-        subscription.add(runInternal(container2, nodeDescription, nestedContext, node));
-        context2.isStaticTree &&= nestedContext.isStaticTree;
-        break;
-      }
-      case "children": {
-        const nestedContext = {
-          ...context2,
-          isStaticComponent: true,
-          isStaticTree: true
-        };
-        subscription.add(wireChildrenComponent(nodeDescription, componentContext, description, container2, nestedContext, node));
-        context2.isStaticTree &&= nestedContext.isStaticTree;
-        break;
-      }
-      case "fragment":
-        context2.isStaticComponent = false;
-        context2.isStaticTree = false;
-        bindFragmentChildren(nodeDescription, node, subscription, bindContext);
-        break;
+  try {
+    const { elementBinds, nodeBinds, container: container2, isSameContainer } = context2.domStrategy(description.component, description.properties, componentContext, outerContainer, document2);
+    context2.isStaticComponent &&= elementBinds.length === 0;
+    context2.isStaticTree &&= context2.isStaticComponent;
+    if (!isSameContainer) {
+      subscriber.next(container2);
+    } else {
+      subscriber.next(document2.createComment("prestamp bound"));
     }
+    const bindContext = {
+      ...context2,
+      complete: () => {
+        console.debug(`Binding in component ${componentName} completed`);
+        subscriber.complete();
+      },
+      error,
+      componentRunner: runInternal,
+      componentWirer: wire,
+      eventBinder: handler,
+      subscription
+    };
+    for (const [element, bindDescription] of elementBinds) {
+      subscription.add(bindElement(element, bindDescription, bindContext, document2));
+    }
+    for (const [node, nodeDescription] of nodeBinds) {
+      switch (nodeDescription.type) {
+        case "component": {
+          const nestedContext = {
+            ...context2,
+            isStaticComponent: true,
+            isStaticTree: true
+          };
+          subscription.add(runInternal(container2, nodeDescription, nestedContext, node));
+          context2.isStaticTree &&= nestedContext.isStaticTree;
+          break;
+        }
+        case "children": {
+          const nestedContext = {
+            ...context2,
+            isStaticComponent: true,
+            isStaticTree: true
+          };
+          subscription.add(wireChildrenComponent(nodeDescription, componentContext, description, container2, nestedContext, node));
+          context2.isStaticTree &&= nestedContext.isStaticTree;
+          break;
+        }
+        case "fragment":
+          context2.isStaticComponent = false;
+          context2.isStaticTree = false;
+          bindFragmentChildren(nodeDescription, node, subscription, bindContext);
+          break;
+      }
+    }
+  } catch (err) {
+    subscriber.error(err);
   }
   return () => {
     subscription.unsubscribe();
@@ -10153,7 +10058,7 @@ function wireChildrenComponent(nodeDescription, componentContext, description, c
     children: []
   }, context2, node);
 }
-function wire(component, context2, document2 = globalThis.document) {
+function wire(component, context2, outerContainer, document2 = globalThis.document) {
   if (isObservable(component)) {
     return component;
   }
@@ -10174,10 +10079,10 @@ function wire(component, context2, document2 = globalThis.document) {
   if (description.component === Suspense) {
     return wireSuspense(description, context2, document2);
   }
-  return new Observable((subscriber) => wireInternal(description, subscriber, context2, document2));
+  return new Observable((subscriber) => wireInternal(description, subscriber, context2, outerContainer, document2));
 }
 function runInternal(container2, component, context2, placeholder, document2 = globalThis.document) {
-  const observable3 = isObservable(component) ? component : wire(component, context2 ?? { isStaticComponent: true, isStaticTree: true }, document2);
+  const observable3 = isObservable(component) ? component : wire(component, context2, container2, document2);
   let previousNode = null;
   const componentName = "type" in component ? component.component.name : component.name;
   return observable3.subscribe({
@@ -10242,115 +10147,187 @@ function wireErrorBoundary(description, context2, document2 = globalThis.documen
   };
   const mainComponent = () => errorViewComponentFragment;
   const mainContext = { ...context2, treeError, preserveOnComplete };
-  const main = wire(mainComponent, mainContext, document2);
+  const main = wire(mainComponent, mainContext, void 0, document2);
   return main;
 }
+
+// node_modules/butterfloat/static-dom.js
+function buildElement(description, nsContext, document2 = globalThis.document) {
+  if (description.attributes.xmlns) {
+    nsContext = {
+      defaultNamespace: description.attributes.xmlns,
+      namespaceMap: { ...nsContext?.namespaceMap }
+    };
+  }
+  let element;
+  if (description.element.includes(":")) {
+    const [nsAbbrev, elementName] = description.element.split(":");
+    let ns = nsContext?.namespaceMap[nsAbbrev];
+    if (!ns) {
+      for (const [key, value] of Object.entries(description.attributes)) {
+        if (key.startsWith("xmlns:")) {
+          const nsAbbrev2 = key.replace("xmlns:", "");
+          nsContext = {
+            defaultNamespace: nsContext?.defaultNamespace ?? null,
+            namespaceMap: {
+              ...nsContext?.namespaceMap,
+              [nsAbbrev2]: value
+            }
+          };
+        }
+      }
+      ns = nsContext?.namespaceMap[nsAbbrev];
+      if (!ns) {
+        throw new Error(`Unknown namespace for '${description.element}'`);
+      }
+    }
+    element = document2.createElementNS(ns, elementName);
+  } else if (nsContext?.defaultNamespace) {
+    element = document2.createElementNS(nsContext.defaultNamespace, description.element);
+  } else {
+    element = document2.createElement(description.element);
+  }
+  for (const [key, value] of Object.entries(description.attributes)) {
+    if (key.startsWith("xmlns:")) {
+      const nsAbbrev = key.replace("xmlns:", "");
+      nsContext = {
+        defaultNamespace: nsContext?.defaultNamespace ?? null,
+        namespaceMap: {
+          ...nsContext?.namespaceMap,
+          [nsAbbrev]: value
+        }
+      };
+    } else if (key.includes(":")) {
+      const [nsAbbrev, attributeName] = key.split(":");
+      const ns = nsContext?.namespaceMap?.[nsAbbrev];
+      if (!ns) {
+        throw new Error(`Unknown namespace for '${key}' attribute`);
+      }
+      element.setAttributeNS(ns, attributeName, (value ?? "").toString());
+    } else if (key.includes("-")) {
+      element.setAttribute(key, (value ?? "").toString());
+    } else if (key === "class") {
+      element.className = value;
+    } else if (key === "for") {
+      ;
+      element.htmlFor = value;
+    } else {
+      ;
+      element[key] = value;
+    }
+  }
+  return { element, nsContext };
+}
+function buildNode(description, container2, elementBinds, nodeBinds, nsContext, document2 = globalThis.document) {
+  switch (description.type) {
+    case "element": {
+      const { element, nsContext: newContext } = buildElement(description, nsContext, document2);
+      if (hasAnyBinds(description)) {
+        elementBinds.push([element, description]);
+      }
+      container2.appendChild(element);
+      return { container: element, nsContext: newContext };
+    }
+    case "children": {
+      const childrenComment = document2.createComment("Children component");
+      container2.appendChild(childrenComment);
+      nodeBinds.push([childrenComment, description]);
+      return null;
+    }
+    case "component": {
+      const componentComment = document2.createComment(`${description.component.name} component`);
+      container2.appendChild(componentComment);
+      nodeBinds.push([componentComment, description]);
+      return null;
+    }
+    case "fragment":
+      if (description.childrenBind && description.childrenBindMode === "prepend") {
+        const fragmentComment = document2.createComment("fragment children binding");
+        container2.appendChild(fragmentComment);
+        nodeBinds.push([fragmentComment, description]);
+      }
+      for (const child of description.children) {
+        if (typeof child === "string") {
+          container2.appendChild(document2.createTextNode(child));
+          continue;
+        }
+        buildTree(child, container2, elementBinds, nodeBinds, nsContext, document2);
+      }
+      if (description.childrenBind && description.childrenBindMode !== "prepend") {
+        const fragmentComment = document2.createComment("fragment children binding");
+        container2.appendChild(fragmentComment);
+        nodeBinds.push([fragmentComment, description]);
+      }
+      return { container: container2, nsContext };
+    case "static":
+      container2.appendChild(description.element);
+      return { container: container2, nsContext };
+  }
+}
+function buildTree(description, container2 = null, elementBinds = [], nodeBinds = [], nsContext, document2 = globalThis.document) {
+  if (!container2 && description.type === "element") {
+    const { element, nsContext: newContext } = buildElement(description, nsContext, document2);
+    nsContext = newContext;
+    container2 = element;
+    if (hasAnyBinds(description)) {
+      elementBinds.push([element, description]);
+    }
+  } else if (!container2 && description.type === "static") {
+    return {
+      elementBinds,
+      nodeBinds,
+      container: description.element
+    };
+  } else if (!container2) {
+    container2 = document2.createDocumentFragment();
+    buildNode(description, container2, elementBinds, nodeBinds, nsContext, document2);
+  } else {
+    const nextNode = buildNode(description, container2, elementBinds, nodeBinds, nsContext, document2);
+    if (nextNode !== null) {
+      const { container: newContainer, nsContext: newContext } = nextNode;
+      container2 = newContainer;
+      nsContext = newContext;
+    }
+  }
+  if (description.type !== "children" && description.type !== "fragment" && description.type !== "static") {
+    for (const child of description.children) {
+      if (typeof child === "string") {
+        container2.appendChild(document2.createTextNode(child));
+        continue;
+      }
+      buildTree(child, container2, elementBinds, nodeBinds, nsContext, document2);
+    }
+  }
+  return {
+    elementBinds,
+    nodeBinds,
+    container: container2
+  };
+}
+
+// node_modules/butterfloat/wiring-dom-build.js
+var buildDomStrategy = (component, properties, context2, container2, document2) => {
+  const tree = component(properties, context2);
+  return {
+    ...buildTree(tree, void 0, void 0, void 0, void 0, document2),
+    isSameContainer: false
+  };
+};
+var wiring_dom_build_default = buildDomStrategy;
 
 // node_modules/butterfloat/runtime.js
 function run(container2, component, options, placeholder, document2 = globalThis.document) {
   const { preserveOnComplete } = options ?? {};
-  return runInternal(container2, component, { isStaticComponent: true, isStaticTree: true, preserveOnComplete }, placeholder, document2);
+  return runInternal(container2, component, {
+    domStrategy: wiring_dom_build_default,
+    isStaticComponent: true,
+    isStaticTree: true,
+    preserveOnComplete
+  }, placeholder, document2);
 }
 
-// main.tsx
+// index.ts
 var import_jquery = __toESM(require_jquery(), 1);
-
-// node_modules/lucide/dist/esm/createElement.js
-var createElement = (tag2, attrs, children = []) => {
-  const element = document.createElementNS("http://www.w3.org/2000/svg", tag2);
-  Object.keys(attrs).forEach((name) => {
-    element.setAttribute(name, String(attrs[name]));
-  });
-  if (children.length) {
-    children.forEach((child) => {
-      const childElement = createElement(...child);
-      element.appendChild(childElement);
-    });
-  }
-  return element;
-};
-var createElement$1 = ([tag2, attrs, children]) => createElement(tag2, attrs, children);
-
-// node_modules/lucide/dist/esm/defaultAttributes.js
-var defaultAttributes = {
-  xmlns: "http://www.w3.org/2000/svg",
-  width: 24,
-  height: 24,
-  viewBox: "0 0 24 24",
-  fill: "none",
-  stroke: "currentColor",
-  "stroke-width": 2,
-  "stroke-linecap": "round",
-  "stroke-linejoin": "round"
-};
-
-// node_modules/lucide/dist/esm/icons/fast-forward.js
-var FastForward = [
-  "svg",
-  defaultAttributes,
-  [
-    ["polygon", { points: "13 19 22 12 13 5 13 19" }],
-    ["polygon", { points: "2 19 11 12 2 5 2 19" }]
-  ]
-];
-
-// node_modules/lucide/dist/esm/icons/github.js
-var Github = [
-  "svg",
-  defaultAttributes,
-  [
-    [
-      "path",
-      {
-        d: "M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"
-      }
-    ],
-    ["path", { d: "M9 18c-4.51 2-5-2-7-2" }]
-  ]
-];
-
-// node_modules/lucide/dist/esm/icons/pause.js
-var Pause = [
-  "svg",
-  defaultAttributes,
-  [
-    ["rect", { width: "4", height: "16", x: "6", y: "4" }],
-    ["rect", { width: "4", height: "16", x: "14", y: "4" }]
-  ]
-];
-
-// node_modules/lucide/dist/esm/icons/play.js
-var Play = ["svg", defaultAttributes, [["polygon", { points: "5 3 19 12 5 21 5 3" }]]];
-
-// node_modules/lucide/dist/esm/icons/plus.js
-var Plus = [
-  "svg",
-  defaultAttributes,
-  [
-    ["path", { d: "M5 12h14" }],
-    ["path", { d: "M12 5v14" }]
-  ]
-];
-
-// node_modules/lucide/dist/esm/icons/rewind.js
-var Rewind = [
-  "svg",
-  defaultAttributes,
-  [
-    ["polygon", { points: "11 19 2 12 11 5 11 19" }],
-    ["polygon", { points: "22 19 13 12 22 5 22 19" }]
-  ]
-];
-
-// node_modules/lucide/dist/esm/icons/skip-forward.js
-var SkipForward = [
-  "svg",
-  defaultAttributes,
-  [
-    ["polygon", { points: "5 4 15 12 5 20 5 4" }],
-    ["line", { x1: "19", x2: "19", y1: "5", y2: "19" }]
-  ]
-];
 
 // node_modules/rxjs-spy/esm/index.js
 var noop_ = function noop_2() {
@@ -14371,6 +14348,103 @@ function create() {
   return new SpyCore(options);
 }
 
+// node_modules/lucide/dist/esm/createElement.js
+var createElement = (tag2, attrs, children = []) => {
+  const element = document.createElementNS("http://www.w3.org/2000/svg", tag2);
+  Object.keys(attrs).forEach((name) => {
+    element.setAttribute(name, String(attrs[name]));
+  });
+  if (children.length) {
+    children.forEach((child) => {
+      const childElement = createElement(...child);
+      element.appendChild(childElement);
+    });
+  }
+  return element;
+};
+var createElement$1 = ([tag2, attrs, children]) => createElement(tag2, attrs, children);
+
+// node_modules/lucide/dist/esm/defaultAttributes.js
+var defaultAttributes = {
+  xmlns: "http://www.w3.org/2000/svg",
+  width: 24,
+  height: 24,
+  viewBox: "0 0 24 24",
+  fill: "none",
+  stroke: "currentColor",
+  "stroke-width": 2,
+  "stroke-linecap": "round",
+  "stroke-linejoin": "round"
+};
+
+// node_modules/lucide/dist/esm/icons/fast-forward.js
+var FastForward = [
+  "svg",
+  defaultAttributes,
+  [
+    ["polygon", { points: "13 19 22 12 13 5 13 19" }],
+    ["polygon", { points: "2 19 11 12 2 5 2 19" }]
+  ]
+];
+
+// node_modules/lucide/dist/esm/icons/github.js
+var Github = [
+  "svg",
+  defaultAttributes,
+  [
+    [
+      "path",
+      {
+        d: "M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"
+      }
+    ],
+    ["path", { d: "M9 18c-4.51 2-5-2-7-2" }]
+  ]
+];
+
+// node_modules/lucide/dist/esm/icons/pause.js
+var Pause = [
+  "svg",
+  defaultAttributes,
+  [
+    ["rect", { width: "4", height: "16", x: "6", y: "4" }],
+    ["rect", { width: "4", height: "16", x: "14", y: "4" }]
+  ]
+];
+
+// node_modules/lucide/dist/esm/icons/play.js
+var Play = ["svg", defaultAttributes, [["polygon", { points: "5 3 19 12 5 21 5 3" }]]];
+
+// node_modules/lucide/dist/esm/icons/plus.js
+var Plus = [
+  "svg",
+  defaultAttributes,
+  [
+    ["path", { d: "M5 12h14" }],
+    ["path", { d: "M12 5v14" }]
+  ]
+];
+
+// node_modules/lucide/dist/esm/icons/rewind.js
+var Rewind = [
+  "svg",
+  defaultAttributes,
+  [
+    ["polygon", { points: "11 19 2 12 11 5 11 19" }],
+    ["polygon", { points: "22 19 13 12 22 5 22 19" }]
+  ]
+];
+
+// node_modules/lucide/dist/esm/icons/skip-forward.js
+var SkipForward = [
+  "svg",
+  defaultAttributes,
+  [
+    ["polygon", { points: "5 4 15 12 5 20 5 4" }],
+    ["line", { x1: "19", x2: "19", y1: "5", y2: "19" }]
+  ]
+];
+
 // node_modules/rxjs-spy/esm/operators/index.js
 function _classCallCheck2(instance, Constructor) {
   if (!(instance instanceof Constructor)) {
@@ -14724,17 +14798,13 @@ function Progress({ item }, { bindImmediateEffect, events }) {
 }
 
 // main.tsx
-var spy = create();
-var w = window;
-w.jQuery = w.$ = import_jquery.default;
-await Promise.resolve().then(() => __toESM(require_jquery_knob_min(), 1));
 function Main(_props, { bindImmediateEffect, events }) {
   const { addItem, pauseAll, unpauseAll } = events;
   const bfDomAttach = events.attach;
   const vm = bfDomAttach.pipe(
     switchMap((element) => {
       return new Observable((subscriber) => {
-        const dial = (0, import_jquery.default)(element);
+        const dial = $(element);
         dial.knob({
           min: 0,
           max: 360,
@@ -14890,6 +14960,12 @@ function Main(_props, { bindImmediateEffect, events }) {
     }
   ))));
 }
+
+// index.ts
+var spy = create();
+var w = window;
+w.jQuery = w.$ = import_jquery.default;
+await Promise.resolve().then(() => __toESM(require_jquery_knob_min(), 1));
 var container = document.getElementById("container");
 run(container, Main);
 /*! Bundled license information:
@@ -14907,6 +14983,18 @@ jquery/dist/jquery.js:
    * https://jquery.org/license
    *
    * Date: 2021-03-02T17:08Z
+   *)
+
+rxjs-spy/esm/index.js:
+  (**
+   * @license Use of this source code is governed by an MIT-style license that
+   * can be found in the LICENSE file at https://github.com/cartant/rxjs-spy
+   *)
+
+rxjs-spy/esm/index.js:
+  (**
+   * @license Use of this source code is governed by an MIT-style license that
+   * can be found in the LICENSE file at https://github.com/cartant/rxjs-spy
    *)
 
 lucide/dist/esm/createElement.js:
@@ -14987,18 +15075,6 @@ lucide/dist/esm/lucide.js:
    *
    * This source code is licensed under the ISC license.
    * See the LICENSE file in the root directory of this source tree.
-   *)
-
-rxjs-spy/esm/index.js:
-  (**
-   * @license Use of this source code is governed by an MIT-style license that
-   * can be found in the LICENSE file at https://github.com/cartant/rxjs-spy
-   *)
-
-rxjs-spy/esm/index.js:
-  (**
-   * @license Use of this source code is governed by an MIT-style license that
-   * can be found in the LICENSE file at https://github.com/cartant/rxjs-spy
    *)
 
 rxjs-spy/esm/operators/index.js:

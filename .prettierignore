@@ -1,1 +1,5 @@
 package-lock.json
+
+# generated (with stamps)
+index.html
+**/*.js
