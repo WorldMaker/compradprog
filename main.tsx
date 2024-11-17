@@ -1,9 +1,4 @@
-import {
-  ComponentContext,
-  Fragment,
-  ObservableEvent,
-  jsx,
-} from 'butterfloat'
+import { ComponentContext, Fragment, ObservableEvent, jsx } from 'butterfloat'
 import { Github, Pause, Play, Plus } from 'lucide'
 import {
   Observable,

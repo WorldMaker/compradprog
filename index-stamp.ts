@@ -1,4 +1,4 @@
-import { Component, runStamps, StampCollection } from 'butterfloat'
+import { runStamps, StampCollection } from 'butterfloat'
 import $ from 'jquery'
 import {
   FastForward,
@@ -25,56 +25,47 @@ await import('jquery-knob')
 
 const container = document.getElementById('container')!
 
-class DebugStampCollection extends StampCollection {
-  getStamp(c: Component, properties: unknown): HTMLTemplateElement | undefined {
-    const stamp = super.getStamp(c, properties)
-    console.log(stamp, c, properties)
-    return stamp
-  }
-}
-
-const stamps = new DebugStampCollection()
-stamps.registerPrestamp(Main, container)
-
-stamps.registerOnlyStamp(
-  Progress,
-  document.getElementById('progress') as HTMLTemplateElement,
-)
-
-stamps.registerStampAlternative(
-  Icon,
-  ({ icon }) => icon == Github,
-  document.getElementById('icon-github') as HTMLTemplateElement,
-)
-stamps.registerStampAlternative(
-  Icon,
-  ({ icon }) => icon == Pause,
-  document.getElementById('icon-pause') as HTMLTemplateElement,
-)
-stamps.registerStampAlternative(
-  Icon,
-  ({ icon }) => icon == Play,
-  document.getElementById('icon-play') as HTMLTemplateElement,
-)
-stamps.registerStampAlternative(
-  Icon,
-  ({ icon }) => icon == Plus,
-  document.getElementById('icon-plus') as HTMLTemplateElement,
-)
-stamps.registerStampAlternative(
-  Icon,
-  ({ icon }) => icon == FastForward,
-  document.getElementById('icon-fast-forward') as HTMLTemplateElement,
-)
-stamps.registerStampAlternative(
-  Icon,
-  ({ icon }) => icon == Rewind,
-  document.getElementById('icon-rewind') as HTMLTemplateElement,
-)
-stamps.registerStampAlternative(
-  Icon,
-  ({ icon }) => icon == SkipForward,
-  document.getElementById('icon-skip-forward') as HTMLTemplateElement,
-)
+const stamps = new StampCollection()
+stamps
+  .registerPrestamp(Main, container)
+  .registerOnlyStamp(
+    Progress,
+    document.querySelector<HTMLTemplateElement>('#progress')!,
+  )
+  .registerStampAlternative(
+    Icon,
+    ({ icon }) => icon == Github,
+    document.querySelector<HTMLTemplateElement>('#icon-github')!,
+  )
+  .registerStampAlternative(
+    Icon,
+    ({ icon }) => icon == Pause,
+    document.querySelector<HTMLTemplateElement>('#icon-pause')!,
+  )
+  .registerStampAlternative(
+    Icon,
+    ({ icon }) => icon == Play,
+    document.querySelector<HTMLTemplateElement>('#icon-play')!,
+  )
+  .registerStampAlternative(
+    Icon,
+    ({ icon }) => icon == Plus,
+    document.querySelector<HTMLTemplateElement>('#icon-plus')!,
+  )
+  .registerStampAlternative(
+    Icon,
+    ({ icon }) => icon == FastForward,
+    document.querySelector<HTMLTemplateElement>('#icon-fast-forward')!,
+  )
+  .registerStampAlternative(
+    Icon,
+    ({ icon }) => icon == Rewind,
+    document.querySelector<HTMLTemplateElement>('#icon-rewind')!,
+  )
+  .registerStampAlternative(
+    Icon,
+    ({ icon }) => icon == SkipForward,
+    document.querySelector<HTMLTemplateElement>('#icon-skip-forward')!,
+  )
 
 runStamps(container, Main, stamps)

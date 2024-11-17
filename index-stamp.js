@@ -15128,53 +15128,38 @@ var w = window;
 w.jQuery = w.$ = import_jquery.default;
 await Promise.resolve().then(() => __toESM(require_jquery_knob_min(), 1));
 var container = document.getElementById("container");
-var DebugStampCollection = class extends StampCollection {
-  getStamp(c, properties) {
-    const stamp = super.getStamp(c, properties);
-    console.log(stamp, c, properties);
-    return stamp;
-  }
-};
-var stamps = new DebugStampCollection();
-stamps.registerPrestamp(Main, container);
-stamps.registerOnlyStamp(
+var stamps = new StampCollection();
+stamps.registerPrestamp(Main, container).registerOnlyStamp(
   Progress,
-  document.getElementById("progress")
-);
-stamps.registerStampAlternative(
+  document.querySelector("#progress")
+).registerStampAlternative(
   Icon,
   ({ icon }) => icon == Github,
-  document.getElementById("icon-github")
-);
-stamps.registerStampAlternative(
+  document.querySelector("#icon-github")
+).registerStampAlternative(
   Icon,
   ({ icon }) => icon == Pause,
-  document.getElementById("icon-pause")
-);
-stamps.registerStampAlternative(
+  document.querySelector("#icon-pause")
+).registerStampAlternative(
   Icon,
   ({ icon }) => icon == Play,
-  document.getElementById("icon-play")
-);
-stamps.registerStampAlternative(
+  document.querySelector("#icon-play")
+).registerStampAlternative(
   Icon,
   ({ icon }) => icon == Plus,
-  document.getElementById("icon-plus")
-);
-stamps.registerStampAlternative(
+  document.querySelector("#icon-plus")
+).registerStampAlternative(
   Icon,
   ({ icon }) => icon == FastForward,
-  document.getElementById("icon-fast-forward")
-);
-stamps.registerStampAlternative(
+  document.querySelector("#icon-fast-forward")
+).registerStampAlternative(
   Icon,
   ({ icon }) => icon == Rewind,
-  document.getElementById("icon-rewind")
-);
-stamps.registerStampAlternative(
+  document.querySelector("#icon-rewind")
+).registerStampAlternative(
   Icon,
   ({ icon }) => icon == SkipForward,
-  document.getElementById("icon-skip-forward")
+  document.querySelector("#icon-skip-forward")
 );
 runStamps(container, Main, stamps);
 /*! Bundled license information:
