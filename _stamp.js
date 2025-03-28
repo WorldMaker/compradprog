@@ -9,7 +9,7 @@ import {
   makeTestComponentContext,
   makeTestEvent,
   require_lucide
-} from "./chunk-X4RUJGUJ.js";
+} from "./chunk-HZ7TX3P3.js";
 import {
   __toESM,
   require_cjs
@@ -49,7 +49,7 @@ var { context: testMainContext } = makeTestComponentContext({
   pauseAll: makeTestEvent(import_rxjs.NEVER),
   unpauseAll: makeTestEvent(import_rxjs.NEVER)
 });
-var { Main } = await import("./main-PT6WCVI2.js");
+var { Main } = await import("./main-JAJ5BKPX.js");
 var mainTree = Main({}, testMainContext);
 var mainStamp = buildStamp(mainTree, document);
 container.append(mainStamp.content);
