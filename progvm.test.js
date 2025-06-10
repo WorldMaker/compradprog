@@ -1,13 +1,10 @@
-import "./chunk-BYXBJQAS.js";
 import {
   BaseSpeed,
   ProgVm,
-  SpeedMultiplier
-} from "./chunk-MH565JGM.js";
-import {
+  SpeedMultiplier,
   __toESM,
   require_cjs
-} from "./chunk-QC5UYQHG.js";
+} from "./chunk-2UASDXKQ.js";
 
 // progvm.test.ts
 var import_rxjs = __toESM(require_cjs(), 1);

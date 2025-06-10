@@ -1,10 +1,7 @@
 import {
   Observable,
-  Subscription,
   combineLatest,
-  combineLatestAll,
   concat,
-  filter,
   interval,
   map,
   of,
@@ -29,8 +26,6 @@ export class CompRadProgVm {
 
   // Internal counter during ticks
   #spinTickCount = 0
-
-  readonly #subscription = new Subscription()
 
   // *** Butterflies and observables ***
 
@@ -72,7 +67,7 @@ export class CompRadProgVm {
     return this.#currentOffset
   }
 
-  constructor(dial?: JQuery<HTMLElement>, ticks?: Observable<unknown>) {
+  constructor(ticks?: Observable<unknown>) {
     ;[this.#progressAdded, this.#addProgress] = butterfly<ProgVm | null>(null)
 
     this.#targetPercent = concat(
@@ -119,22 +114,6 @@ export class CompRadProgVm {
     this.#currentOffset = current.pipe(
       map(([, currentOffset]) => currentOffset),
     )
-
-    if (dial) {
-      this.#subscription.add(
-        this.currentVal.subscribe((currentVal) =>
-          dial.val(currentVal).trigger('change'),
-        ),
-      )
-
-      this.#subscription.add(
-        this.currentOffset.subscribe((currentOffset) =>
-          dial.trigger('configure', { angleOffset: currentOffset }),
-        ),
-      )
-    } else {
-      console.warn('Unable to subscribe jQuery Knob dial to progress changes')
-    }
   }
 
   pauseAll() {
@@ -185,9 +164,5 @@ export class CompRadProgVm {
       currentOffset = 0
     }
     return [currentVal, currentOffset]
-  }
-
-  unsubscribe() {
-    this.#subscription.unsubscribe()
   }
 }

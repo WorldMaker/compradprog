@@ -27,57 +27,33 @@ export function Main(
   _props: {},
   { bindImmediateEffect, events }: ComponentContext<MainEvents>,
 ) {
-  const { addItem, pauseAll, unpauseAll } = events
+  const { addItem, attach, pauseAll, unpauseAll } = events
 
-  const bfDomAttach = events.attach
+  const vm = new CompRadProgVm(interval(500))
+  const { targetPercent, targetRoundPercent, currentOffset, currentVal } = vm
 
-  const vm = bfDomAttach.pipe(
-    switchMap((element) => {
-      return new Observable<CompRadProgVm>((subscriber) => {
-        // create and bind
-        const dial = $(element)
-
-        dial.knob({
-          min: 0,
-          max: 360,
-          readOnly: true,
-          displayInput: false,
-        })
-
-        const vm = new CompRadProgVm(dial, interval(500))
-        subscriber.next(vm)
-        return () => vm.unsubscribe()
-      })
-    }),
-    tag('vm'),
-    shareReplay(1),
+  const angleClass = currentOffset.pipe(
+    map((offset) => `angle-${offset}`),
+    tag('angle-class'),
   )
 
-  const targetPercent = vm.pipe(switchMap((vm) => vm.targetPercent))
-
-  const targetRoundPercent = vm.pipe(
-    switchMap((vm) => vm.targetRoundPercent),
-    tag('target-round-percent'),
-    shareReplay(1),
+  const currentValueStyle = currentVal.pipe(
+    map((val) => `--o-progress: ${val};`),
+    tag('current-value-style'),
   )
 
-  bindImmediateEffect(
-    addItem.pipe(withLatestFrom(vm), tag('add-item')),
-    ([, vm]) => vm.addItem(),
-  )
+  bindImmediateEffect(addItem, () => vm.addItem())
 
-  bindImmediateEffect(
-    pauseAll.pipe(withLatestFrom(vm), tag('pause-all')),
-    ([, vm]) => vm.unpauseAll(),
-  )
+  bindImmediateEffect(attach, (el: HTMLElement) => {
+    // Have to set this manually for now because there aren't any of the other signs for attribute binding such as hyphen
+    el.setAttribute('max', '360')
+  })
 
-  bindImmediateEffect(
-    unpauseAll.pipe(withLatestFrom(vm), tag('unpause-all')),
-    ([, vm]) => vm.unpauseAll(),
-  )
+  bindImmediateEffect(pauseAll, () => vm.unpauseAll())
 
-  const children = vm.pipe(
-    switchMap((vm) => vm.progressAdded),
+  bindImmediateEffect(unpauseAll, () => vm.unpauseAll())
+
+  const children = vm.progressAdded.pipe(
     filter((progVm) => progVm !== null),
     map((progVm) => () => <Progress item={progVm!} />),
     tag('children'),
@@ -161,18 +137,30 @@ export function Main(
       </section>
 
       <section class="section">
-        <div className="dashboard">
-          <div className="dial">
-            <input
-              type="text"
-              id="dial"
-              className="dial"
-              value="0"
-              events={{ bfDomAttach }}
-            />
-            <label htmlFor="dial" className="is-hidden">
-              Total Progress Dial
-            </label>
+        <div class="dashboard">
+          <div class="bigbang dial">
+            <div class="gravity-spot">
+              <div class="orbit-4">
+                <o-progress
+                  shape="circle"
+                  bind={{
+                    /* can't bind to o-progress `value` because attribute not property, can't use styleBind because variable not a property */
+                    style: currentValueStyle,
+                    /* can't use classBind because "dynamic" class name */
+                    className: angleClass,
+                  }}
+                  events={{ bfDomAttach: attach }}
+                ></o-progress>
+              </div>
+              <div class="orbit-0">
+                <div class="satellite">
+                  <div
+                    class="capsule"
+                    bind={{ innerText: targetRoundPercent }}
+                  />
+                </div>
+              </div>
+            </div>
           </div>
           <div className="total">
             <div className="level">

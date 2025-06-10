@@ -44,7 +44,7 @@ describe('CompRadProgVm', () => {
         b: 1,
         c: 1,
       }
-      const vm = new CompRadProgVm(undefined, ticks)
+      const vm = new CompRadProgVm(ticks)
       vm.addItem()
       vm.addItem()
       expectObservable(vm.currentVal).toBe(expected, expectedValues)

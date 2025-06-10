@@ -1,19 +1,16 @@
-import "./chunk-BYXBJQAS.js";
-import {
-  ProgVm
-} from "./chunk-MH565JGM.js";
 import {
   Icon,
   Progress,
+  require_lucide
+} from "./chunk-W7ZSPGI2.js";
+import {
+  ProgVm,
+  __toESM,
   buildStamp,
   makeTestComponentContext,
   makeTestEvent,
-  require_lucide
-} from "./chunk-HZ7TX3P3.js";
-import {
-  __toESM,
   require_cjs
-} from "./chunk-QC5UYQHG.js";
+} from "./chunk-2UASDXKQ.js";
 
 // _stamp.ts
 var import_lucide = __toESM(require_lucide(), 1);
@@ -34,13 +31,8 @@ var dom = new JSDOM(`
     </html>
 `);
 var { window } = dom;
-globalThis.window = window;
 var { document } = window;
 globalThis.document = document;
-var jQuery = function() {
-};
-jQuery.fn = {};
-globalThis.jQuery = jQuery;
 var container = document.getElementById("container");
 var { context: testMainContext } = makeTestComponentContext({
   addItem: makeTestEvent(import_rxjs.NEVER),
@@ -49,7 +41,7 @@ var { context: testMainContext } = makeTestComponentContext({
   pauseAll: makeTestEvent(import_rxjs.NEVER),
   unpauseAll: makeTestEvent(import_rxjs.NEVER)
 });
-var { Main } = await import("./main-JAJ5BKPX.js");
+var { Main } = await import("./main-GOYU7Y55.js");
 var mainTree = Main({}, testMainContext);
 var mainStamp = buildStamp(mainTree, document);
 container.append(mainStamp.content);

@@ -33,12 +33,8 @@ const dom = new JSDOM(`
     </html>
 `)
 const { window } = dom
-;(globalThis as any).window = window
 const { document } = window
 ;(globalThis as any).document = document
-const jQuery: any = function () {}
-jQuery.fn = {}
-;(globalThis as any).jQuery = jQuery
 const container = document.getElementById('container')!
 
 // *** Main (prestamp) ***

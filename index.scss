@@ -1,19 +1,20 @@
-@import 'bulma/sass/utilities/_all';
-@import 'bulma/sass/base/_all';
-@import 'bulma/sass/elements/_all';
-// @import "bulma/sass/form/_all"
-// @import 'bulma/sass/components/_all';
-@import 'bulma/sass/components/card';
-@import 'bulma/sass/components/level';
-@import 'bulma/sass/components/navbar';
-// @import "bulma/sass/grid/_all"
-@import 'bulma/sass/helpers/_all';
-@import 'bulma/sass/layout/_all';
+@use 'bulma/sass/utilities';
+@forward 'bulma/sass/base';
+@forward 'bulma/sass/elements';
+// @forward "bulma/sass/form"
+// @forward 'bulma/sass/components';
+@forward 'bulma/sass/components/card';
+@forward 'bulma/sass/components/navbar';
+// @forward "bulma/sass/grid"
+@forward 'bulma/sass/helpers';
+@forward 'bulma/sass/layout';
+@forward 'bulma/sass/themes';
+@import '@zumer/orbit/dist/orbit.css';
 
 .dashboard {
   display: grid;
-  grid-template-columns: auto 1fr;
-  grid-template-rows: auto 1fr;
+  grid-template-columns: 10rem 1fr;
+  grid-template-rows: 10rem 1fr;
   grid-template-areas:
     'dial total'
     'items items';
@@ -22,6 +23,17 @@
 
 .dial {
   grid-area: dial;
+}
+
+.dial o-progress {
+  --o-fill: var(--bulma-primary);
+}
+
+.dial .satellite {
+  border-color: transparent;
+  font-size: 3rem;
+  font-weight: bold;
+  color: var(--bulma-primary);
 }
 
 .total {
