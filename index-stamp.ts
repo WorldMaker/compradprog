@@ -1,5 +1,4 @@
 import { runStamps, StampCollection } from 'butterfloat'
-import $ from 'jquery'
 import {
   FastForward,
   Github,
@@ -13,15 +12,9 @@ import { create } from 'rxjs-spy'
 import { Icon } from './icon.js'
 import { Main } from './main.js'
 import { Progress } from './progress.js'
+import '@zumer/orbit'
 
 const spy = create()
-
-// Set global for jquery-knob
-const w = window as any
-w.jQuery = w.$ = $
-
-// @ts-ignore
-await import('jquery-knob')
 
 const container = document.getElementById('container')!
 

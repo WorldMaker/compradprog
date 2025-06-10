@@ -1,13 +1,6 @@
 import {
-  ProgVm,
-  Subscription,
-  butterfly,
-  combineLatest,
-  combineLatestAll,
-  filter,
-  map,
-  shareReplay
-} from "./chunk-MH565JGM.js";
+  CompRadProgVm
+} from "./chunk-IGQWQIZX.js";
 import {
   __commonJS,
   __toESM,
@@ -24,7 +17,7 @@ import {
   require_intervalProvider,
   require_performanceTimestampProvider,
   require_timeoutProvider
-} from "./chunk-QC5UYQHG.js";
+} from "./chunk-2UASDXKQ.js";
 
 // node_modules/rxjs/dist/cjs/internal/testing/SubscriptionLog.js
 var require_SubscriptionLog = __commonJS({
@@ -32,7 +25,7 @@ var require_SubscriptionLog = __commonJS({
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.SubscriptionLog = void 0;
-    var SubscriptionLog = function() {
+    var SubscriptionLog = /* @__PURE__ */ function() {
       function SubscriptionLog2(subscribedFrame, unsubscribedFrame) {
         if (unsubscribedFrame === void 0) {
           unsubscribedFrame = Infinity;
@@ -96,14 +89,12 @@ var require_applyMixins = __commonJS({
 var require_ColdObservable = __commonJS({
   "node_modules/rxjs/dist/cjs/internal/testing/ColdObservable.js"(exports) {
     "use strict";
-    var __extends = exports && exports.__extends || function() {
+    var __extends = exports && exports.__extends || /* @__PURE__ */ function() {
       var extendStatics = function(d, b) {
         extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
           d2.__proto__ = b2;
         } || function(d2, b2) {
-          for (var p in b2)
-            if (Object.prototype.hasOwnProperty.call(b2, p))
-              d2[p] = b2[p];
+          for (var p in b2) if (Object.prototype.hasOwnProperty.call(b2, p)) d2[p] = b2[p];
         };
         return extendStatics(d, b);
       };
@@ -163,14 +154,12 @@ var require_ColdObservable = __commonJS({
 var require_HotObservable = __commonJS({
   "node_modules/rxjs/dist/cjs/internal/testing/HotObservable.js"(exports) {
     "use strict";
-    var __extends = exports && exports.__extends || function() {
+    var __extends = exports && exports.__extends || /* @__PURE__ */ function() {
       var extendStatics = function(d, b) {
         extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
           d2.__proto__ = b2;
         } || function(d2, b2) {
-          for (var p in b2)
-            if (Object.prototype.hasOwnProperty.call(b2, p))
-              d2[p] = b2[p];
+          for (var p in b2) if (Object.prototype.hasOwnProperty.call(b2, p)) d2[p] = b2[p];
         };
         return extendStatics(d, b);
       };
@@ -236,14 +225,12 @@ var require_HotObservable = __commonJS({
 var require_TestScheduler = __commonJS({
   "node_modules/rxjs/dist/cjs/internal/testing/TestScheduler.js"(exports) {
     "use strict";
-    var __extends = exports && exports.__extends || function() {
+    var __extends = exports && exports.__extends || /* @__PURE__ */ function() {
       var extendStatics = function(d, b) {
         extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
           d2.__proto__ = b2;
         } || function(d2, b2) {
-          for (var p in b2)
-            if (Object.prototype.hasOwnProperty.call(b2, p))
-              d2[p] = b2[p];
+          for (var p in b2) if (Object.prototype.hasOwnProperty.call(b2, p)) d2[p] = b2[p];
         };
         return extendStatics(d, b);
       };
@@ -259,21 +246,17 @@ var require_TestScheduler = __commonJS({
     }();
     var __read = exports && exports.__read || function(o, n) {
       var m = typeof Symbol === "function" && o[Symbol.iterator];
-      if (!m)
-        return o;
+      if (!m) return o;
       var i = m.call(o), r, ar = [], e;
       try {
-        while ((n === void 0 || n-- > 0) && !(r = i.next()).done)
-          ar.push(r.value);
+        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
       } catch (error) {
         e = { error };
       } finally {
         try {
-          if (r && !r.done && (m = i["return"]))
-            m.call(i);
+          if (r && !r.done && (m = i["return"])) m.call(i);
         } finally {
-          if (e)
-            throw e.error;
+          if (e) throw e.error;
         }
       }
       return ar;
@@ -285,16 +268,13 @@ var require_TestScheduler = __commonJS({
     };
     var __values = exports && exports.__values || function(o) {
       var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
-      if (m)
-        return m.call(o);
-      if (o && typeof o.length === "number")
-        return {
-          next: function() {
-            if (o && i >= o.length)
-              o = void 0;
-            return { value: o && o[i++], done: !o };
-          }
-        };
+      if (m) return m.call(o);
+      if (o && typeof o.length === "number") return {
+        next: function() {
+          if (o && i >= o.length) o = void 0;
+          return { value: o && o[i++], done: !o };
+        }
+      };
       throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
     };
     Object.defineProperty(exports, "__esModule", { value: true });
@@ -660,32 +640,32 @@ var require_TestScheduler = __commonJS({
           throw new Error("animate() must only be used in run mode");
         }
         var lastHandle = 0;
-        var map2;
+        var map;
         var delegate = {
           requestAnimationFrame: function(callback) {
-            if (!map2) {
+            if (!map) {
               throw new Error("animate() was not called within run()");
             }
             var handle = ++lastHandle;
-            map2.set(handle, callback);
+            map.set(handle, callback);
             return handle;
           },
           cancelAnimationFrame: function(handle) {
-            if (!map2) {
+            if (!map) {
               throw new Error("animate() was not called within run()");
             }
-            map2.delete(handle);
+            map.delete(handle);
           }
         };
         var animate = function(marbles) {
           var e_1, _a;
-          if (map2) {
+          if (map) {
             throw new Error("animate() must not be called more than once within run()");
           }
           if (/[|#]/.test(marbles)) {
             throw new Error("animate() must not complete or error");
           }
-          map2 = /* @__PURE__ */ new Map();
+          map = /* @__PURE__ */ new Map();
           var messages = TestScheduler3.parseMarbles(marbles, void 0, void 0, void 0, true);
           try {
             for (var messages_1 = __values(messages), messages_1_1 = messages_1.next(); !messages_1_1.done; messages_1_1 = messages_1.next()) {
@@ -693,8 +673,8 @@ var require_TestScheduler = __commonJS({
               _this.schedule(function() {
                 var e_2, _a2;
                 var now = _this.now();
-                var callbacks = Array.from(map2.values());
-                map2.clear();
+                var callbacks = Array.from(map.values());
+                map.clear();
                 try {
                   for (var callbacks_1 = (e_2 = void 0, __values(callbacks)), callbacks_1_1 = callbacks_1.next(); !callbacks_1_1.done; callbacks_1_1 = callbacks_1.next()) {
                     var callback = callbacks_1_1.value;
@@ -704,11 +684,9 @@ var require_TestScheduler = __commonJS({
                   e_2 = { error: e_2_1 };
                 } finally {
                   try {
-                    if (callbacks_1_1 && !callbacks_1_1.done && (_a2 = callbacks_1.return))
-                      _a2.call(callbacks_1);
+                    if (callbacks_1_1 && !callbacks_1_1.done && (_a2 = callbacks_1.return)) _a2.call(callbacks_1);
                   } finally {
-                    if (e_2)
-                      throw e_2.error;
+                    if (e_2) throw e_2.error;
                   }
                 }
               }, message.frame);
@@ -717,11 +695,9 @@ var require_TestScheduler = __commonJS({
             e_1 = { error: e_1_1 };
           } finally {
             try {
-              if (messages_1_1 && !messages_1_1.done && (_a = messages_1.return))
-                _a.call(messages_1);
+              if (messages_1_1 && !messages_1_1.done && (_a = messages_1.return)) _a.call(messages_1);
             } finally {
-              if (e_1)
-                throw e_1.error;
+              if (e_1) throw e_1.error;
             }
           }
         };
@@ -907,151 +883,6 @@ var import_rxjs = __toESM(require_cjs(), 1);
 var import_testing = __toESM(require_testing(), 1);
 import { deepEqual, ok } from "node:assert/strict";
 import { describe, it } from "node:test";
-
-// compradprogvm.js
-var CompRadProgVm = class {
-  // *** Experiment modification fields ***
-  minBar = 1;
-  maxGrowthPerTick = 90;
-  maxCatchPerTick = 15;
-  catchSpinRate = 2;
-  growthSpinRate = 1;
-  spinTicks = 2;
-  spinRate = 1;
-  // Internal counter during ticks
-  #spinTickCount = 0;
-  #subscription = new Subscription();
-  // *** Butterflies and observables ***
-  #progressAdded;
-  #addProgress;
-  get progressAdded() {
-    return this.#progressAdded;
-  }
-  #inprogress = [];
-  get progressCount() {
-    return this.#inprogress.length;
-  }
-  get pausedStatus() {
-    return combineLatest(this.#inprogress.map((prog) => prog.paused));
-  }
-  #targetPercent;
-  get targetPercent() {
-    return this.#targetPercent;
-  }
-  #targetRoundPercent;
-  get targetRoundPercent() {
-    return this.#targetRoundPercent;
-  }
-  #targetVal;
-  get targetVal() {
-    return this.#targetVal;
-  }
-  #ticks;
-  #tick;
-  #currentVal;
-  #setCurrentVal;
-  get currentVal() {
-    return this.#currentVal;
-  }
-  #currentOffset;
-  #setCurrentOffset;
-  get currentOffset() {
-    return this.#currentOffset;
-  }
-  constructor(dial) {
-    ;
-    [this.#progressAdded, this.#addProgress] = butterfly(null);
-    [this.#ticks, this.#tick] = butterfly(void 0);
-    [this.#currentVal, this.#setCurrentVal] = butterfly(0);
-    [this.#currentOffset, this.#setCurrentOffset] = butterfly(0);
-    this.#targetPercent = this.progressAdded.pipe(
-      filter((progress) => progress !== null),
-      map((progress) => progress.percent),
-      combineLatestAll(),
-      map((progresses) => progresses.reduce((a, b) => a + b) / progresses.length),
-      shareReplay(1)
-    );
-    this.#targetRoundPercent = this.targetPercent.pipe(
-      map((target) => Math.round(target * 100))
-    );
-    this.#targetVal = this.targetPercent.pipe(
-      map((target) => Math.round(target * 360))
-    );
-    const current = combineLatest([this.currentVal, this.currentOffset, this.targetVal, this.#ticks]).pipe(
-      map(([currentVal, currentOffset, targetVal]) => this.onTick(currentVal, currentOffset, targetVal))
-    );
-    this.#subscription.add(
-      current.subscribe({
-        next: ([currentVal, currentOffset]) => {
-          this.#setCurrentVal(currentVal);
-          this.#setCurrentOffset(currentOffset);
-        }
-      })
-    );
-    if (dial) {
-      this.#subscription.add(this.currentVal.subscribe((currentVal) => dial.val(currentVal).trigger("change")));
-      this.#subscription.add(this.currentOffset.subscribe(
-        (currentOffset) => dial.trigger("configure", { angleOffset: currentOffset })
-      ));
-    } else {
-      console.warn("Unable to subscribe jQuery Knob dial to progress changes");
-    }
-  }
-  pauseAll() {
-    this.#inprogress.forEach((item) => item.pause());
-  }
-  unpauseAll() {
-    this.#inprogress.forEach((item) => item.unpause());
-  }
-  addItem() {
-    const progress = new ProgVm();
-    this.#addProgress(progress);
-    this.#inprogress.unshift(new ProgVm());
-  }
-  tick() {
-    this.#inprogress.forEach((item) => item.tick());
-    this.#tick(void 0);
-  }
-  onTick(currentVal, currentOffset, targetVal) {
-    if (currentVal < this.minBar) {
-      currentVal = this.minBar;
-    }
-    if (targetVal > currentVal) {
-      const diff = Math.min(
-        targetVal - currentVal,
-        this.maxGrowthPerTick
-      );
-      currentVal += diff;
-      if (this.growthSpinRate) {
-        currentOffset += this.growthSpinRate;
-      }
-      this.#spinTickCount = 0;
-    } else if (targetVal < currentVal && currentVal > this.minBar) {
-      const diff = Math.min(
-        currentVal - targetVal,
-        this.maxCatchPerTick
-      );
-      currentVal = Math.max(currentVal - diff, this.minBar);
-      const offset = (currentOffset + diff + this.catchSpinRate) % 360;
-      currentOffset = offset;
-      this.#spinTickCount = 0;
-    } else if (currentVal < 360) {
-      this.#spinTickCount++;
-      if (this.#spinTickCount == this.spinTicks) {
-        currentOffset = (currentOffset + this.spinRate) % 360;
-        this.#spinTickCount = 0;
-      }
-    } else if (currentVal == 360 && currentOffset != 0) {
-      currentOffset = 0;
-    }
-    return [currentVal, currentOffset];
-  }
-  unsubscribe() {
-    this.#subscription.unsubscribe();
-  }
-};
-
-// compradprogvm.test.ts
 describe("CompRadProgVm", () => {
   it("adds items", () => {
     const vm = new CompRadProgVm();
@@ -1088,7 +919,7 @@ describe("CompRadProgVm", () => {
         b: 1,
         c: 1
       };
-      const vm = new CompRadProgVm(void 0, ticks);
+      const vm = new CompRadProgVm(ticks);
       vm.addItem();
       vm.addItem();
       expectObservable(vm.currentVal).toBe(expected, expectedValues);
